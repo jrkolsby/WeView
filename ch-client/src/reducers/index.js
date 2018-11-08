@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux'
 
-import game from './game'
+import onboard from './onboard'
 
 export default combineReducers({
-    game
+    onboard
 })
 

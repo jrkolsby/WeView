@@ -1,47 +1,61 @@
 import React, {Component} from 'react'
 
 import {connect} from 'react-redux';
-import * as actionCreators from '../actions'
+import * as actionCreators from '../actions/onboard'
 
-import SignupModal from '../components/signup'
+import AccountModal from '../components/account-modal'
 
 class ModalContainer extends Component {
     constructor(props) {
         super(props)
-
-        this.handleSelect = this.handleSelect.bind(this)
+        this.gotoLogin = this.gotoLogin.bind(this)
+        this.gotoSignup = this.gotoSignup.bind(this)
     }
 
-    handleSelect(chunkIndex) {
-        //console.log('handle select', chunkIndex)
-        this.props.jumpToChunk(chunkIndex)
-    }
+    gotoLogin() { this.props.openOnboard(false) }
+    gotoSignup() { this.props.openOnboard(true) }
 
     render() {  
-        //console.log('editor chunk', this.props)
-        return (
-            <SignupModal
-
-                // State Props
-                isOpen={this.props.signup}
-
-                // Action creators
-                handleOpen={this.props.signup}
-            />
-        )
+        return this.props.onboard.signup ||
+            this.props.onboard.login ? (
+            <div id="modal-container">
+                <AccountModal
+                    isOpen={this.props.onboard.signup}
+                    fields={[{
+                        placeholder: "Username"
+                    },{
+                        placeholder: "Password",
+                        pass: true
+                    }]}
+                    title="Sign Up"
+                    primary="Sign Up"
+                    secondary="or login..."
+                    handlePrimary={this.props.signup}
+                    handleSecondary={this.gotoLogin}
+                />
+                <AccountModal
+                    isOpen={this.props.onboard.login}
+                    fields={[{
+                        placeholder: "Username"
+                    },{
+                        placeholder: "Password",
+                        pass: true
+                    }]}
+                    title="Log In"
+                    primary="Log In"
+                    secondary="or create an account..."
+                    handlePrimary={this.props.login}
+                    handleSecondary={this.gotoSignup}
+                />
+            </div>
+        ) : null
     }
-
 }
 
 const mapStateToProps = (state) => {
     return {
-        editor: state.editor,
-        player: state.player
+        onboard: state.onboard
     }
 }
 
-let connection = connect(mapStateToProps, actionCreators)(ModalContainer)
-
-console.log(connection)
-
-export default connection
+export default connect(mapStateToProps, actionCreators)(ModalContainer)
