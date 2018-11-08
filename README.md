@@ -2,7 +2,7 @@
 
 ### TODO
 
-[ ] Configure chat rooms
-[ ] Bracket in chat
-[ ] Rottentomatoes API
-[ ] Awards API
+- [] Configure chat rooms
+- [] Bracket in chat
+- [] Rottentomatoes API
+- [] Awards API

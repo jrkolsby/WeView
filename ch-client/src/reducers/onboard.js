@@ -1,8 +1,8 @@
 import {ACTIONS} from '../actions';
 
 let defaultState = {
-    signup: true,
-    login: false
+    signup: false,
+    login: true
 }
 
 const reducer = (state=defaultState, action) => {

@@ -16,11 +16,8 @@ class AccountModal extends Modal {
             <div className='account modal'>
                 <h1>{this.props.title}</h1>
 
-                {this.props.fields.map((f,i) => <input 
-                    key={i}
-                    type={f.pass ? "password" : "text"}
-                    placeholder={f.placeholder}
-                />)}
+                <input type="text" placeholder="Username"/>
+                <input type="password" placeholder="Password"/>
 
                 <button onClick={this.send}>
                     {this.props.primary}</button>

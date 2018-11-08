@@ -21,12 +21,6 @@ class ModalContainer extends Component {
             <div id="modal-container">
                 <AccountModal
                     isOpen={this.props.onboard.signup}
-                    fields={[{
-                        placeholder: "Username"
-                    },{
-                        placeholder: "Password",
-                        pass: true
-                    }]}
                     title="Sign Up"
                     primary="Sign Up"
                     secondary="or login..."
@@ -35,12 +29,6 @@ class ModalContainer extends Component {
                 />
                 <AccountModal
                     isOpen={this.props.onboard.login}
-                    fields={[{
-                        placeholder: "Username"
-                    },{
-                        placeholder: "Password",
-                        pass: true
-                    }]}
                     title="Log In"
                     primary="Log In"
                     secondary="or create an account..."
