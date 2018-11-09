@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 
 import {connect} from 'react-redux';
-import * as actionCreators from '../actions/onboard'
+import {bindActionCreators} from 'redux';
+import * as apiActions from '../actions/api'
+import * as onboardActions from '../actions/onboard'
 
 import AccountModal from '../components/account-modal'
 
@@ -12,27 +14,27 @@ class ModalContainer extends Component {
         this.gotoSignup = this.gotoSignup.bind(this)
     }
 
-    gotoLogin() { this.props.openOnboard(false) }
-    gotoSignup() { this.props.openOnboard(true) }
+    gotoLogin() { this.props.actions.onboard.openOnboard(false) }
+    gotoSignup() { this.props.actions.onboard.openOnboard(true) }
 
     render() {  
-        return this.props.onboard.signup ||
-            this.props.onboard.login ? (
+        return this.props.atSignup ||
+            this.props.atLogin ? (
             <div id="modal-container">
                 <AccountModal
-                    isOpen={this.props.onboard.signup}
+                    isOpen={this.props.atSignup}
                     title="Sign Up"
                     primary="Sign Up"
                     secondary="or login..."
-                    handlePrimary={this.props.signup}
+                    handlePrimary={this.props.actions.api.signup}
                     handleSecondary={this.gotoLogin}
                 />
                 <AccountModal
-                    isOpen={this.props.onboard.login}
+                    isOpen={this.props.atLogin}
                     title="Log In"
                     primary="Log In"
                     secondary="or create an account..."
-                    handlePrimary={this.props.login}
+                    handlePrimary={this.props.actions.api.login}
                     handleSecondary={this.gotoSignup}
                 />
             </div>
@@ -40,10 +42,17 @@ class ModalContainer extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const stateToProps = (state) => {
+    return state.onboard
+}
+
+const dispatchToProps = (dispatch) => {
     return {
-        onboard: state.onboard
+        actions: {
+            api: bindActionCreators(apiActions, dispatch),
+            onboard: bindActionCreators(onboardActions, dispatch) 
+        } 
     }
 }
 
-export default connect(mapStateToProps, actionCreators)(ModalContainer)
+export default connect(stateToProps, dispatchToProps)(ModalContainer)

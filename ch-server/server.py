@@ -11,8 +11,9 @@ from flask_socketio import SocketIO, send, emit
 from data.messages 
 from data.movies import 
 from data.votes import addMessage, getMessages, addVote
-from data.users import addUser, getUser
 '''
+
+from data.users import addUser, getUser
 
 app = Flask(__name__)
 CORS(app)
@@ -21,18 +22,31 @@ login = LoginManager(app)
 socketio = SocketIO(app)
 
 def success(payload): 
-    response = {
+    return jsonify({
         "type": "SUCCESS",
         "payload": payload
-    }
-    return jsonify(response)
+    })
 
 def error(payload):
-    response = {
+    return jsonify({
         "type": "ERROR",
         "payload": payload 
-    }
-    return jsonify(response)
+    })
+
+@app.route("/signup", methods=['GET', 'POST', 'DELETE'])
+def signup():
+    username = request.form.get('user')
+    password = request.form.get('pass')
+
+    if username == "" or password == "":
+        return error("Incomplete Credentials")
+
+    if getUser(username) is not None:
+        return error("User exists")
+    
+    user = addUser(username, password)
+
+    return success(user.getToken(password))
 
 @app.route("/login", methods=['POST'])
 def login():
@@ -42,7 +56,6 @@ def login():
     if username == "" or password == "":
         return error("Incomplete Credentials")
 
-    '''
     user = getUser(username)
 
     if user is None:
@@ -53,5 +66,5 @@ def login():
     if token is None:
         return error("Invalid Password")
 
-    '''
-    return success("Token!")
+    return success(token)
+

@@ -9,10 +9,7 @@ import {createStore, applyMiddleware} from 'redux'
 
 //import registerServiceWorker from './registerServiceWorker';
 
-import ModalContainer from './containers/modal'
-
-import "./style/reset.css"
-import "./style/index.css"
+import Choosy from './containers/choosy'
 
 const store = createStore(
     rootReducer,
@@ -21,7 +18,7 @@ const store = createStore(
 
 ReactDOM.render(
     <Provider store={store}>
-        <ModalContainer />
+        <Choosy />
     </Provider>,
     document.getElementById('root')
 );

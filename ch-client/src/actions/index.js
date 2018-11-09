@@ -4,10 +4,13 @@ export const ACTIONS = {
     ADD_CHOICE: 2,
     VOTE_CHOICE: 3,
     VERIFY_USER: 20,
-    LOADING: 666,
 
     CLOSE_ONBOARD: 10,
-    OPEN_ONBOARD: 30
+    OPEN_ONBOARD: 30,
+
+    LOGIN_SUCCESS: "SUCCESS",
+    LOADING: "LOADING",
+    ERROR: "ERROR"
 }
 
 export default ACTIONS

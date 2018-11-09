@@ -1,8 +1,9 @@
 import {ACTIONS} from '../actions';
 
 let defaultState = {
-    atSignup: false,
-    atLogin: true
+    ok: true,
+    loading: false,
+    error: ""
 }
 
 const reducer = (state=defaultState, action) => {
@@ -11,27 +12,26 @@ const reducer = (state=defaultState, action) => {
         case ACTIONS.LOGIN_SUCCESS:
             return {
                 ...state,
-                atSignup: false,
-                atLogin: false
+                ok: true,
+                loading: false,
+                error: ""
             }
 
-        case ACTIONS.OPEN_ONBOARD:
+        case ACTIONS.ERROR:
             return {
-                ...state,
-                atSignup: action.payload,
-                atLogin: !action.payload 
+                ...state, 
+                ok: false,
+                error: action.payload
             }
 
-        case ACTIONS.CLOSE_ONBOARD:
+        case ACTIONS.LOADING:
             return {
                 ...state,
-                atSignup: false,
-                atLogin: false, 
+                loading: action.payload 
             }
- 
+
         default:
             return state
-    
     }
 }
 

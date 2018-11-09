@@ -4,8 +4,8 @@ from random import choice
 
 from passlib.apps import custom_app_context as pwd
 
-from app import Base, session, createAll
-from app import Column, Integer, String
+from data import Base, session, createAll
+from data import Column, Integer, String
 
 TOKEN_EXPIRE = 3600 * 1000
 TOKEN_SIZE = 17
@@ -32,8 +32,8 @@ class User(Base):
 
             # generate token
             alphabet = string.ascii_letters + string.digits
-            self.token = ''.join( \
-                    choice(alphabet) for i in range(TOKEN_SIZE))
+            self.token = ''.join( choice(alphabet) \
+                for i in range(TOKEN_SIZE))
 
             self.expire = getTime() + TOKEN_EXPIRE
             session.commit()
