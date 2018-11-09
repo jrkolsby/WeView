@@ -18,8 +18,7 @@ class ModalContainer extends Component {
     gotoSignup() { this.props.actions.onboard.openOnboard(true) }
 
     render() {  
-        return this.props.atSignup ||
-            this.props.atLogin ? (
+        return this.props.atSignup || this.props.atLogin ? (
             <div id="modal-container">
                 <AccountModal
                     isOpen={this.props.atSignup}

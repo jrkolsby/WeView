@@ -13,6 +13,7 @@ from data.movies import
 from data.votes import addMessage, getMessages, addVote
 '''
 
+from data.choices import addChoice, getChoices
 from data.users import addUser, getUser
 
 app = Flask(__name__)
@@ -32,6 +33,32 @@ def error(payload):
         "type": "ERROR",
         "payload": payload 
     })
+
+@socketio.on('message')
+def handleSocket(packet):
+    packetType = packet['type']
+    payload = packet['payload']
+
+    username = payload['username']
+    token = payload['token']
+    user = getUser(username)
+
+    if user is not None and user.verifyToken(token):
+
+        if packetType == "MESSAGE":
+
+            content = payload['content']
+            send(message(username, content), broadcast = True)
+            addMessage(username, content)
+
+        elif packetType == "VOTE":
+            messageID = payload['messageID']
+
+            newCount = addVote(messageID)
+            send(vote(messageID, newCount))
+
+    else:
+        print "WARN: Unverified user"
 
 @app.route("/signup", methods=['GET', 'POST', 'DELETE'])
 def signup():

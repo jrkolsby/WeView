@@ -8,7 +8,7 @@ import LoadingBar from '../components/loading-bar'
 class StatusContainer extends Component {
     render() {
         return (
-            <>
+            <div id="status-container">
                 <LoadingBar 
                     visible={this.props.loading}
                 />
@@ -16,7 +16,7 @@ class StatusContainer extends Component {
                     visible={this.props.ok}
                     message={this.props.error}
                 />
-            </>
+            </div>
         ) 
     }
 }

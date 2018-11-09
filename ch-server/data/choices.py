@@ -1,12 +1,12 @@
 import time
 
-from app import Base, session, createAll
-from app import Column, Integer, String
+from data import Base, session, createAll
+from data import Column, Integer, String
 
-from app.users import getUser, User
+from data.users import getUser, User
 
-class Message(Base):
-    __tablename__ = 'messages'
+class Choice(Base):
+    __tablename__ = 'choices'
 
     id = Column('id', Integer, primary_key=True)
     content = Column('content', String)
@@ -24,27 +24,27 @@ class Join(Base):
     __tablename__ = 'join'
 
     user = Column('user', Integer, primary_key=True)
-    message = Column('message', Integer, primary_key=True)
+    choice = Column('choice', Integer, primary_key=True)
 
-    def __init__(self, user, message):
+    def __init__(self, user, choice):
         self.user = user.id
-        self.message = message.id
+        self.choice = choice.id
         session.add(self)
         session.commit()
 
-def addVote(messageID):
-    theMessage = session.query(Message).get(messageID)
-    theMessage.votes = theMessage.votes + 1
+def addVote(choiceID):
+    theChoice = session.query(Choice).get(choiceID)
+    theChoice.votes = theChoice.votes + 1
     session.commit()
-    return theMessage.votes
+    return theChoice.votes
 
-def addMessage(user, content):
+def addChoice(user, content):
     theUser = getUser(user)
     if theUser is not None:
-        return Join(theUser, Message(content)) 
+        return Join(theUser, Choice(content)) 
     return None;
 
-def getMessages(user=None):
+def getChoices(user=None):
     userFilter = (True)
     if user is not None:
         userFilter = (Join.user == getUser(user).id)
@@ -54,9 +54,9 @@ def getMessages(user=None):
 
     return list(map(lambda x: { \
         "user": session.query(User).get(x.user).name, \
-        "id": session.query(Message).get(x.message).id, \
-        "votes": session.query(Message).get(x.message).votes, \
-        "content": session.query(Message).get(x.message).content \
+        "id": session.query(Choice).get(x.choice).id, \
+        "votes": session.query(Choice).get(x.choice).votes, \
+        "content": session.query(Choice).get(x.choice).content \
         }, joins))
 
 createAll()

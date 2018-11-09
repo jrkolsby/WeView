@@ -5,6 +5,8 @@ import "../style/index.css"
 
 import OnboardContainer from './onboard'
 import StatusContainer from './status'
+import LobbyContainer from './lobby'
+import RoomContainer from './room'
 
 class Choosy extends Component {
     render() {
