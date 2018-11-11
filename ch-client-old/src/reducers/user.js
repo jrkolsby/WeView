@@ -8,6 +8,12 @@ let defaultState = {
 const reducer = (state=defaultState, action) => {
     switch(action.type) {
 
+        case ACTIONS.ATTEMPT_USER:
+            return {
+                ...state,
+                user: action.payload 
+            }
+
         case ACTIONS.LOGIN_SUCCESS:
             return {
                 ...state,

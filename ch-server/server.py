@@ -7,12 +7,6 @@ from flask_login import LoginManager, UserMixin
 
 from flask_socketio import SocketIO, send, emit
 
-'''
-from data.messages 
-from data.movies import 
-from data.votes import addMessage, getMessages, addVote
-'''
-
 from data.choices import addChoice, getChoices
 from data.users import addUser, getUser
 

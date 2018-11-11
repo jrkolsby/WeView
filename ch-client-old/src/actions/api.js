@@ -8,6 +8,7 @@ const SIGNUP_URL = "http://localhost:5000/signup"
 export const signup = (user, pass) => {
     return (dispatch, getState) => {
 		dispatch(loading(true))
+		dispatch(attemptUser(true))
 		request
 			.post(SIGNUP_URL)
             .type('form')
@@ -23,6 +24,7 @@ export const signup = (user, pass) => {
 export const login = (user, pass) => {
     return (dispatch, getState) => {
 		dispatch(loading(true))
+        dispatch(attemptUser(user))
 		request
 			.post(LOGIN_URL)
             .type('form')
@@ -32,6 +34,13 @@ export const login = (user, pass) => {
 				dispatch(res.body) 
                 console.log(res.body)
             }) 
+    }
+}
+
+export const attemptUser = (user) => {
+    return {
+        type: ACTIONS.ATTEMPT_USER,
+        payload: user
     }
 }
 

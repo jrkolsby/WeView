@@ -1,5 +1,9 @@
 import {ACTIONS} from '.'
 
+export const addChoice = (message) => {
+
+}
+
 export const joinRoom = (roomID) => {
     return {
         type: ACTIONS.JOIN_ROOM,
