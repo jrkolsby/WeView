@@ -1,14 +1,11 @@
 import {combineReducers} from 'redux'
 
-import onboard from './onboard'
+import nav from './nav'
+import game from './game'
 import user from './user'
-import room from './room'
-import api from './api'
 
 export default combineReducers({
-    onboard,
+    nav,
     user,
-    room,
-    api
+    game,
 })
-

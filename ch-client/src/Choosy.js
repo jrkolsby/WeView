@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 
-import "../style/reset.css"
-import "../style/index.css"
+import "./style/reset.css"
+import "./style/index.css"
 
-import BracketContainer from '../containers/bracket'
+import HeaderContainer from './containers/header-container'
+import InputContainer from './containers/input-container'
+import NavigationContainer from './containers/navigation-container'
+
+/*
+import VotingContainer from './containers/voting-container'
+import LandingContainer from './containers/landing-container'
+import ResultsContainer from './containers/results-container'
+*/
 
 class Choosy extends Component {
 
@@ -11,10 +19,24 @@ class Choosy extends Component {
         return (
             <div className="choosy">
                 <HeaderContainer />
-                <BracketContainer />
-                <InputContainer />
+                <NavigationContainer>
+                    <InputContainer />
+                </NavigationContainer>
             </div>
         );
+        /*
+        return (
+            <div className="choosy">
+                <HeaderContainer />
+                <NavigationContainer>
+                    <LandingContainer />
+                    <InputContainer />
+                    <VotingContainer />
+                    <ResultsContainer />
+                </NavigationContainer>
+            </div>
+        );
+        */
     }
 }
 

@@ -1,5 +1,7 @@
 from flask import Flask, request
-from flask import render_template, jsonify 
+from flask import render_template, jsonify
+
+import json
 
 from flask_cors import CORS
 
@@ -7,6 +9,7 @@ from flask_login import LoginManager, UserMixin
 
 from flask_socketio import SocketIO, send, emit
 
+from actions import success, error
 from data.choices import addChoice, getChoices
 from data.users import addUser, getUser
 
@@ -16,17 +19,15 @@ CORS(app)
 login = LoginManager(app)
 socketio = SocketIO(app)
 
-def success(payload): 
-    return jsonify({
-        "type": "SUCCESS",
-        "payload": payload
-    })
+@app.route("/api/game", methods=['POST'])
+def userAPI():
+    print request.form
+    return jsonify(error("hello"))
 
-def error(payload):
-    return jsonify({
-        "type": "ERROR",
-        "payload": payload 
-    })
+@socketio.on('action')
+def handleAction(packet):
+    print "new socket action!"
+    emit('action', error("hello"))
 
 @socketio.on('message')
 def handleSocket(packet):
@@ -68,6 +69,7 @@ def signup():
     user = addUser(username, password)
 
     return success(user.getToken(password))
+
 
 @app.route("/login", methods=['POST'])
 def login():

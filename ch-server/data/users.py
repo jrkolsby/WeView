@@ -22,6 +22,12 @@ class User(Base):
     expire = Column('expire', Integer)
     password = Column('password', String)
 
+    def __init__(self, name, password):
+        self.name = name
+        self.password = pwd.encrypt(password)
+        session.add(self)
+        session.commit()
+
     def verifyToken(self, token):
         if token == self.token and self.expire > getTime():
             return True;
@@ -40,12 +46,6 @@ class User(Base):
             return self.token;
 
         return None
-
-    def __init__(self, name, password):
-        self.name = name
-        self.password = pwd.encrypt(password)
-        session.add(self)
-        session.commit()
 
 def addUser(username, password):
     return User(username, password)
