@@ -2,21 +2,20 @@ import React, {Component} from 'react'
 
 import NavigationHeader from '../components/navHeader.js'
 
-import {connect} from 'react-redux';
 import * as navActions from '../actions/nav'
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
-let CLASS_CONTAINER = "nav-container"
-let CLASS_SELECTED = "nav-current"
-let CLASS_LEFT = "nav-left"
-let CLASS_RIGHT = "nav-right"
+const CLASS_CONTAINER = "nav-container"
+const CLASS_SELECTED = "nav-current"
+const CLASS_LEFT = "nav-left"
+const CLASS_RIGHT = "nav-right"
 
-let PageContainer = (props) => {
-    return (
+const PageContainer = (props) => (
         <div className={props.navClass}>
             {props.children}
         </div>
-    )
-}
+)
 
 class NavigationContainer extends Component {
     componentWillMount() {
@@ -57,4 +56,10 @@ const mapState = (state) => {
     return state.nav
 }
 
-export default connect(mapState, navActions)(NavigationContainer)
+const mapDispatch = (dispatch) => {
+    return {
+        ...bindActionCreators(navActions, dispatch), 
+    }
+}
+
+export default connect(mapState, mapDispatch)(NavigationContainer)

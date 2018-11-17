@@ -1,43 +1,27 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import "./style/reset.css"
 import "./style/index.css"
 
+import LandingContainer from './containers/landing-container'
 import HeaderContainer from './containers/header-container'
-import InputContainer from './containers/input-container'
+import ChoiceInputContainer from './containers/choice-input-container'
 import NavigationContainer from './containers/navigation-container'
 
 /*
-import VotingContainer from './containers/voting-container'
-import LandingContainer from './containers/landing-container'
+import VoteContainer from './containers/vote-container'
 import ResultsContainer from './containers/results-container'
 */
 
-class Choosy extends Component {
+export const Choosy = (props) => (
 
-    render() {
-        return (
-            <div className="choosy">
-                <HeaderContainer />
-                <NavigationContainer>
-                    <InputContainer />
-                </NavigationContainer>
-            </div>
-        );
-        /*
-        return (
-            <div className="choosy">
-                <HeaderContainer />
-                <NavigationContainer>
-                    <LandingContainer />
-                    <InputContainer />
-                    <VotingContainer />
-                    <ResultsContainer />
-                </NavigationContainer>
-            </div>
-        );
-        */
-    }
-}
+    <div className="choosy">
+        <HeaderContainer />
+        <NavigationContainer>
+            <LandingContainer />
+            <ChoiceInputContainer />
+        </NavigationContainer>
+    </div>
+)
 
 export default Choosy;

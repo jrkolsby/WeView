@@ -1,11 +1,13 @@
 import {combineReducers} from 'redux'
+import { reducer as form } from 'redux-form'
 
 import nav from './nav'
-import game from './game'
+import room from './room'
 import user from './user'
 
 export default combineReducers({
     nav,
     user,
-    game,
+    room,
+    form
 })

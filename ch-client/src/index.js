@@ -13,21 +13,24 @@ import Choosy from './Choosy'
 
 let socket = io('http://localhost:5000');
 
-socket.on('action', (action) => {
-    store.dispatch(action)
-})
-
-// Custom middleware to emit SERVER actions from the socket
-const flaskSocket = store => next => action => {
-    if (action.type && action.type.indexOf("SERVER") === 0) {
+// Emit SOCKET_ actions to the socket
+const thunkSocket = store => next => action => {
+    if (action.type && action.type.indexOf("SOCKET_") === 0) {
         socket.emit('action', action)
     }
     next(action);
 }
 
+// Dispatch SOCKET_ actions from the socket
+socket.on('action', (action) => {
+    if (action.type && action.type.indexOf("SOCKET_") === 0) {
+        store.dispatch(action)
+    } 
+})
+
 const store = createStore(
     rootReducer,
-    applyMiddleware(thunk, flaskSocket)
+    applyMiddleware(thunk, thunkSocket)
 );
 
 ReactDOM.render((

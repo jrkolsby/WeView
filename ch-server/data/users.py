@@ -50,7 +50,7 @@ class User(Base):
 def addUser(username, password):
     return User(username, password)
 
-def getUser(name=None):
+def getUser(id=None, name=None, ):
     nameFilter = (True)
     if name is not None:
         nameFilter = (User.name == name)

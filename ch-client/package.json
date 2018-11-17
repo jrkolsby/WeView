@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-loader": "^8.0.4",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-redux": "^5.1.0",
     "react-scripts": "2.1.1",
+    "redux-form": "^7.4.2",
     "redux-socket.io": "^1.4.0",
     "redux-thunk": "^2.3.0",
     "socketio": "^1.0.0",

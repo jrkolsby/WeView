@@ -1,8 +1,9 @@
 import {ACTIONS} from '../actions';
 
 const defaultState = {
-    name: "",
-    token: "",
+    id: 0,
+    name: "John Doe",
+    token: "axys",
     tempUser: true,
 }
 
@@ -12,6 +13,7 @@ const user = (state=defaultState, action) => {
             return {
                 ...state,
                 name: action.payload.name,
+                pass: action.payload.pass,
                 token: action.payload.token,
                 tempUser: false
             }

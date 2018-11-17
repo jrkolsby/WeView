@@ -9,9 +9,14 @@ from flask_login import LoginManager, UserMixin
 
 from flask_socketio import SocketIO, send, emit
 
-from actions import success, error
+from actions import success, error, newChoice
+
 from data.choices import addChoice, getChoices
 from data.users import addUser, getUser
+'''
+from data.matches import addMatch, getMatches
+from data.votes import addVote, getVotes
+'''
 
 app = Flask(__name__)
 CORS(app)
@@ -19,15 +24,55 @@ CORS(app)
 login = LoginManager(app)
 socketio = SocketIO(app)
 
-@app.route("/api/game", methods=['POST'])
-def userAPI():
-    print request.form
-    return jsonify(error("hello"))
-
 @socketio.on('action')
-def handleAction(packet):
-    print "new socket action!"
-    emit('action', error("hello"))
+def handleAction(action):
+    
+    print action
+    theType = action['type']
+    room = action['room']
+    user = action['user']
+    token = action['token']
+
+    user = getUser(user)
+    if user is not None and user.verifyToken(token):
+        if theType == "SOCKET_VOTE":
+            payload = action['payload']
+            matchID = payload['matchID']
+            voteA = payload['voteA']
+            addVote(matchID, voteA)
+
+        elif theType == "SOCKET_ADD_CHOICE":
+            payload = action['payload']
+            choice = addChoice(user, payload)
+            #emit('action', newChoice(id, payload, user), broadcast = True)
+    else:
+        emit('action', error("SOCKET NOT FOUND"), broadcast = True)
+        
+
+@app.route("/api", methods=['POST'])
+def userAPI():
+
+    print action
+    theType = action['type']
+    room = action['room']
+    user = action['user']
+    token = action['token']
+
+    user = getUser(user)
+    if user is not None and user.verifyToken(token):
+        if theType == "SOCKET_VOTE":
+            payload = action['payload']
+            matchID = payload['matchID']
+            voteA = payload['voteA']
+            addVote(matchID, voteA)
+            emit('action', error("hello"), broadcast = True)
+
+        elif theType == "SOCKET_ADD_CHOICE":
+            payload = action['payload']
+            choice = addChoice(user, payload)
+            #emit('action', newChoice(id, payload, user), broadcast = True)
+    else:
+        emit('action', error("hello"), broadcast = True)
 
 @socketio.on('message')
 def handleSocket(packet):
@@ -55,7 +100,8 @@ def handleSocket(packet):
     else:
         print "WARN: Unverified user"
 
-@app.route("/signup", methods=['GET', 'POST', 'DELETE'])
+
+@app.route("/api/user/signup", methods=['GET', 'POST', 'DELETE'])
 def signup():
     username = request.form.get('user')
     password = request.form.get('pass')

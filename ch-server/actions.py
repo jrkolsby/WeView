@@ -1,11 +1,21 @@
-def success(payload): 
+def success(message): 
     return {
         "type": "SUCCESS",
-        "payload": payload
+        "payload": message
     }
 
-def error(payload):
+def error(message):
     return {
         "type": "ERROR",
-        "payload": payload 
+        "payload": message 
+    }
+
+def newChoice(id, title, user):
+    return {
+        "type": "ADD_CHOICE",
+        "payload": {
+            "id": id,
+            "title": title,
+            "user": user
+        }
     }

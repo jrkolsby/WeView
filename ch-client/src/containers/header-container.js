@@ -1,36 +1,57 @@
 import React from 'react'
 
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-
-import * as navActions from '../actions/nav'
 import * as userActions from '../actions/user'
+import * as navActions from '../actions/nav'
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 const HeaderContainer = (props) => {
     return (
         <header>
-            <h1>{props.title}</h1>
-            <h3>{props.subtitle}</h3>
-            <nav>
-                <a href="/">New Decision</a>
-                {props.temp ? (<a href="/new">Create Account</a>) : null}
-                {props.temp ? null : (<a href="/logout">Logout</a>)}
-            </nav>
+            <h1>{props.state.title}</h1>
+            <h3>{props.state.subtitle}</h3>
+            <nav><ul>
+                <li href="/new"
+                    onClick={(e) => {
+                        props.dispatch.navigateTo(1)
+                    }}
+                >Create Account</li>
+
+                {props.state.temp ? (
+                    <li href="/new"
+                        onClick={(e) => {
+                            props.dispatch.navigateTo(1)
+                        }}
+                    >Create Account</li>
+                ) : null}
+
+                {props.state.temp ? null : (
+                    <li href="/logout"
+                        onClick={(e) => {
+                            props.dispatch.logout()
+                        }}
+                    >Logout</li>
+                )}
+            </ul></nav>
         </header>
     ) 
 }
 
 const mapState = (state) => {
     return {
-        ...state.nav,
-        ...state.user
+        state: {
+            ...state.nav,
+            ...state.user
+        }
     }
 }
 
 const mapDispatch = (dispatch) => {
     return { 
-        ...bindActionCreators(navActions, dispatch), 
-        ...bindActionCreators(userActions, dispatch)
+        dispatch: {
+            ...bindActionCreators(navActions, dispatch), 
+            ...bindActionCreators(userActions, dispatch)
+        }
     }
 }
 
