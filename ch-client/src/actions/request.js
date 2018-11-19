@@ -11,7 +11,7 @@ export const request = (action, successAction=success) => {
 		req.post(API_URL)
             .send({
                 ...action,
-                room: getState().nav.room,
+                list: getState().nav.list,
                 user: getState().user.name,
                 token: getState().user.token,
             }) 
@@ -42,16 +42,5 @@ export const request = (action, successAction=success) => {
                     }
                 }
             })
-    }
-}
-
-export const socket = (action) => {
-    return (dispatch, getState) => {
-        dispatch({
-            ...action,
-            user: getState().user.name,
-            token: getState().user.token,
-            room: getState().room.id
-        }) 
     }
 }
