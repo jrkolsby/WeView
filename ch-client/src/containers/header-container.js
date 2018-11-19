@@ -13,14 +13,14 @@ const HeaderContainer = (props) => {
             <nav><ul>
                 <li href="/new"
                     onClick={(e) => {
-                        props.dispatch.navigateTo(1)
+                        props.dispatch.gotoPage(1)
                     }}
                 >Create Account</li>
 
                 {props.state.temp ? (
                     <li href="/new"
                         onClick={(e) => {
-                            props.dispatch.navigateTo(1)
+                            props.dispatch.gotoPage(1)
                         }}
                     >Create Account</li>
                 ) : null}

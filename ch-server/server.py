@@ -24,9 +24,11 @@ socketio = SocketIO(app)
 @app.route("/api", methods=['POST'])
 def api():
 
+    action = request.form
     print action
+    
     kind = action['type'] # type
-    room = action['room']
+    room = action['list']
     user = action['user']
     token = action['token']
 
