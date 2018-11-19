@@ -13,10 +13,6 @@ const ChoiceInputForm = (props) => {
                     props.handleChange(e.target.value)
                 }}
             />
-            <button onClick={(e) => {
-                e.preventDefault()
-                props.handleShuffle()
-            }}>Shuffle</button>
             <button type="submit">Submit</button>
         </form>
     )

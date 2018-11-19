@@ -1,14 +1,15 @@
 import req from 'superagent'
 
 import {ACTIONS} from '.'
-import {loading, error, success} from './nav'
+import {showLoading, showError, showSuccess} from './nav'
 
-const API_URL = "http://localhost:5000/api"
+export const SERVER = "http://localhost:5000"
+export const SERVER_REQUEST = SERVER + "/api"
 
-export const request = (action, successAction=success) => {
+export const request = (action, success=showSuccess, error=showError) => {
     return (dispatch, getState) => {
-        dispatch(loading(1))
-		req.post(API_URL)
+        dispatch(showLoading(1))
+		req.post(SERVER_REQUEST)
             .send({
                 ...action,
                 list: getState().nav.list,
@@ -17,7 +18,7 @@ export const request = (action, successAction=success) => {
             }) 
             .type("form")
 			.end((err, res) => {
-                dispatch(loading(0))
+                dispatch(showLoading(0))
                 if (err) {
                     alert(err) 
                 } else { 

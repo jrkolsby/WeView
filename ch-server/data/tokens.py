@@ -14,5 +14,3 @@ class Token(Base):
         self.user = user
         session.add(self)
         session.commit()
-
-class ValidateToken()

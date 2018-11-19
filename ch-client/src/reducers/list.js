@@ -1,37 +1,29 @@
 import {ACTIONS} from '../actions';
 
 const defaultState = {
-    id: 0,
-    choiceSuggestions: {
-        199: {
-            title: "The Royal Tennenbaums",
-            user: "Steve Buschemi",
-        }, 
-        232: {
-            title: "The Royal Tennenbaums",
-            user: "Rose Meriam",
-        }, 
-    },
+    list: 0,
     choices: {
         1: {
             title: "The Royal Tennenbaums",
-            user: "Rose Meriam",
+            user: 1
         },
         2: {
             title: "Moonrise Kingdom",
-            user: "India Chai",
+            user: 2
         },
         3: {
             title: "The Life Aquatic",
-            user: "James Kolsby",
+            user: 2
         }},
-    matches: {
-        123: [1,3],
-        322: [3,2]
+    users: {
+        1: {
+            name: "James Kolsby"  
+        },
+        2: {
+            name: "India Chai"  
+        }
+    
     },
-    users: [{
-        name: "James Kolsby",
-    }],
 }
 
 const room = (state=defaultState, action) => {
@@ -79,8 +71,7 @@ const room = (state=defaultState, action) => {
                 }
             }
 
-        default:
-            return state;
+        default: return state;
     }
 }
 

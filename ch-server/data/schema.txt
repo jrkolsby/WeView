@@ -28,7 +28,8 @@ token(string)
 owner(bool)
 
 {
-    JOIN_LIST -> emit(ADD_USER)
+    CREATE_LIST -> 
+    JOIN_LIST -> emit(CREATE_USER)
     LEAVE_LIST -> emit(REMOVE_USER)
 }
 
@@ -44,7 +45,7 @@ index(int)
 points(int)
 
 {
-    ADD_CHOICE -> emit(ADD_CHOICE)
+    CREATE_CHOICE -> emit(CREATE_CHOICE)
     UPDATE_CHOICE -> emit(UPDATE_CHOICE)
     REMOVE_CHOICE -> emit(REMOVE_CHOICE)
 }
@@ -54,6 +55,6 @@ choice_list_join(id)
 user(id)
 
 {
-    ADD_VOTE -> emit(UPDATE_CHOICE)
+    CREATE_VOTE -> emit(UPDATE_CHOICE)
 }
 

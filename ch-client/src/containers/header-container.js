@@ -33,6 +33,9 @@ const HeaderContainer = (props) => {
                     >Logout</li>
                 )}
             </ul></nav>
+            {props.state.messages.map((m, i) => (
+                <div className="message">{m}</div> 
+            ))}
         </header>
     ) 
 }

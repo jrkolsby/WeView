@@ -4,7 +4,7 @@ const Choice = (props) => {
     return (
         <div className="match">
             <span>{props.user}</span>
-            {props.title}
+            <span>{props.title}</span>
         </div> 
     )
 }

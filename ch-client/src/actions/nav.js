@@ -1,36 +1,37 @@
 import ACTIONS from '.'
 
-export const openModal = (modalIndex) => {
+export const gotoModal = (modalIndex) => {
     return {
-        type: ACTIONS.OPEN_MODAL,
+        type: ACTIONS.GOTO_MODAL,
         payload: modalIndex
     }
-
 }
-export const navigateTo = (pageIndex) => {
+
+export const gotoPage = (pageIndex) => {
     return {
-        type: ACTIONS.NAVIGATE,
+        type: ACTIONS.GOTO_PAGE,
         payload: pageIndex
     }
 }
 
-export const error = (message) => {
+export const showError = (message) => {
     return {
-        type: ACTIONS.ERROR,
+        type: ACTIONS.SHOW_ERROR,
         payload: message 
     }
 }
 
-export const success = (message) => {
+export const showSuccess = (message) => {
     return {
-        types: ACTIONS.SUCCESS 
+        types: ACTIONS.SHOW_SUCCESS,
+        payload: message
     }
 
 }
 
-export const loading = (progress) => {
+export const showLoading = (progress) => {
     return {
-        type: ACTIONS.LOADING,
+        type: ACTIONS.SHOW_LOADING,
         payload: progress
     }
 } 

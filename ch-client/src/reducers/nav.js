@@ -1,34 +1,53 @@
 import {ACTIONS} from '../actions';
 
 const defaultState = {
-    page: 1,
-    modal: 1,
-    history: [0, 1],
-    title: "Choosy",
-    subtitle: "Decide with friends",
+    currentPage: 0,
+    currentModal: 0,
+
+    pageTitle: "Choosy",
+    pageSubtitle: "Decide with friends",
     navTitle: "Add some movies!",
-    loading: false,
-    room: 0
+
+    progress: 0,
+    messages: []
 }
 
 const nav = (state=defaultState, action) => {
     switch(action.type) {
-        case ACTIONS.OPEN_MODAL:
+        case ACTIONS.GOTO_MODAL:
             return {
                 ...state,
-                modal: action.payload 
+                currentModal: action.payload 
             }
 
-        case ACTIONS.IS_LOADING:
+        case ACTIONS.GOTO_PAGE:
             return {
                 ...state,
-                loading: action.payload 
+                currentPage: action.payload 
             }
 
-        case ACTIONS.NAVIGATE:
+        case ACTIONS.SHOW_LOADING:
             return {
                 ...state,
-                page: action.payload 
+                progress: action.payload 
+            }
+
+        case ACTIONS.SHOW_SUCCESS:
+            return {
+                ...state, 
+                messages: [
+                    ...state.messages,
+                    action.payload 
+                ]
+            }
+
+        case ACTIONS.SHOW_ERROR:
+            return {
+                ...state, 
+                messages: [
+                    ...state.messages,
+                    action.payload 
+                ]
             }
 
         default:

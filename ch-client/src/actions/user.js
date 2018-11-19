@@ -1,7 +1,6 @@
 import ACTIONS from '.'
 
-import {request} from './server'
-import {navigateTo, error} from './nav'
+import { request } from './request'
 
 export const signup = (user, pass) => {
     return request({
@@ -10,9 +9,7 @@ export const signup = (user, pass) => {
             user,
             pass 
         }
-    }, (success) => {
-        return navigateTo(1)
-    }, error)
+    })
 }
 
 export const login = (user, pass) => {
@@ -22,15 +19,11 @@ export const login = (user, pass) => {
             user,
             pass 
         }
-    }, (success) => {
-        return navigateTo(1)
-    }, error)
+    })
 }
 
 export const logout = () => {
     return request({
         type: ACTIONS.LOGOUT
-    }, (success) => {
-        return navigateTo(1)
-    }, error)
+    })
 }
