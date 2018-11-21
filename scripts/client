@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cd ch-client && yarn install && yarn start
