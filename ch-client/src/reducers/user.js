@@ -1,10 +1,10 @@
 import {ACTIONS} from '../actions';
 
 const defaultState = {
-    id: 0,
-    name: "John Doe",
-    token: "axys",
-    tempUser: true,
+    userID: 0,
+    name: "",
+    token: "",
+    loggedIn: false,
 }
 
 const user = (state=defaultState, action) => {
@@ -12,10 +12,10 @@ const user = (state=defaultState, action) => {
         case ACTIONS.LOGIN:
             return {
                 ...state,
+                userID: action.payload.id,
                 name: action.payload.name,
-                pass: action.payload.pass,
                 token: action.payload.token,
-                tempUser: false
+                loggedIn: true
             }
 
         case ACTIONS.LOGOUT:
@@ -23,7 +23,7 @@ const user = (state=defaultState, action) => {
                 ...state,
                 name: "",
                 token: "",
-                tempUser: true 
+                loggedIn: false 
             }
         default:
             return state;

@@ -19,32 +19,48 @@ from data.votes import addVote, getVotes
 app = Flask(__name__)
 CORS(app)
 
-socketio = SocketIO(app)
+socket = SocketIO(app)
+
+votingQueues = {}
 
 @app.route("/api", methods=['POST'])
 def api():
 
     action = request.form
-    print action
     
-    kind = action['type'] # type
-    room = action['list']
-    user = action['user']
-    token = action['token']
+    try:
+        room = action['list']
+        user = action['user']
+        token = action['token']
+        action = action['type'] 
+    except:
+        return jsonify(error("Bad Action"))
 
+    if action == "LOGIN":
+        payload = action['payload']
+        print payload
+        loginUser = payload['user']
+        loginPass = payload['pass']
+        return jsonify(success("Login"))
+    
     user = getUser(user)
     if user is not None and user.verifyToken(token):
-        if theType == "SOCKET_VOTE":
+        if kind == "SOCKET_VOTE":
             payload = action['payload']
             matchID = payload['matchID']
             voteA = payload['voteA']
             addVote(matchID, voteA)
-            emit('action', error("hello"), broadcast = True)
 
-        elif theType == "SOCKET_ADD_CHOICE":
+            socket.to(room).emit('action', error("hello"))
+            return jsonify(success("emiited!"))
+
+        elif kind == "SOCKET_ADD_CHOICE":
             payload = action['payload']
             choice = addChoice(user, payload)
-            #emit('action', newChoice(id, payload, user), broadcast = True)
+
+            socket.to(room).emit('action', newChoice(id, payload, user))
+            return jsonify(success("emiited!"))
     else:
-        emit('action', error("hello"), broadcast = True)
+        print "WARN Unauthenticated user"
+        return jsonify(error("Invalid User"))
 

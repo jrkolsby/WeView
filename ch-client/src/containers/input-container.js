@@ -11,7 +11,8 @@ import {connect} from 'react-redux';
 const InputContainer = (props) => {
     return (
         <div className="input-container">
-            <div className="matches">
+        <div className="wrapper">
+            <div className="choices">
                 {Object.entries(props.state.choices).map(([id,c]) => (
                     <Choice 
                         user={props.state.users[c.user].name}
@@ -19,17 +20,17 @@ const InputContainer = (props) => {
                         key={id}
                     />
                 ))}
-            </div>
-            <div className="controls">
                 <ChoiceForm
+                    active={props.state.newInput}
                     onSubmit={(form) => {
                         props.dispatch.createChoice(form.choice)
                     }}
+                    handleChange={() => {
+                        
+                    }}
                 />
-                <button onClick={() => {
-                    props.dispatch.gotoPage(2) 
-                }}>Vote!</button>
             </div>
+        </div>
         </div>
     )
 }

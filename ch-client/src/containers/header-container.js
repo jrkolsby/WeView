@@ -5,37 +5,64 @@ import * as navActions from '../actions/nav'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
+import AccountForm from '../components/accountForm'
+
 const HeaderContainer = (props) => {
     return (
         <header>
+        <div className="wrapper">
             <h1>{props.state.title}</h1>
             <h3>{props.state.subtitle}</h3>
             <nav><ul>
-                <li href="/new"
-                    onClick={(e) => {
-                        props.dispatch.gotoPage(1)
+                <li onClick={(e) => {
+                    props.dispatch.gotoModal(1)
+                }}
+                >New Decision</li>
+
+                {props.state.loggedIn ? null : (
+                    <li onClick={(e) => {
+                        props.dispatch.gotoModal(1)
                     }}
-                >Create Account</li>
-
-                {props.state.temp ? (
-                    <li href="/new"
-                        onClick={(e) => {
-                            props.dispatch.gotoPage(1)
-                        }}
-                    >Create Account</li>
-                ) : null}
-
-                {props.state.temp ? null : (
-                    <li href="/logout"
-                        onClick={(e) => {
-                            props.dispatch.logout()
-                        }}
-                    >Logout</li>
+                    >Login</li>
                 )}
+
+                {props.state.loggedIn ? (
+                    <li onClick={(e) => {
+                        props.dispatch.logout()
+                    }}
+                    >Logout</li>
+                ) : null}
             </ul></nav>
-            {props.state.messages.map((m, i) => (
-                <div className="message">{m}</div> 
-            ))}
+            <div className="messages">
+                {props.state.messages.map((m, i) => (
+                    <div className="message">{m}</div> 
+                ))}
+            </div>
+            <div className="modals">
+                {props.state.currentModal === 1 ? (
+                    <AccountForm
+                        title="Login"       
+                        name="login"
+                        primary="Login"
+                        onSubmit={(form) => {
+                            props.dispatch.login(form.loginUser, 
+                                                 form.loginPass)
+                        }}
+                    />
+                ) : null}
+                {props.state.currentModal === 2 ? (
+                    <AccountForm
+                        title="Signup"       
+                        name="signup"
+                        primary="Create Account"
+                        onSubmit={(form) => {
+                            console.log(form) 
+                        }}
+                    />
+                ) : null}
+                
+            </div>
+        </div>
         </header>
     ) 
 }

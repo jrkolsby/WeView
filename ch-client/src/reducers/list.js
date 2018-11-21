@@ -1,7 +1,8 @@
 import {ACTIONS} from '../actions';
 
 const defaultState = {
-    list: 0,
+    listID: 0,
+    newChoice: 0,
     choices: {
         1: {
             title: "The Royal Tennenbaums",
@@ -26,20 +27,9 @@ const defaultState = {
     },
 }
 
-const room = (state=defaultState, action) => {
+const list = (state=defaultState, action) => {
     switch(action.type) {
-        case ACTIONS.REQUEST_SUCCESS:
-            return {
-                ...state,
-            }
-
-        case ACTIONS.SERVER_ADD:
-            return {
-                ...state,
-                choices: [...state.choices, action.payload]
-            }
-
-        case ACTIONS.SOCKET_ADD_CHOICE: 
+        case ACTIONS.NEW_CHOICE: 
             console.log('socket add choice', action)
             return {
                 ...state,
@@ -75,4 +65,4 @@ const room = (state=defaultState, action) => {
     }
 }
 
-export default room
+export default list

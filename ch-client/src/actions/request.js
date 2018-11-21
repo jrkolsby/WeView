@@ -12,8 +12,8 @@ export const request = (action, success=showSuccess, error=showError) => {
 		req.post(SERVER_REQUEST)
             .send({
                 ...action,
-                list: getState().nav.list,
-                user: getState().user.name,
+                list: getState().list.listID,
+                user: getState().user.userID,
                 token: getState().user.token,
             }) 
             .type("form")

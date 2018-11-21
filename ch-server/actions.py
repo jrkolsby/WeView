@@ -1,12 +1,18 @@
 def success(message): 
     return {
-        "type": "SUCCESS",
+        "type": "REQUEST_SUCCESS",
         "payload": message
+    }
+
+def reject(message):
+    return {
+        "type": "REQUEST_REJECT",
+        "payload": message 
     }
 
 def error(message):
     return {
-        "type": "ERROR",
+        "type": "REQUEST_ERROR",
         "payload": message 
     }
 

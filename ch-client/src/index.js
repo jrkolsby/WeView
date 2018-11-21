@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import rootReducer from './reducers'
 
-import socket from 'socket.io-client';
+import socketio from 'socket.io-client';
 import thunk from 'redux-thunk'
 
 import {Provider} from 'react-redux'
@@ -13,14 +13,28 @@ import Choosy from './Choosy'
 
 import { SERVER } from './actions/request'
 
-socket(SERVER)
+const socket = socketio(SERVER)
+
+// Dispatch socket actions
+socket.on('connection', (socket) => {
+        console.log('Socket Connected') 
+    })
     .on('action', (action) => {
         store.dispatch(action)
     })
 
+// Intercept JOIN_ROOM actions
+const room = store => next => action => {
+    if (action.type === "JOIN_ROOM") {
+        socket.join(action.payload)
+    }
+    next(action);
+}
+
+
 const store = createStore(
     rootReducer,
-    applyMiddleware(thunk)
+    applyMiddleware(thunk, room)
 );
 
 ReactDOM.render((
