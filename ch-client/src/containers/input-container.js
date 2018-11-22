@@ -21,12 +21,13 @@ const InputContainer = (props) => {
                     />
                 ))}
                 <ChoiceForm
-                    active={props.state.newInput}
+                    active={props.state.newChoice === 0}
+                    handleCreate={props.dispatch.createChoice}
                     onSubmit={(form) => {
                         props.dispatch.createChoice(form.choice)
                     }}
-                    handleChange={() => {
-                        
+                    handleChange={(form) => {
+                        console.log('change', form) 
                     }}
                 />
             </div>

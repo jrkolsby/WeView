@@ -16,7 +16,7 @@ export const request = (action, success=showSuccess, error=showError) => {
                 user: getState().user.userID,
                 token: getState().user.token,
             }) 
-            .type("form")
+            .set('Accept', 'application/json')
 			.end((err, res) => {
                 dispatch(showLoading(0))
                 if (err) {
@@ -27,6 +27,7 @@ export const request = (action, success=showSuccess, error=showError) => {
                         res.body.payload) { 
                         switch(res.body.type) {
                             case ACTIONS.REQUEST_SUCCESS:
+                                console.log(success(res.body.payload))
                                 dispatch(success(res.body.payload)) 
                                 break;
 

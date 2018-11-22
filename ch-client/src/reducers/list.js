@@ -30,7 +30,6 @@ const defaultState = {
 const list = (state=defaultState, action) => {
     switch(action.type) {
         case ACTIONS.NEW_CHOICE: 
-            console.log('socket add choice', action)
             return {
                 ...state,
                 choices: {

@@ -23,7 +23,7 @@ export const showError = (message) => {
 
 export const showSuccess = (message) => {
     return {
-        types: ACTIONS.SHOW_SUCCESS,
+        type: ACTIONS.SHOW_SUCCESS,
         payload: message
     }
 

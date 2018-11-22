@@ -26,26 +26,25 @@ votingQueues = {}
 @app.route("/api", methods=['POST'])
 def api():
 
-    action = request.form
+    action = request.get_json(force=True)
     
     try:
         room = action['list']
         user = action['user']
         token = action['token']
-        action = action['type'] 
+        aType = action['type'] 
     except:
         return jsonify(error("Bad Action"))
 
-    if action == "LOGIN":
+    if aType == "LOGIN":
         payload = action['payload']
-        print payload
         loginUser = payload['user']
         loginPass = payload['pass']
         return jsonify(success("Login"))
     
     user = getUser(user)
     if user is not None and user.verifyToken(token):
-        if kind == "SOCKET_VOTE":
+        if aType == "SOCKET_VOTE":
             payload = action['payload']
             matchID = payload['matchID']
             voteA = payload['voteA']
@@ -54,7 +53,7 @@ def api():
             socket.to(room).emit('action', error("hello"))
             return jsonify(success("emiited!"))
 
-        elif kind == "SOCKET_ADD_CHOICE":
+        elif aType == "SOCKET_ADD_CHOICE":
             payload = action['payload']
             choice = addChoice(user, payload)
 

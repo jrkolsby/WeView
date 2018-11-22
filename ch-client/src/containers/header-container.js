@@ -35,7 +35,7 @@ const HeaderContainer = (props) => {
             </ul></nav>
             <div className="messages">
                 {props.state.messages.map((m, i) => (
-                    <div className="message">{m}</div> 
+                    <div key={i} className="message">{m}</div> 
                 ))}
             </div>
             <div className="modals">
