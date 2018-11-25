@@ -9,6 +9,7 @@ const defaultState = {
 
 const user = (state=defaultState, action) => {
     switch(action.type) {
+
         case ACTIONS.LOGIN:
             return {
                 ...state,
@@ -21,10 +22,12 @@ const user = (state=defaultState, action) => {
         case ACTIONS.LOGOUT:
             return {
                 ...state,
+                userID: 0,
                 name: "",
                 token: "",
                 loggedIn: false 
             }
+
         default:
             return state;
     }

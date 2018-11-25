@@ -11,10 +11,11 @@ export const request = (action, success=showSuccess, error=showError) => {
         dispatch(showLoading(1))
 		req.post(SERVER_REQUEST)
             .send({
-                ...action,
+                type: action.type,
                 list: getState().list.listID,
                 user: getState().user.userID,
                 token: getState().user.token,
+                payload: action.payload ? action.payload : {}
             }) 
             .set('Accept', 'application/json')
 			.end((err, res) => {

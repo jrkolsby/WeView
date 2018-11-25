@@ -6,61 +6,115 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import AccountForm from '../components/accountForm'
+import DecisionForm from '../components/decisionForm'
+
+import { reduxForm, FormSection } from 'redux-form'
 
 const HeaderContainer = (props) => {
+    console.log('loggedIn', props.state.loggedIn)
+    console.log(props.state)
     return (
         <header>
         <div className="wrapper">
-            <h1>{props.state.title}</h1>
-            <h3>{props.state.subtitle}</h3>
-            <nav><ul>
-                <li onClick={(e) => {
-                    props.dispatch.gotoModal(1)
-                }}
-                >New Decision</li>
+            {props.state.progress ? (
+                <div className="progress"></div>
+            ) : null}
+            <h1>{props.state.pageTitle}</h1>
+            <h3>{props.state.loggedIn ? "Hello, " + props.state.name : null}</h3>
+            <nav>
+                <div>
+                    <a href="#new"
+                        onClick={(e) => {
+                            e.preventDefault()
+                            if (props.state.loggedIn) {
+                                props.dispatch.gotoModal(3) 
+                            } else {
+                                props.dispatch.gotoModal(1)
+                            }
+                        }}
+                    >New Decision</a>
+                    {props.state.currentModal === 3 ? (
+                        <FormSection name="decision">
+                            <DecisionForm
+                                form="decision"
+                                title="New Decision"       
+                                primary="Create Decision"
+                                onSubmit={(form) => {
+                                    props.dispatch.createList(form.name)
+                                }}
+                            />
+                        </FormSection>
+                    ) : null} 
+                </div>
 
                 {props.state.loggedIn ? null : (
-                    <li onClick={(e) => {
-                        props.dispatch.gotoModal(1)
-                    }}
-                    >Login</li>
+                    <div>
+                        <a href="#signup"
+                            onClick={(e) => {
+                                e.preventDefault()
+                                props.dispatch.gotoModal(2)
+                            }}
+                        >Signup</a>
+                        {props.state.currentModal === 2 ? (
+                            <FormSection name="signup">
+                            <AccountForm
+                                form="signup"
+                                title="Sign Up"       
+                                primary="Create Account"
+                                onSubmit={(form) => {
+                                    props.dispatch.signup(form.user, 
+                                                          form.pass)
+                                }}
+                            />
+                            </FormSection>
+                        ) : null} 
+                    </div>
+                )}
+
+                {props.state.loggedIn ? null : (
+                    <div>
+                        <a href="#login"
+                            onClick={(e) => {
+                                e.preventDefault()
+                                props.dispatch.gotoModal(1)
+                            }}
+                        >Login</a>
+                        {props.state.currentModal === 1 ? (
+                            <FormSection name="login">
+                                <AccountForm
+                                    form="login"
+                                    title="Log In"
+                                    primary="Login"
+                                    onSubmit={(form) => {
+                                        props.dispatch.login(form.user, 
+                                                             form.pass)
+                                    }}
+                                />
+                            </FormSection>
+                        ) : null}
+                    </div>
                 )}
 
                 {props.state.loggedIn ? (
-                    <li onClick={(e) => {
-                        props.dispatch.logout()
-                    }}
-                    >Logout</li>
+                    <div>
+                        <a href="#logout"
+                            onClick={(e) => {
+                                props.dispatch.logout()
+                                props.dispatch.gotoModal(0)
+                                e.preventDefault()
+                            }}
+                        >Logout</a>
+                    </div>
                 ) : null}
-            </ul></nav>
+            </nav>
             <div className="messages">
                 {props.state.messages.map((m, i) => (
-                    <div key={i} className="message">{m}</div> 
+                    <div key={i} 
+                        className={"message " + m.type}>
+                    {typeof m.payload === "string" ? m.payload : 
+                        JSON.stringify(m.payload)}
+                    </div> 
                 ))}
-            </div>
-            <div className="modals">
-                {props.state.currentModal === 1 ? (
-                    <AccountForm
-                        title="Login"       
-                        name="login"
-                        primary="Login"
-                        onSubmit={(form) => {
-                            props.dispatch.login(form.loginUser, 
-                                                 form.loginPass)
-                        }}
-                    />
-                ) : null}
-                {props.state.currentModal === 2 ? (
-                    <AccountForm
-                        title="Signup"       
-                        name="signup"
-                        primary="Create Account"
-                        onSubmit={(form) => {
-                            console.log(form) 
-                        }}
-                    />
-                ) : null}
-                
             </div>
         </div>
         </header>
@@ -71,7 +125,7 @@ const mapState = (state) => {
     return {
         state: {
             ...state.nav,
-            ...state.user
+            ...state.user,
         }
     }
 }
@@ -85,4 +139,4 @@ const mapDispatch = (dispatch) => {
     }
 }
 
-export default connect(mapState, mapDispatch)(HeaderContainer)
+export default reduxForm({form: "account"})(connect(mapState, mapDispatch)(HeaderContainer))

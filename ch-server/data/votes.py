@@ -10,13 +10,16 @@ class Vote(Base):
     )
 
     id = Column('id', Integer, primary_key=True)
-    user = Column('user', Integer, primary_key=True)
-    match = Column('match', Integer, primary_key=True)
-    voteForA = Column('voteForA', Boolean)
+    user = Column('user', Integer)
+    theList = Column('list', Integer)
+    voteIndex = Column('voteIndex', Boolean)
+    bracketIndex = Column('bracketIndex', Integer)
 
-    def __init__(self, user, match, voteForA):
+    def __init__(self, user, theList, bracketIndex, voteIndex):
         self.user = user.id
-        self.match = choice.id
+        self.theList = theList.id
+        self.theList = theList.id
+        self.theList = theList.id
         session.add(self)
         session.commit()
 

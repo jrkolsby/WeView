@@ -11,6 +11,9 @@ from actions import success, error, newChoice
 
 from data.choices import addChoice, getChoices
 from data.users import addUser, getUser
+from data.tokens import addToken, getToken, deleteToken
+
+
 '''
 from data.matches import addMatch, getMatches
 from data.votes import addVote, getVotes
@@ -27,39 +30,87 @@ votingQueues = {}
 def api():
 
     action = request.get_json(force=True)
-    
+
     try:
-        room = action['list']
+        list = action['list']
         user = action['user']
         token = action['token']
-        aType = action['type'] 
+        theType = action['type'] 
+        payload = action['payload']
     except:
         return jsonify(error("Bad Action"))
 
-    if aType == "LOGIN":
-        payload = action['payload']
-        loginUser = payload['user']
-        loginPass = payload['pass']
-        return jsonify(success("Login"))
+    if theType == "LOGIN":
+        username = payload['user']
+        password = payload['pass']
+
+        user = getUser(name=username, password=password)
+        if user is not None:
+            token = addToken(user)
+            return jsonify(success({
+                "id": user.id,
+                "token": token.token
+            }))
+        
+        print "WARN: Bad Login"
+        return jsonify(error("Bad Login"))
     
-    user = getUser(user)
-    if user is not None and user.verifyToken(token):
-        if aType == "SOCKET_VOTE":
-            payload = action['payload']
-            matchID = payload['matchID']
-            voteA = payload['voteA']
-            addVote(matchID, voteA)
+    if theType == "SIGNUP":
+        username = payload['user']
+        password = payload['pass']
+        
+        if getUser(name=username) is None:
+            user = addUser(username, password)
+            token = addToken(user)
+            return jsonify(success({
+                "id": user.id,
+                "token": token.token
+            }))
 
-            socket.to(room).emit('action', error("hello"))
-            return jsonify(success("emiited!"))
-
-        elif aType == "SOCKET_ADD_CHOICE":
-            payload = action['payload']
-            choice = addChoice(user, payload)
-
-            socket.to(room).emit('action', newChoice(id, payload, user))
-            return jsonify(success("emiited!"))
-    else:
-        print "WARN Unauthenticated user"
+        return jsonify(error("Username taken"))
+    
+    # Validate existing user
+    user = getUser(id=user)
+    if user is None:
+        print "WARN Invalid user"
         return jsonify(error("Invalid User"))
+
+    # Validate token
+    token = getToken(token=token, user=user)
+    if token is None:
+        print "WARN Invalid token"
+        return jsonify(error("Invalid Token"))
+    
+    if theType == "LOGOUT":
+        deleteToken(token)
+        return jsonify(success("Deleted Token!"))
+
+    if theType == "CREATE_CHOICE":
+        choice = addChoice(user, payload)
+        socket.to(list).emit('action', newChoice(id, payload, user))
+        return jsonify(success("Read Choices!"))
+
+    if theType == "READ_CHOICES":
+        return jsonify(success("Read Choices!"))
+
+    if theType == "UPDATE_CHOICE":
+        return jsonify(success("Update Choice!"))
+    
+    if theType == "ADD_VOTE":
+        payload = action['payload']
+        matchID = payload['matchID']
+        voteA = payload['voteA']
+        addVote(matchID, voteA)
+
+        socket.to(list).emit('action', error("hello"))
+        return jsonify(success("Add Vote!"))
+
+    if theType == "CREATE_LIST":
+        return jsonify(success("Create List!"))
+
+    if theType == "JOIN_LIST":
+        return jsonify(success("Join List!"))
+
+    if theType == "LEAVE_LIST":
+        return jsonify(success("Leave List!!"))
 

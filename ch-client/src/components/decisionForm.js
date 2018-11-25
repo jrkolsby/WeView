@@ -1,5 +1,5 @@
 import React from 'react'
-import {reduxForm, Form, Field} from 'redux-form'
+import {reduxForm, Field, Form} from 'redux-form'
 
 export const AccountForm = (props) => (
     <Form className="account modal"
@@ -7,22 +7,16 @@ export const AccountForm = (props) => (
     >
         <h3>{props.title}</h3>
         <Field 
-            name="user"
+            name="name"
             component="input" 
             type="text"
-            placeholder="Username..."
-        />
-        <Field 
-            name="pass"
-            component="input" 
-            type="password"
-            placeholder="Password..."
+            placeholder="Give it a name..."
         />
         <button type="submit">{props.primary}</button>
         <a href="." onClick={(e) => {
             e.preventDefault()
             props.handleSecondary()
-        }}>{props.secondary}</a>
+        }}>{props.secondary}</a>    
     </Form>
 )
 

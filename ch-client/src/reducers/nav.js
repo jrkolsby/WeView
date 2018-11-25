@@ -17,7 +17,9 @@ const nav = (state=defaultState, action) => {
         case ACTIONS.GOTO_MODAL:
             return {
                 ...state,
-                currentModal: action.payload 
+                currentModal: 
+                    state.currentModal === action.payload ? 0 :
+                    action.payload
             }
 
         case ACTIONS.GOTO_PAGE:
@@ -37,7 +39,7 @@ const nav = (state=defaultState, action) => {
                 ...state, 
                 messages: [
                     ...state.messages,
-                    action.payload 
+                    action
                 ]
             }
 
@@ -46,7 +48,7 @@ const nav = (state=defaultState, action) => {
                 ...state, 
                 messages: [
                     ...state.messages,
-                    action.payload 
+                    action
                 ]
             }
 

@@ -1,61 +1,51 @@
-import time
-import string
-from random import choice
+from data import Base, session, createAll
+from data import Column, Integer, String, UniqueConstraint
 
 from passlib.apps import custom_app_context as pwd
 
-from data import Base, session, createAll
-from data import Column, Integer, String
-
-TOKEN_EXPIRE = 3600 * 1000
-TOKEN_SIZE = 17
-
-def getTime():
-    return int(round(time.time() * 1000))
-
 class User(Base):
     __tablename__ = 'users'
+    __table_args__ = (
+        UniqueConstraint("username"),
+    )
 
     id = Column('id', Integer, primary_key=True)
-    name = Column('name', String)
-    token = Column('token', String)
-    expire = Column('expire', Integer)
+    username = Column('username', String)
     password = Column('password', String)
 
-    def __init__(self, name, password):
-        self.name = name
+    def __init__(self, username, password):
+        self.username = username
         self.password = pwd.encrypt(password)
         session.add(self)
         session.commit()
 
-    def verifyToken(self, token):
-        if token == self.token and self.expire > getTime():
-            return True;
-        return False;
+def addUser(username, password):
+    print "NEW USER: " + username
+    return User(username, password)
 
-    def getToken(self, password):
-        if pwd.verify(password, self.password):
+def getUser(id=None, name=None, password=None):
 
-            # generate token
-            alphabet = string.ascii_letters + string.digits
-            self.token = ''.join( choice(alphabet) \
-                for i in range(TOKEN_SIZE))
+    if id is not None:
+        return session.query(User).get(id) 
 
-            self.expire = getTime() + TOKEN_EXPIRE
-            session.commit()
-            return self.token;
+    nameFilter = (True)
+
+    if name is not None:
+        nameFilter = (User.username == name)
+
+    user = session.query(User) \
+        .filter(nameFilter) \
+        .first()
+
+    if user is None:
+        return None
+
+    if password is not None: 
+        if pwd.verify(password, user.password):
+            return user
 
         return None
 
-def addUser(username, password):
-    return User(username, password)
-
-def getUser(id=None, name=None, ):
-    nameFilter = (True)
-    if name is not None:
-        nameFilter = (User.name == name)
-
-    return session.query(User) \
-        .filter(nameFilter).first()
+    return user
 
 createAll()

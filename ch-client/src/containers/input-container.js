@@ -13,15 +13,8 @@ const InputContainer = (props) => {
         <div className="input-container">
         <div className="wrapper">
             <div className="choices">
-                {Object.entries(props.state.choices).map(([id,c]) => (
-                    <Choice 
-                        user={props.state.users[c.user].name}
-                        title={c.title}
-                        key={id}
-                    />
-                ))}
                 <ChoiceForm
-                    active={props.state.newChoice === 0}
+                    active={props.state.newChoice > 0}
                     handleCreate={props.dispatch.createChoice}
                     onSubmit={(form) => {
                         props.dispatch.createChoice(form.choice)
@@ -30,6 +23,13 @@ const InputContainer = (props) => {
                         console.log('change', form) 
                     }}
                 />
+                {Object.entries(props.state.choices).map(([id,c]) => (
+                    <Choice 
+                        user={props.state.users[c.user].name}
+                        title={c.title}
+                        key={id}
+                    />
+                ))}
             </div>
         </div>
         </div>
