@@ -9,6 +9,7 @@ export const SERVER_REQUEST = SERVER + "/api"
 export const request = (action, success=showSuccess, error=showError) => {
     return (dispatch, getState) => {
         dispatch(showLoading(1))
+        console.log(action)
 		req.post(SERVER_REQUEST)
             .send({
                 type: action.type,
@@ -28,11 +29,11 @@ export const request = (action, success=showSuccess, error=showError) => {
                         res.body.payload) { 
                         switch(res.body.type) {
                             case ACTIONS.REQUEST_SUCCESS:
-                                console.log(success(res.body.payload))
                                 dispatch(success(res.body.payload)) 
                                 break;
 
                             case ACTIONS.REQUEST_REJECT:
+                                // TODO: Implement reject!
                                 dispatch(error(res.body.payload))
                                 break;
                             
@@ -44,6 +45,7 @@ export const request = (action, success=showSuccess, error=showError) => {
                         }
                     }
                 }
-            })
+            }
+        )
     }
 }

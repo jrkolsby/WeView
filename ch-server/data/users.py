@@ -23,7 +23,7 @@ def addUser(username, password):
     print "NEW USER: " + username
     return User(username, password)
 
-def getUser(id=None, name=None, password=None):
+def getUser(id=None, list=None, name=None, password=None):
 
     if id is not None:
         return session.query(User).get(id) 
@@ -33,17 +33,17 @@ def getUser(id=None, name=None, password=None):
     if name is not None:
         nameFilter = (User.username == name)
 
-    user = session.query(User) \
+    users = session.query(User) \
         .filter(nameFilter) \
-        .first()
+        .all()
 
-    if user is None:
+    if len(users) == 0:
         return None
 
-    if password is not None: 
-        if pwd.verify(password, user.password):
-            return user
+    user = users[0]
 
+    if password is not None and \
+       not pwd.verify(password, user.password):
         return None
 
     return user

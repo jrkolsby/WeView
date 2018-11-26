@@ -10,9 +10,9 @@ import NavigationContainer from './containers/navigation-container'
 
 export const Choosy = (props) => (
     <div className="choosy">
-        <HeaderContainer />
+        <HeaderContainer form="nav" />
         <NavigationContainer>
-            <InputContainer />
+            <InputContainer form="input"/>
             <VoteContainer />
         </NavigationContainer>
     </div>

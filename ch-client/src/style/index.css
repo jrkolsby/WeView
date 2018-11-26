@@ -12,6 +12,7 @@ a {
 
 .wrapper {
     margin: 0 auto;
+    padding: 0 16px;
     width: 100%;
     max-width: 800px;
     position: relative;
@@ -35,6 +36,11 @@ form.modal {
     border: 1px solid #E5E5E5;
     box-shadow: 0 0 24px 0 rgba(0,0,0,0.12);
     z-index: 100;
+    display: none;
+}
+
+form.modal.active {
+    display: block;
 }
 
 form.modal h3 {
@@ -46,17 +52,6 @@ form.modal h3 {
 form.modal input {
     display: block;
     margin-bottom: 16px;
-}
-
-form.modal.account.login {
-
-}
-
-form.modal.account.signup {
-
-}
-form.modal.account.createDecision {
-
 }
 
 header .progress {
@@ -112,11 +107,13 @@ header .messages {
     background: #FF5E5E
 }
 
-header nav div {
+nav div {
     margin-left: 24px;
     position: relative;
-    display: inline-block;
+    display: none;
 }
+
+nav div.active { display: inline-block; }
 
 .choice {
     background: #4948FF;
@@ -131,8 +128,9 @@ header nav div {
     border-radius: 16px 16px 8px 8px;
 }
 
-.choice:nth-of-type(2n) {
+.choices .choice:nth-child(2n+1) {
     border-radius: 8px 8px 16px 16px ;
+    margin-bottom: 32px;
 }
 
 .choice span.user {

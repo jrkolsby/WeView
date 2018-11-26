@@ -2,7 +2,7 @@ import React from 'react'
 import {reduxForm, Form, Field} from 'redux-form'
 
 export const AccountForm = (props) => (
-    <Form className="account modal"
+    <Form className={"account modal" + (props.active ? " active" : "")}
         onSubmit={props.handleSubmit}
     >
         <h3>{props.title}</h3>
@@ -26,4 +26,4 @@ export const AccountForm = (props) => (
     </Form>
 )
 
-export default reduxForm({form: "account"})(AccountForm)
+export default reduxForm()(AccountForm)

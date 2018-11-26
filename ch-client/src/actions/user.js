@@ -14,7 +14,7 @@ export const signup = (user="", pass="") => {
             type: ACTIONS.LOGIN,
             payload: {
                 id: creds.id,
-                name: user,
+                username: user,
                 token: creds.token
             }
         }
@@ -33,7 +33,7 @@ export const login = (user="", pass="") => {
             type: ACTIONS.LOGIN,
             payload: {
                 id: creds.id,
-                name: user,
+                username: user,
                 token: creds.token
             }
         }

@@ -2,7 +2,7 @@ import {ACTIONS} from '../actions';
 
 const defaultState = {
     userID: 0,
-    name: "",
+    username: "",
     token: "",
     loggedIn: false,
 }
@@ -14,7 +14,7 @@ const user = (state=defaultState, action) => {
             return {
                 ...state,
                 userID: action.payload.id,
-                name: action.payload.name,
+                username: action.payload.username,
                 token: action.payload.token,
                 loggedIn: true
             }
@@ -23,7 +23,7 @@ const user = (state=defaultState, action) => {
             return {
                 ...state,
                 userID: 0,
-                name: "",
+                username: "",
                 token: "",
                 loggedIn: false 
             }

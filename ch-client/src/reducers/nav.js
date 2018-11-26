@@ -28,6 +28,14 @@ const nav = (state=defaultState, action) => {
                 currentPage: action.payload 
             }
 
+        case ACTIONS.JOIN_LIST:
+            return {
+                ...state,
+                pageSubtitle: action.payload.url,
+                pageTitle: action.payload.title,
+                currentModal: 0
+            }
+
         case ACTIONS.SHOW_LOADING:
             return {
                 ...state,
@@ -51,6 +59,9 @@ const nav = (state=defaultState, action) => {
                     action
                 ]
             }
+
+        case ACTIONS.LOGOUT:
+            return defaultState
 
         default:
             return state

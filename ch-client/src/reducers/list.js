@@ -1,8 +1,8 @@
 import {ACTIONS} from '../actions';
 
 const defaultState = {
-    listID: 0,
-    newChoice: 0,
+    listID: -1,
+    editing: 0,
     choices: {
         1: { title: "The Royal Tennenbaums", user: 1 },
         2: { title: "Moonrise Kingdom", user: 2 },
@@ -41,9 +41,10 @@ const defaultState = {
 
 const list = (state=defaultState, action) => {
     switch(action.type) {
-        case ACTIONS.NEW_CHOICE: 
+        case ACTIONS.CREATE_CHOICE: 
             return {
                 ...state,
+                editing: action.payload.id,
                 choices: {
                     ...state.choices,
                     [action.payload.id]: {
@@ -58,8 +59,16 @@ const list = (state=defaultState, action) => {
                 ...state,
                 choices: {
                     ...state.choices,
-                    [action.payload.id]: action.payload.name
+                    [action.payload.id]: {
+                        title: action.payload.title
+                    }
                 }
+            }
+
+        case ACTIONS.JOIN_LIST:
+            return {
+                ...state,
+                listID: action.payload.id,
             }
             
 
@@ -71,6 +80,9 @@ const list = (state=defaultState, action) => {
                     [action.payload.id]: action.payload 
                 }
             }
+
+        case ACTIONS.LOG_OUT:
+            return defaultState
 
         default: return state;
     }

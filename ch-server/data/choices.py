@@ -9,25 +9,28 @@ class Choice(Base):
     __tablename__ = 'choices'
 
     id = Column('id', Integer, primary_key=True)
-    content = Column('content', String)
+    user = Column('user', Integer)
+    title = Column('title', String)
 
-    def __init__(self, content):
-        self.content = content
+    def __init__(self, user, title):
+        self.user = user.id
+        self.title = title
         session.add(self)
         session.commit()
 
-def addChoice(user, content):
-    theUser = getUser(user)
-    if theUser is not None:
-        return Owner(theUser, Choice(content)) 
-    return None;
+def addChoice(user, title):
+    return Choice(user, title)
 
-def getChoices(user=None):
-    userFilter = (True)
-    if user is not None:
-        userFilter = (Owner.user == getUser(user).id)
+def getChoice(id=None, list=None, title=None):
+    if id is not None:
+        return session.query(Choice).get(id) 
 
-    joins = session.query(Owner) \
+    titleFilter = (True)
+
+    if title is not None:
+        titleFilter = (Choice.title == title)
+
+    choices = session.query(Choice) \
         .filter(userFilter).all()
 
     return list(map(lambda x: { \

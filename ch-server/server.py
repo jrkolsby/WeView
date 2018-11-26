@@ -7,12 +7,12 @@ from flask_cors import CORS
 
 from flask_socketio import SocketIO, send, emit
 
-from actions import success, error, newChoice
-
-from data.choices import addChoice, getChoices
+from data.choices import addChoice, getChoice
 from data.users import addUser, getUser
 from data.tokens import addToken, getToken, deleteToken
+from data.lists import addList, getList, addListUser, addListChoice
 
+from actions import success, error, createChoice
 
 '''
 from data.matches import addMatch, getMatches
@@ -32,7 +32,7 @@ def api():
     action = request.get_json(force=True)
 
     try:
-        list = action['list']
+        theList = action['list']
         user = action['user']
         token = action['token']
         theType = action['type'] 
@@ -46,6 +46,11 @@ def api():
 
         user = getUser(name=username, password=password)
         if user is not None:
+            token = getToken(user=user)
+            if token is not None:
+                deleteToken(token)
+                print "WARN: Account breach"
+
             token = addToken(user)
             return jsonify(success({
                 "id": user.id,
@@ -86,31 +91,60 @@ def api():
         return jsonify(success("Deleted Token!"))
 
     if theType == "CREATE_CHOICE":
-        choice = addChoice(user, payload)
-        socket.to(list).emit('action', newChoice(id, payload, user))
-        return jsonify(success("Read Choices!"))
+        choice = addChoice(user, payload['title'])
+        socket.emit('action', createChoice(choice.id, \
+                              choice.title, user.id), \
+                              room=theList)
+        return jsonify(success({
+            "id": choice.id,
+            "user": choice.user,
+            "title": choice.title 
+        }))
+        
+    if theType == "UPDATE_CHOICE":
+        choice = getChoice(id=payload['id'])
+        socket.emit('action', createChoice(choice.id, \
+                              choice.title, user.id), \
+                              room=theList)
+
+        return jsonify(success("Update Choice!"))
 
     if theType == "READ_CHOICES":
-        return jsonify(success("Read Choices!"))
-
-    if theType == "UPDATE_CHOICE":
-        return jsonify(success("Update Choice!"))
-    
-    if theType == "ADD_VOTE":
-        payload = action['payload']
-        matchID = payload['matchID']
-        voteA = payload['voteA']
-        addVote(matchID, voteA)
-
-        socket.to(list).emit('action', error("hello"))
-        return jsonify(success("Add Vote!"))
+        choices = getChoice(theList=theList)
+        return jsonify(success(choices))
 
     if theType == "CREATE_LIST":
-        return jsonify(success("Create List!"))
+        if getList(title=payload['title']) is not None:
+            return jsonify(error("List exists"))
+
+        theList = addList(payload['title'], user)
+
+        return jsonify(success({
+            "title": theList.title,
+            "url": theList.url,
+            "id": theList.id,
+        }))
 
     if theType == "JOIN_LIST":
-        return jsonify(success("Join List!"))
+        theList = getList(url=payload['url'])
+        if theList is None:
+            return jsonify(error("Invalid URL"))
 
+        return jsonify(success({
+            "title": theList.title,
+            "url": theList.url,
+            "id": theList.id,
+        }))
+
+    if theType == "ADD_VOTE":
+        matchID = payload['matchID']
+        vote = payload['vote']
+        addVote(matchID, voteA)
+
+        socket.emit('action', error("hello"), room=theList)
+        return jsonify(success("Add Vote!"))
+
+        
     if theType == "LEAVE_LIST":
         return jsonify(success("Leave List!!"))
 

@@ -16,9 +16,9 @@ def error(message):
         "payload": message 
     }
 
-def newChoice(id, title, user):
+def createChoice(id, title, user):
     return {
-        "type": "ADD_CHOICE",
+        "type": "CREATE_CHOICE",
         "payload": {
             "id": id,
             "title": title,

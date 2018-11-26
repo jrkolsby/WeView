@@ -10,7 +10,7 @@ TOKEN_EXPIRE = 3600 * 1000
 TOKEN_SIZE = 17
 
 class Token(Base):
-    __tablename__ = 'token'
+    __tablename__ = 'tokens'
 
     id = Column('id', Integer)
     user = Column('user', Integer)

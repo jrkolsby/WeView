@@ -31,7 +31,6 @@ const room = store => next => action => {
     next(action);
 }
 
-
 const store = createStore(
     rootReducer,
     applyMiddleware(thunk, room)
