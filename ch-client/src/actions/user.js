@@ -9,13 +9,13 @@ export const signup = (user="", pass="") => {
             user,
             pass 
         }
-    }, (creds) => {
+    }, (token) => {
         return {
             type: ACTIONS.LOGIN,
             payload: {
-                id: creds.id,
+                id: token.id,
                 username: user,
-                token: creds.token
+                token: token.token
             }
         }
     })
@@ -28,13 +28,13 @@ export const login = (user="", pass="") => {
             user,
             pass 
         }
-    }, (creds) => {
+    }, (token) => {
         return {
             type: ACTIONS.LOGIN,
             payload: {
-                id: creds.id,
                 username: user,
-                token: creds.token
+                user: token.user,
+                token: token.token,
             }
         }
     })

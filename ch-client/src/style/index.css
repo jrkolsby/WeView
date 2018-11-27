@@ -25,6 +25,21 @@ header {
     padding-top: 32px;
 }
 
+header .users {
+    margin: 0 auto;
+    text-align: center;
+}
+
+header .users .user {
+    display: inline-block;
+    color: blue;
+    margin-right: 16px;
+}
+
+header .users .user:last-child {
+    margin-right: 0;
+}
+
 form.modal {
     position: absolute;
     display: block;
@@ -86,16 +101,17 @@ header nav {
 header .messages {
     position: fixed;
     pointer-events: none;
-    top: 16px;
+    bottom: 16px;
     right: 16px;
 }
 
 .message {
-    padding: 8px 16px;
-    background: #E5E5E5;
+    opacity: 0.8;
+    padding: 16px 32px;
     border-radius: 8px;
     margin-bottom: 16px;
-    width: 144px;
+    width: 188px;
+    color: white;
 }
 
 .message.SHOW_SUCCESS {
@@ -103,8 +119,7 @@ header .messages {
 }
 
 .message.SHOW_ERROR {
-    color: black;
-    background: #FF5E5E
+    background: #FF4631;
 }
 
 nav div {
@@ -118,7 +133,6 @@ nav div.active { display: inline-block; }
 .choice {
     background: #4948FF;
     width: 304px;
-    height: 64px;
     font-weight: 500;
     padding: 12px;
     margin-bottom: 16px;
@@ -126,14 +140,15 @@ nav div.active { display: inline-block; }
 
 .choice {
     border-radius: 16px 16px 8px 8px;
+    white-space: normal;
 }
 
-.choices .choice:nth-child(2n+1) {
+.choice:nth-child(2n+1) {
     border-radius: 8px 8px 16px 16px ;
     margin-bottom: 32px;
 }
 
-.choice span.user {
+.choice span {
     font-size: 14px;
     letter-spacing: 0.5px;
     color: rgba(255,255,255,0.75);
@@ -142,9 +157,13 @@ nav div.active { display: inline-block; }
     margin-bottom: 6px;
 }
 
-.choice span.title {
+.choice p {
     font-size: 20px;
+    line-height: 1.2;
+    min-height: 24px;
     color: white;
+    display: block;
+    height: auto;
 }
 
 input {
@@ -157,6 +176,17 @@ input {
     border-radius: 24px;
 }
 
+.choice input {
+    font-size: 20px;
+    padding: 0;
+    color: white;
+    width: auto;
+    border: none;
+    height: auto;
+    background: none;
+    border-radius: none;
+}
+
 button {
     padding: 12px 32px;
     background: #5BFF92;
@@ -165,6 +195,12 @@ button {
     cursor: pointer;
     font-size: 20px;
     font-weight: 500;
+}
+
+button.new {
+    background: none;
+    border-radius: none;
+    color: #444;
 }
 
 @media only screen and (max-width: 960px) {

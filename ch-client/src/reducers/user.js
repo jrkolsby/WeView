@@ -1,7 +1,7 @@
 import {ACTIONS} from '../actions';
 
 const defaultState = {
-    userID: 0,
+    userID: -1,
     username: "",
     token: "",
     loggedIn: false,
@@ -11,21 +11,22 @@ const user = (state=defaultState, action) => {
     switch(action.type) {
 
         case ACTIONS.LOGIN:
+            console.log(action.payload)
             return {
                 ...state,
-                userID: action.payload.id,
-                username: action.payload.username,
+                loggedIn: true,
+                userID: action.payload.user,
                 token: action.payload.token,
-                loggedIn: true
+                username: action.payload.username,
             }
 
         case ACTIONS.LOGOUT:
             return {
                 ...state,
+                loggedIn: false, 
+                token: "",
                 userID: 0,
                 username: "",
-                token: "",
-                loggedIn: false 
             }
 
         default:

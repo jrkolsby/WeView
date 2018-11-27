@@ -101,9 +101,18 @@ const HeaderContainer = (props) => {
                             props.dispatch.logout()
                             props.dispatch.gotoModal(0)
                         }}
-                    >Logout</a>
+                    >Logout {props.state.username}</a>
                 </div>
             </nav>
+
+            <div className="users">
+                {Object.entries(props.state.users).map(([id, u]) => (
+                    <div key={id}
+                        className="user">
+                    {u.name},
+                    </div>
+                ))}
+            </div>
 
             <div className="messages">
                 {props.state.messages.map((m, i) => (
@@ -124,6 +133,7 @@ const mapState = (state) => {
         state: {
             ...state.nav,
             ...state.user,
+            users: state.list.users
         }
     }
 }

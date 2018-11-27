@@ -16,12 +16,14 @@ def error(message):
         "payload": message 
     }
 
-def createChoice(id, title, user):
+def updateChoice(choice):
     return {
-        "type": "CREATE_CHOICE",
-        "payload": {
-            "id": id,
-            "title": title,
-            "user": user
-        }
+        "type": "UPDATE_CHOICE",
+        "payload": choice.toDict()
+    }
+
+def updateUser(user):
+    return {
+        "type": "UPDATE_USER",
+        "payload": user.toDict()
     }

@@ -2,10 +2,9 @@ import ACTIONS from '.'
 
 import { request } from './request'
 
-export const createChoice = (title="") => {
+export const createChoice = () => {
     return request({
         type: ACTIONS.CREATE_CHOICE,
-        payload: { title }
     }, (choice) => {
         return {
             type: ACTIONS.CREATE_CHOICE, 
@@ -18,16 +17,19 @@ export const createChoice = (title="") => {
     })
 }
 
-export const readChoices = (list) => {
-    return request({
-        type: ACTIONS.READ_CHOICES
-    })
-}
-
 export const updateChoice = (id, title) => {
     return request({
         type: ACTIONS.UPDATE_CHOICE,
         payload: { id, title }
+    }, (choice) => {
+        return {
+            type: ACTIONS.UPDATE_CHOICE,
+            payload: { 
+                id: choice.id, 
+                user: choice.user,
+                title: choice.title 
+            }
+        }
     })
 }
 
@@ -36,12 +38,15 @@ export const joinList = (url) => {
         type: ACTIONS.JOIN_LIST,
         payload: { url }
     }, (list) => {
+        console.log(list)
         return {
             type: ACTIONS.JOIN_LIST,
             payload: {
                 url,
                 id: list.id,
-                title: list.title
+                title: list.title,
+                users: list.users,
+                choices: list.choices
             }
         }
     })
@@ -58,6 +63,8 @@ export const createList = (title) => {
                 title,
                 id: list.id,
                 url: list.url,
+                users: list.users,
+                choices: []
             }
         }
     })

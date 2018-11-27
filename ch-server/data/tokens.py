@@ -30,6 +30,12 @@ class Token(Base):
         session.add(self)
         session.commit()
 
+    def toDict(self):
+        return {
+            "user": self.user,
+            "token": self.token
+        }
+
 def getTime():
     return int(round(time.time() * 1000))
 
@@ -38,14 +44,11 @@ def getToken(id=None, user=None, token=None):
     if id is not None:
         return session.query(Token).get(id) 
 
-    tokenFilter = (True)
-    userFilter = (True)
+    tokenFilter = (Token.token == token) \
+        if (token is not None) else (True)
 
-    if token is not None:
-        tokenFilter = (Token.token == token)
-
-    if user is not None:
-        userFilter = (Token.user == user.id)
+    userFilter = (Token.user == user.id) \
+        if (user is not None) else (True)
 
     token = session.query(Token) \
         .filter(tokenFilter) \

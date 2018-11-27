@@ -3,8 +3,6 @@ import time
 from data import Base, session, createAll
 from data import Column, Integer, String, UniqueConstraint
 
-from data.users import getUser
-
 class Choice(Base):
     __tablename__ = 'choices'
 
@@ -18,26 +16,28 @@ class Choice(Base):
         session.add(self)
         session.commit()
 
+    def toDict(self):
+        return {
+            "id": self.id,
+            "user": self.user,
+            "title": self.title
+        }
+
 def addChoice(user, title):
     return Choice(user, title)
 
-def getChoice(id=None, list=None, title=None):
+def setChoice(choice, title):
+    choice.title = title
+    session.commit()
+
+def getChoice(id=None, title=None):
     if id is not None:
         return session.query(Choice).get(id) 
 
-    titleFilter = (True)
-
-    if title is not None:
-        titleFilter = (Choice.title == title)
+    titleFilter = (Choice.title == title) \
+        if (title is None) else (True)
 
     choices = session.query(Choice) \
-        .filter(userFilter).all()
-
-    return list(map(lambda x: { \
-        "user": session.query(User).get(x.user).name, \
-        "id": session.query(Choice).get(x.choice).id, \
-        "votes": session.query(Choice).get(x.choice).votes, \
-        "content": session.query(Choice).get(x.choice).content \
-        }, joins))
+        .filter(userFilter).first()
 
 createAll()

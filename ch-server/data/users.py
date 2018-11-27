@@ -19,31 +19,30 @@ class User(Base):
         session.add(self)
         session.commit()
 
-def addUser(username, password):
+    def toDict(self):
+        return {
+            "id": self.id,
+            "name": self.username
+        }
+
+def addUser(username, password, theList=None):
     print "NEW USER: " + username
     return User(username, password)
 
-def getUser(id=None, list=None, name=None, password=None):
-
+def getUser(id=None, name=None, password=None, theList=None):
     if id is not None:
         return session.query(User).get(id) 
 
-    nameFilter = (True)
+    nameFilter = (User.username == name) \
+        if (name is not None) else (True)
 
-    if name is not None:
-        nameFilter = (User.username == name)
-
-    users = session.query(User) \
+    user = session.query(User) \
         .filter(nameFilter) \
-        .all()
+        .first()
 
-    if len(users) == 0:
-        return None
-
-    user = users[0]
-
-    if password is not None and \
-       not pwd.verify(password, user.password):
+    if user is not None and \
+       password is not None and not \
+       pwd.verify(password, user.password):
         return None
 
     return user

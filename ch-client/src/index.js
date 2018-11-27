@@ -20,14 +20,24 @@ socket.on('connection', (socket) => {
         console.log('Socket Connected') 
     })
     .on('action', (action) => {
+        console.log('socket action', action)
         store.dispatch(action)
     })
 
 // Intercept JOIN_ROOM actions
 const room = store => next => action => {
-    if (action.type === "JOIN_ROOM") {
-        socket.join(action.payload)
-    }
+    switch (action.type) {
+        case "JOIN_LIST":
+            socket.emit('join', action.payload.url)
+            break;
+
+        case "LEAVE_LIST":
+            socket.emit('leave', action.payload.url)
+            break;
+
+        default: break;
+    } 
+
     next(action);
 }
 

@@ -10,38 +10,32 @@ import {connect} from 'react-redux';
 
 import debounce from 'lodash/debounce'
 
-const DEBOUNCE_TIME = 1000
+const DEBOUNCE_TIME = 100
 
 const updateChoice = debounce((dispatch, id, newValue) => {
     dispatch(id, newValue)
 }, DEBOUNCE_TIME)
 
 const InputContainer = (props) => {
-    console.log(props.state.form)
+    console.log(props.state)
     return (
         <div className="input-container">
         <div className="wrapper">
             <div className="choices">
-                <button onClick={() => {
-                    props.dispatch.createChoice("") 
-                }}>New</button>
-                {Object.entries(props.state.choices).map(([id,c]) =>
-                    props.state.editing === parseInt(id) ? (
-                        <ChoiceForm
-                            key={id}
-                            form="choice"
-                            handleChange={() => {
-                                updateChoice(props.dispatch.updateChoice, id,
-                                             props.state.form.choice.values.choice) 
-                            }}
-                        />
-                    ) : (
-                        <Choice 
-                            user={props.state.users[c.user].name}
-                            title={c.title}
-                            key={id}
-                        />
-                ))}
+                <button className="new" onClick={
+                    props.dispatch.createChoice}
+                >+ Add Choice</button>
+                {Object.entries(props.state.choices).reverse().map(([id,c]) =>
+                    <Choice 
+                        handleChange={(newTitle) => {
+                            updateChoice(props.dispatch.updateChoice, id, newTitle)
+                        }}
+                        editing={props.state.editing === parseInt(id)}
+                        user={props.state.users[c.user].name}
+                        title={c.title}
+                        key={id}
+                    />
+                )}
             </div>
         </div>
         </div>
@@ -53,7 +47,6 @@ const mapState = (state) => {
         state: {
             ...state.list,
             ...state.nav,
-            form: state.form
         }
     }
 }

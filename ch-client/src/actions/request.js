@@ -9,14 +9,14 @@ export const SERVER_REQUEST = SERVER + "/api"
 export const request = (action, success=showSuccess, error=showError) => {
     return (dispatch, getState) => {
         dispatch(showLoading(1))
-        console.log(action)
+        console.log('request', action, getState().user)
 		req.post(SERVER_REQUEST)
             .send({
                 type: action.type,
                 list: getState().list.listID,
                 user: getState().user.userID,
                 token: getState().user.token,
-                payload: action.payload ? action.payload : {}
+                payload: action.payload ? action.payload : ""
             }) 
             .set('Accept', 'application/json')
 			.end((err, res) => {
