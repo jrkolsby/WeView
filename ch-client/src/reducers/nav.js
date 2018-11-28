@@ -6,7 +6,7 @@ const defaultState = {
 
     pageTitle: "Choosy",
     pageSubtitle: "Decide with friends",
-    navTitle: "Add some movies!",
+    navTitle: "",
 
     progress: 0,
     messages: []
@@ -14,6 +14,20 @@ const defaultState = {
 
 const nav = (state=defaultState, action) => {
     switch(action.type) {
+
+        case ACTIONS.JOIN_LIST:
+            return {
+                ...state,
+                currentModal: 0,
+                pageTitle: action.payload.title,
+                pageSubtitle: "chsy.io/" + action.payload.url,
+                navTitle: "Contributions by " + 
+                    action.payload.users.reduce((s, u, i, a) => {
+                        return s + u.name + ", " 
+                    }, "")
+            }
+
+
         case ACTIONS.GOTO_MODAL:
             return {
                 ...state,

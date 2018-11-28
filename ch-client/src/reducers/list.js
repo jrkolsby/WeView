@@ -75,8 +75,8 @@ const list = (state=testState, action) => {
                 }
             }
 
-        case ACTIONS.LOG_OUT:
-            return defaultState
+        case ACTIONS.LOGOUT:
+            return testState
 
         default: return state;
     }

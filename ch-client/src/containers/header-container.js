@@ -40,7 +40,7 @@ const HeaderContainer = (props) => {
                     />
                 </div>
 
-                <div className={props.state.loggedIn ? " active" : ""}>
+                <div className={props.state.loggedIn ? "active" : ""}>
                     <a href="#join"
                         onClick={(e) => {
                             props.state.loggedIn ? 
@@ -59,7 +59,7 @@ const HeaderContainer = (props) => {
                     />
                 </div>
 
-                <div className={props.state.loggedIn ? "" : " active"}>
+                <div className={props.state.loggedIn ? "" : "active"}>
                     <a href="#signup"
                         onClick={(e) => {
                             props.dispatch.gotoModal(2)
@@ -77,7 +77,7 @@ const HeaderContainer = (props) => {
                     />
                 </div>
 
-                <div className={props.state.loggedIn ? "" : " active"}>
+                <div className={props.state.loggedIn ? "" : "active"}>
                     <a href="#login"
                         onClick={(e) => {
                             props.dispatch.gotoModal(1)
@@ -95,7 +95,7 @@ const HeaderContainer = (props) => {
                     />
                 </div>
 
-                <div className={props.state.loggedIn ? " active" : ""}>
+                <div className={props.state.loggedIn ? "active" : ""}>
                     <a href="#logout"
                         onClick={(e) => {
                             props.dispatch.logout()
@@ -105,14 +105,7 @@ const HeaderContainer = (props) => {
                 </div>
             </nav>
 
-            <div className="users">
-                {Object.entries(props.state.users).map(([id, u]) => (
-                    <div key={id}
-                        className="user">
-                    {u.name},
-                    </div>
-                ))}
-            </div>
+            <h4>{props.state.navTitle}</h4>
 
             <div className="messages">
                 {props.state.messages.map((m, i) => (
@@ -133,7 +126,6 @@ const mapState = (state) => {
         state: {
             ...state.nav,
             ...state.user,
-            users: state.list.users
         }
     }
 }

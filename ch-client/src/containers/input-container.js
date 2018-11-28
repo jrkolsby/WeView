@@ -1,6 +1,5 @@
 import React  from 'react'
 
-import ChoiceForm from '../components/choiceForm'
 import Choice from '../components/choice'
 
 import * as listActions from '../actions/list'
@@ -22,8 +21,8 @@ const InputContainer = (props) => {
         <div className="input-container">
         <div className="wrapper">
             <div className="choices">
-                <button className="new" onClick={
-                    props.dispatch.createChoice}
+                <button className={"new" + (props.state.listID >= 0 ? " active" : "")}
+                    onClick={props.dispatch.createChoice}
                 >+ Add Choice</button>
                 {Object.entries(props.state.choices).reverse().map(([id,c]) =>
                     <Choice 
@@ -47,6 +46,7 @@ const mapState = (state) => {
         state: {
             ...state.list,
             ...state.nav,
+            loggedIn: state.user.loggedIn
         }
     }
 }

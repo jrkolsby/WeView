@@ -16,11 +16,7 @@ import { SERVER } from './actions/request'
 const socket = socketio(SERVER)
 
 // Dispatch socket actions
-socket.on('connection', (socket) => {
-        console.log('Socket Connected') 
-    })
-    .on('action', (action) => {
-        console.log('socket action', action)
+socket.on('action', (action) => {
         store.dispatch(action)
     })
 

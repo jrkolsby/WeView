@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
 
-import NavigationHeader from '../components/navHeader.js'
-
 import * as navActions from '../actions/nav'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -41,9 +39,6 @@ class NavigationContainer extends Component {
     render() {
         return (
             <div id={CLASS_CONTAINER}>
-                <NavigationHeader
-                    handleBack={() => this.props.navigateTo(this.props.index-1)}
-                />
                 <main>
                     {this.renderChildren()}
                 </main>

@@ -13,9 +13,9 @@ export const signup = (user="", pass="") => {
         return {
             type: ACTIONS.LOGIN,
             payload: {
-                id: token.id,
                 username: user,
-                token: token.token
+                user: token.user,
+                token: token.token,
             }
         }
     })
@@ -41,6 +41,7 @@ export const login = (user="", pass="") => {
 }
 
 export const logout = () => {
+    console.log("LOGOUT")
     return request({
         type: ACTIONS.LOGOUT
     }, () => {
