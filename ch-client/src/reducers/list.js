@@ -13,6 +13,7 @@ const defaultState = {
 const list = (state=testState, action) => {
     switch(action.type) {
         case ACTIONS.CREATE_CHOICE: 
+            console.log('update choice', action)
             return {
                 ...state,
                 editing: action.payload.id,
@@ -26,6 +27,7 @@ const list = (state=testState, action) => {
             }
 
         case ACTIONS.UPDATE_CHOICE: 
+            console.log('update choice', action)
             return {
                 ...state,
                 choices: {

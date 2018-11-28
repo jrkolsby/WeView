@@ -10,7 +10,7 @@ export const DecisionForm = (props) => (
             name="name"
             component="input" 
             type="text"
-            placeholder="Give it a name..."
+            placeholder={props.placeholder}
         />
         <button type="submit">{props.primary}</button>
         <a href="." onClick={(e) => {

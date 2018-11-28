@@ -33,6 +33,7 @@ const HeaderContainer = (props) => {
                         form="new-decision"
                         title="New Decision"       
                         primary="Create Decision"
+                        placeholder="What's the question?"
                         active={props.state.currentModal === 3}
                         onSubmit={(form) => {
                             props.dispatch.createList(form.name)
@@ -52,6 +53,7 @@ const HeaderContainer = (props) => {
                         form="join"
                         title="Join Decision"       
                         primary="Join"
+                        placeholder="Room URL"
                         active={props.state.currentModal === 4}
                         onSubmit={(form) => {
                             props.dispatch.joinList(form.name)
@@ -101,11 +103,16 @@ const HeaderContainer = (props) => {
                             props.dispatch.logout()
                             props.dispatch.gotoModal(0)
                         }}
-                    >Logout {props.state.username}</a>
+                    ><span>Logout</span> {props.state.username}</a>
                 </div>
             </nav>
 
-            <h4>{props.state.navTitle}</h4>
+            <h4>
+            {props.state.navTitle}
+            {Object.values(props.state.users).map((u, i, a, r) => {
+                console.log(u, i, a)
+                return u.name + (i < a.length - 1 ? ", " : "")
+            })}</h4>
 
             <div className="messages">
                 {props.state.messages.map((m, i) => (
@@ -126,6 +133,7 @@ const mapState = (state) => {
         state: {
             ...state.nav,
             ...state.user,
+            users: state.list.users
         }
     }
 }

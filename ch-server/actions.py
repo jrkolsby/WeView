@@ -16,6 +16,9 @@ def error(message):
         "payload": message 
     }
 
+def send(io, room, action):
+    io.emit('action', action, room=room)
+
 def updateChoice(choice):
     return {
         "type": "UPDATE_CHOICE",

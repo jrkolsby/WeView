@@ -16,7 +16,6 @@ const updateChoice = debounce((dispatch, id, newValue) => {
 }, DEBOUNCE_TIME)
 
 const InputContainer = (props) => {
-    console.log(props.state)
     return (
         <div className="input-container">
         <div className="wrapper">
@@ -30,7 +29,8 @@ const InputContainer = (props) => {
                             updateChoice(props.dispatch.updateChoice, id, newTitle)
                         }}
                         editing={props.state.editing === parseInt(id)}
-                        user={props.state.users[c.user].name}
+                        user={props.state.users[c.user] ? 
+                            props.state.users[c.user].name : "--"}
                         title={c.title}
                         key={id}
                     />

@@ -5,14 +5,14 @@ import json
 
 from flask_cors import CORS
 
-from flask_socketio import SocketIO, send, emit, join_room, leave_room
+from flask_socketio import SocketIO, emit, join_room, leave_room
 
 from data.choices   import addChoice,   getChoice,  setChoice
 from data.tokens    import addToken,    getToken,   deleteToken
 from data.users     import addUser,     getUser
 from data.lists     import addList,     getList,    addListUser, addListChoice
 
-from actions import success, error, updateChoice, updateUser
+from actions import success, error, send, updateChoice, updateUser
 
 '''
 from data.matches import addMatch, getMatches
@@ -22,21 +22,21 @@ from data.votes import addVote, getVotes
 app = Flask(__name__)
 CORS(app)
 
-socket = SocketIO(app)
+io = SocketIO(app)
 
 votingQueues = {}
 
-@socket.on('join')
+@io.on('join')
 def join(room):
     join_room(room)
-    #send(username + ' has entered the room.', room=room)
+    send(io, room, success("Joined chsy.io/"))
     print "JOIN_LIST"
 
-@socket.on('leave')
+@io.on('leave')
 def leave(room):
     leave_room(room)
     print "LEAVE_LIST"
-    #send(username + ' has left the room.', room=room)
+    send(io, room, success("Left chsy.io/"))
 
 @app.route("/api", methods=['POST'])
 def api():
@@ -123,14 +123,14 @@ def api():
         if choice is None:
             return jsonify(error("No such choice"))
 
+        # Set to database
         setChoice(choice, payload['title'])
 
         theList = getList(id=theList)
         if theList is None:
             return jsonify(error("No such list"))
 
-        socket.emit('action', updateChoice(choice), \
-                              room=theList.url)
+        send(io, theList.url, updateChoice(choice))
 
         return jsonify(success(choice.toDict()))
 
@@ -150,17 +150,16 @@ def api():
 
         addListUser(theList, user)
 
-        socket.emit('action', updateUser(user), \
-                              room=theList.url)
+        send(io, theList.url, updateUser(user))
 
         return jsonify(success(theList.toDict()))
 
     if theType == "ADD_VOTE":
-        matchID = payload['matchID']
-        vote = payload['vote']
-        addVote(matchID, voteA)
+        choice = payload['choice']
+        
+        print choice
 
-        socket.emit('action', error("hello"), room=theList)
+        io.emit('action', error("hello"), room=theList)
         return jsonify(success("Add Vote!"))
 
         

@@ -6,7 +6,7 @@ const defaultState = {
 
     pageTitle: "Choosy",
     pageSubtitle: "Decide with friends",
-    navTitle: "",
+    navTitle: "Contributions by ",
 
     progress: 0,
     messages: []
@@ -14,17 +14,21 @@ const defaultState = {
 
 const nav = (state=defaultState, action) => {
     switch(action.type) {
+        case ACTIONS.LOGIN:
+            return {
+                ...state,
+                messages: [],
+                currentModal: 4,
+            }
 
         case ACTIONS.JOIN_LIST:
             return {
                 ...state,
                 currentModal: 0,
+                messages: [],
                 pageTitle: action.payload.title,
                 pageSubtitle: "chsy.io/" + action.payload.url,
-                navTitle: "Contributions by " + 
-                    action.payload.users.reduce((s, u, i, a) => {
-                        return s + u.name + ", " 
-                    }, "")
+                navTitle: "Add Suggestions"
             }
 
 
@@ -47,7 +51,9 @@ const nav = (state=defaultState, action) => {
                 ...state,
                 pageSubtitle: action.payload.url,
                 pageTitle: action.payload.title,
-                currentModal: 0
+
+                currentModal: 0,
+                messages: [],
             }
 
         case ACTIONS.SHOW_LOADING:

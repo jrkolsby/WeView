@@ -115,9 +115,14 @@ header .messages {
 }
 
 nav div {
+    font-size: 17px;
     margin-left: 24px;
     position: relative;
     display: none;
+}
+
+nav div span {
+    font-size: 12px;
 }
 
 nav div.active { display: inline-block; }

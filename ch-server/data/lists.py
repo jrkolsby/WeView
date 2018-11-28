@@ -9,6 +9,9 @@ from data.choices import getChoice
 
 class List(Base):
     __tablename__ = 'lists'
+    __table_args__ = (
+        UniqueConstraint("url"),
+    )
 
     id = Column('id', Integer, primary_key=True)
     url = Column('url', String)
@@ -39,11 +42,14 @@ class List(Base):
 # JOIN LIST and USER
 class ListUser(Base):
     __tablename__ = 'list_users'
+    __table_args__ = (
+        UniqueConstraint('list','user'),
+    )
 
     id = Column('id', Integer, primary_key=True)
     user = Column('user', Integer)
     owner = Column('owner', Boolean)
-    theList = Column('theList', Integer)
+    theList = Column('list', Integer)
 
     def __init__(self, theList, user, owner):
         self.theList = theList.id
@@ -58,7 +64,13 @@ class ListVote(Base):
 
     id = Column('id', Integer, primary_key=True)
     user = Column('user', Integer)
-    theList = Column('theList', Integer)
+    vote = Column('vote', Boolean)
+    index = Column('index', Integer)
+    theList = Column('list', Integer)
+
+    __table_args__ = (
+        UniqueConstraint('user', 'index', 'list'),
+    )
 
     def __init__(self, theList, vote):
         self.theList = theList.id
@@ -74,7 +86,7 @@ class ListChoice(Base):
     id = Column('id', Integer, primary_key=True)
     user = Column('user', Integer)
     choice = Column('choice', Integer)
-    theList = Column('theList', Integer)
+    theList = Column('list', Integer)
 
     def __init__(self, theList, choice, user):
         self.theList = theList.id
@@ -104,15 +116,17 @@ def getList(id=None, title=None, url=None):
 
     return theList
 
-def getListUsers(theList):
+def getListUsers(theList, user=None):
     return session.query(ListUser) \
-        .filter(ListUser.theList == theList.id).all()
+        .filter(ListUser.theList == theList.id) \
+        .filter((ListUser.user == user.id) if \
+                (user is not None) else (True)).all()
 
 def getListVotes(theList):
     return session.query(ListVote) \
         .filter(ListVote.theList == theList.id).all()
 
-def getListChoices(theList):
+def getListChoices(theList, choice=None):
     return session.query(ListChoice) \
         .filter(ListChoice.theList == theList.id).all()
 
@@ -120,7 +134,9 @@ def addListChoice(theList, theChoice, theUser):
     return ListChoice(theList, theChoice, theUser)
 
 def addListUser(theList, theUser):
-    return ListUser(theList, theUser, False)
+    if len(getListUsers(theList, user=theUser)) == 0:
+        return ListUser(theList, theUser, False)
+    return None
 
 createAll()
 
