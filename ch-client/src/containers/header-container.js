@@ -107,11 +107,14 @@ const HeaderContainer = (props) => {
                 </div>
             </nav>
 
-            <h4>
-            {props.state.navTitle + " "}
-            {Object.values(props.state.users).map((u, i, a, r) => {
-                return u.name + (i < a.length - 1 ? ", " : "")
-            })}</h4>
+            <div className="nav-header">
+                <h4>
+                {props.state.navTitle + " "}
+                {Object.values(props.state.users).map((u, i, a, r) => {
+                    return u.name + (i < a.length - 1 ? ", " : "")
+                })}
+                </h4>
+            </div>
 
             <div className="messages">
                 {props.state.messages.map((m, i) => (

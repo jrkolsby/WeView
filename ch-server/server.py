@@ -12,7 +12,8 @@ from data.tokens    import addToken,    getToken,   deleteToken
 from data.users     import addUser,     getUser
 from data.lists     import addList,     getList,    addListUser, addListChoice
 
-from actions import success, error, send, updateChoice, updateUser
+from actions import success, error, \
+                    send, updateChoice, updateUser, showSuccess
 
 '''
 from data.matches import addMatch, getMatches
@@ -27,16 +28,52 @@ io = SocketIO(app)
 votingQueues = {}
 
 @io.on('join')
-def join(room):
+def join(action):
+    try:
+        user = action['user']
+        token = action['token']
+        room = action['payload']['url']
+    except:
+        print "BAD ACTION"
+        return
+    
+    user = getUser(id=user)
+    if user is None:
+        print "WARN Invalid user"
+        return 
+
+    # Validate token
+    token = getToken(token=token, user=user)
+    if token is None:
+        print "WARN Invalid token"
+        return 
+
+    print "JOINED ROOM"
     join_room(room)
-    send(io, room, success("Joined chsy.io/"))
-    print "JOIN_LIST"
+    send(io, room, showSuccess(user.username + " joined /" + room))
 
 @io.on('leave')
-def leave(room):
-    leave_room(room)
-    print "LEAVE_LIST"
-    send(io, room, success("Left chsy.io/"))
+def leave(action):
+    try:
+        user = action['user']
+        token = action['token']
+        listID = action['list']
+    except:
+        print "BAD ACTION"
+        return
+
+    room = getList(id=listID)
+    if list is None:
+        print "WARN Invalid list"
+        return
+    
+    user = getUser(id=user)
+    if user is None:
+        print "WARN Invalid user"
+        return 
+
+    leave_room(room.url)
+    send(io, room.url, showSuccess(user.username + " left /" + room.url))
 
 @app.route("/api", methods=['POST'])
 def api():
@@ -52,8 +89,6 @@ def api():
         payload = action['payload']
     except:
         return jsonify(error("Bad Action"))
-
-    print theType
     
     if theType == "LOGIN":
         try:

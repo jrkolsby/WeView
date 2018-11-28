@@ -4,6 +4,12 @@ def success(message):
         "payload": message
     }
 
+def showSuccess(message):
+    return {
+        "type": "SHOW_SUCCESS",
+        "payload": message
+    }
+
 def reject(message):
     return {
         "type": "REQUEST_REJECT",

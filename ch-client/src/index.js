@@ -11,7 +11,7 @@ import {createStore, applyMiddleware} from 'redux'
 
 import Choosy from './Choosy'
 
-import { SERVER } from './actions/request'
+import { SERVER, attachCreds } from './actions/request'
 
 const socket = socketio(SERVER)
 
@@ -23,12 +23,16 @@ socket.on('action', (action) => {
 // Intercept JOIN_ROOM actions
 const room = store => next => action => {
     switch (action.type) {
+        case "LOGOUT":
+            socket.emit('leave', attachCreds(action, store.getState()))
+            break;
+
         case "JOIN_LIST":
-            socket.emit('join', action.payload.url)
+            socket.emit('join', attachCreds(action, store.getState()))
             break;
 
         case "LEAVE_LIST":
-            socket.emit('leave', action.payload.url)
+            socket.emit('leave', attachCreds(action, store.getState()))
             break;
 
         default: break;

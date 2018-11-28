@@ -24,10 +24,14 @@ header {
     padding-top: 32px;
 }
 
+header .nav-header {
+    width: 100%;
+}
+
 header h4 {
     text-align: center;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 16px;
     color: #444444;
     padding: 16px 0;
 }
@@ -102,12 +106,15 @@ header .messages {
     opacity: 0.8;
     width: 188px;
     font-weight: 500;
-    padding: 16px 32px;
+    line-height: 1.2;
+    padding: 12px 24px;
     margin-bottom: 16px;
+    white-space: normal;
 }
 
 .message.SHOW_SUCCESS {
     background: #5BFF92;
+    color: #444;
 }
 
 .message.SHOW_ERROR {

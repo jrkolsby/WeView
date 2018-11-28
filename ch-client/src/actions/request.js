@@ -6,18 +6,21 @@ import {showLoading, showError, showSuccess} from './nav'
 export const SERVER = "http://localhost:5000"
 export const SERVER_REQUEST = SERVER + "/api"
 
+export const attachCreds = (action, state) => {
+    return {
+        type: action.type,
+        list: state.list.listID,
+        user: state.user.userID,
+        token: state.user.token,
+        payload: action.payload ? action.payload : ""
+    }
+}
+
 export const request = (action, success=showSuccess, error=showError) => {
     return (dispatch, getState) => {
         dispatch(showLoading(1))
-        console.log('request', action, getState().user)
 		req.post(SERVER_REQUEST)
-            .send({
-                type: action.type,
-                list: getState().list.listID,
-                user: getState().user.userID,
-                token: getState().user.token,
-                payload: action.payload ? action.payload : ""
-            }) 
+            .send(attachCreds(action, getState())) 
             .set('Accept', 'application/json')
 			.end((err, res) => {
                 dispatch(showLoading(0))
