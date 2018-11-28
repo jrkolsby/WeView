@@ -145,6 +145,18 @@ nav div.active { display: inline-block; }
     margin-bottom: 32px;
 }
 
+.vote-container .choice {
+    border-radius: 16px 16px 8px 8px;
+    display: inline-block;
+    margin-right: 16px;
+    cursor: pointer;
+    transition: 0.1s background ease-in-out;
+}
+
+.vote-container .choice:hover {
+    background: #FEDC2C;
+}
+
 .choice span {
     display: block;
     font-size: 14px;

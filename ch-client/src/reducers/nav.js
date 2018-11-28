@@ -6,7 +6,7 @@ const defaultState = {
 
     pageTitle: "Choosy",
     pageSubtitle: "Decide with friends",
-    navTitle: "Contributions by ",
+    navTitle: "Contributions by",
 
     progress: 0,
     messages: []
@@ -28,9 +28,8 @@ const nav = (state=defaultState, action) => {
                 messages: [],
                 pageTitle: action.payload.title,
                 pageSubtitle: "chsy.io/" + action.payload.url,
-                navTitle: "Add Suggestions"
+                navTitle: "Contributions by - "
             }
-
 
         case ACTIONS.GOTO_MODAL:
             return {

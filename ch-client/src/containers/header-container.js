@@ -108,9 +108,8 @@ const HeaderContainer = (props) => {
             </nav>
 
             <h4>
-            {props.state.navTitle}
+            {props.state.navTitle + " "}
             {Object.values(props.state.users).map((u, i, a, r) => {
-                console.log(u, i, a)
                 return u.name + (i < a.length - 1 ? ", " : "")
             })}</h4>
 
