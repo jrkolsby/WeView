@@ -48,6 +48,13 @@ const list = (state=testState, action) => {
                 }
             }
 
+        case ACTIONS.UPDATE_BRACKET:
+            console.log('update bracket', action)
+            return {
+                ...state,
+                bracket: action.payload.bracket
+            }
+
         case ACTIONS.JOIN_LIST:
             return {
                 ...state,

@@ -14,10 +14,10 @@ import { reduxForm } from 'redux-form'
 const HeaderContainer = (props) => {
     return (
         <header>
+        {props.state.progress > 0 ? (
+            <div className="progress"></div>
+        ) : null}
         <div className="wrapper">
-            {props.state.progress ? (
-                <div className="progress"></div>
-            ) : null}
             <h1>{props.state.pageTitle}</h1>
             <h3>{props.state.pageSubtitle}</h3>
             <nav>
@@ -108,12 +108,22 @@ const HeaderContainer = (props) => {
             </nav>
 
             <div className="nav-header">
+                <a href="#back"
+                    onClick={(e) => {
+                        props.dispatch.gotoPage(0)
+                    }}
+                >Bracket</a>
                 <h4>
                 {props.state.navTitle + " "}
                 {Object.values(props.state.users).map((u, i, a, r) => {
                     return u.name + (i < a.length - 1 ? ", " : "")
                 })}
                 </h4>
+                <a href="#next"
+                    onClick={(e) => {
+                        props.dispatch.gotoPage(1)
+                    }}
+                >Vote</a>
             </div>
 
             <div className="messages">

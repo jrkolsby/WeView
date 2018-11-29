@@ -25,8 +25,8 @@ class NavigationContainer extends Component {
 
             var navClass = CLASS_SELECTED
 
-            if (index < this.props.index) { navClass = CLASS_LEFT }
-            if (index > this.props.index) { navClass = CLASS_RIGHT }
+            if (index < this.props.currentPage) { navClass = CLASS_LEFT }
+            if (index > this.props.currentPage) { navClass = CLASS_RIGHT }
 
             return (
                 <PageContainer navClass={navClass}>

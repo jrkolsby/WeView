@@ -26,9 +26,19 @@ header {
 
 header .nav-header {
     width: 100%;
+    position: relative;
 }
 
-header h4 {
+.nav-header a {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+}
+
+.nav-header a:first-child { left: 0; }
+.nav-header a:last-child { right: 0; }
+
+.nav-header h4 {
     text-align: center;
     font-weight: 400;
     font-size: 16px;
@@ -65,15 +75,15 @@ form.modal input {
 }
 
 header .progress {
-    position: absolute;
+    position: fixed;
+    z-index: 3000;
+    background: #5BFF92;
     top: 0;
     left: 0;
-    height: 5px;
-    width: 100%
-}
-
-header .progress.done {
-    background: red;
+    height: 10px;
+    width: 100%;
+    -webkit-animation: loading 1s infinite;
+    animation: loading 1s infinite;
 }
 
 header h1 {
@@ -88,8 +98,8 @@ header h3 {
 }
 
 header nav {
-    right: 0;
     top: 20px;
+    right: 16px;
     position: absolute;
 }
 
@@ -108,13 +118,14 @@ header .messages {
     font-weight: 500;
     line-height: 1.2;
     padding: 12px 24px;
-    margin-bottom: 16px;
+    margin-top: 16px;
     white-space: normal;
 }
 
 .message.SHOW_SUCCESS {
     background: #5BFF92;
-    color: #444;
+    font-weight: 400;
+    color: #111;
 }
 
 .message.SHOW_ERROR {
@@ -196,19 +207,22 @@ input {
     padding: 0;
     width: auto;
     border: none;
-    color: white;
     height: auto;
+    color: #FEDC2C;
     font-size: 20px;
     background: none;
     border-radius: none;
 }
-.choice input::-webkit-input-placeholder,
-.choice input:-ms-input-placeholder,
-.choice input::-moz-placeholder,
-.choice input:-moz-placeholder,
+.choice input::-webkit-input-placeholder { 
+    color: #FEDC2C !important; }
+.choice input:-ms-input-placeholder {
+    color: #FEDC2C !important; }
+.choice input::-moz-placeholder {
+    color: #FEDC2C !important; }
+.choice input:-moz-placeholder {
+    color: #FEDC2C !important; }
 .choice input::placeholder {
-    color: pink;
-}
+    color: #FEDC2C !important; }
 
 button {
     border: none;
@@ -228,6 +242,18 @@ button.new {
 }
 
 button.new.active { display: inline-block; }
+
+@-webkit-keyframes loading {
+    0% { width: 0; }
+    50% { width: 100%; }
+    100% { width: 0; }
+}
+
+@keyframes loading {
+    0% { width: 0; }
+    50% { width: 100%; }
+    100% { width: 0; }
+}
 
 @media only screen and (max-width: 960px) {
     form.modal {

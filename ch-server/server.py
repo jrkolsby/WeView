@@ -12,8 +12,8 @@ from data.tokens    import addToken,    getToken,   deleteToken
 from data.users     import addUser,     getUser
 from data.lists     import addList,     getList,    addListUser, addListChoice
 
-from actions import success, error, \
-                    send, updateChoice, updateUser, showSuccess
+from actions import success, error, send, \
+        updateChoice, updateUser, showSuccess, updateBracket
 
 '''
 from data.matches import addMatch, getMatches
@@ -25,7 +25,12 @@ CORS(app)
 
 io = SocketIO(app)
 
-votingQueues = {}
+voteQueues = {
+    1: [{
+        "listID": 1,
+        "bracketID": 5
+    }]
+}
 
 @io.on('join')
 def join(action):
@@ -150,6 +155,10 @@ def api():
             return jsonify(error("No such list"))
 
         addListChoice(theList, choice, user)
+
+        print theList.bracket
+
+        send(io, theList.url, updateBracket(theList))
 
         return jsonify(success(choice.toDict()))
         

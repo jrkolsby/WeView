@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import "./style/reset.css"
+import "./style/nav.css"
 import "./style/index.css"
 
 import VoteContainer from './containers/vote-container'

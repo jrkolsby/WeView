@@ -28,11 +28,8 @@ const room = store => next => action => {
             break;
 
         case "JOIN_LIST":
-            socket.emit('join', attachCreds(action, store.getState()))
-            break;
-
-        case "LEAVE_LIST":
             socket.emit('leave', attachCreds(action, store.getState()))
+            socket.emit('join', attachCreds(action, store.getState()))
             break;
 
         default: break;

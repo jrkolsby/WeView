@@ -1,3 +1,6 @@
+def send(io, room, action):
+    io.emit('action', action, room=room)
+
 def success(message): 
     return {
         "type": "REQUEST_SUCCESS",
@@ -22,13 +25,16 @@ def error(message):
         "payload": message 
     }
 
-def send(io, room, action):
-    io.emit('action', action, room=room)
-
 def updateChoice(choice):
     return {
         "type": "UPDATE_CHOICE",
         "payload": choice.toDict()
+    }
+
+def updateBracket(theList):
+    return {
+        "type": "UPDATE_BRACKET",
+        "payload": theList.toDict()
     }
 
 def updateUser(user):

@@ -1,0 +1,32 @@
+main {
+    width: 100%;
+    position: relative;
+}
+
+.nav-current,
+.nav-right,
+.nav-left {
+    overflow: visible;
+
+    position: absolute;
+    width: 100%;
+
+    transition: left 0.2s ease-in-out; 
+    -o-transition: left 0.2s ease-in-out;
+    -moz-transition: left 0.2s ease-in-out;
+    -webkit-transition: left 0.2s ease-in-out;
+
+    transform: translateZ(0);
+}
+
+.nav-current {
+    left: 0;
+}
+
+.nav-right {
+    left: 100%;
+}
+
+.nav-left {
+    left: -100%;
+}

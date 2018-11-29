@@ -10,7 +10,6 @@ class Vote(Base):
     user = Column('user', Integer)
     vote = Column('vote', Boolean)
     index = Column('index', Integer)
-
     theList = Column('list', Integer)
 
     def __init__(self, user, vote, index):

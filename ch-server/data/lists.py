@@ -1,4 +1,5 @@
 import re
+import json
 
 from data import Base, session, createAll
 from data import Column, Integer, String, Boolean, UniqueConstraint
@@ -6,6 +7,8 @@ from data import Column, Integer, String, Boolean, UniqueConstraint
 from data.users import getUser
 from data.votes import getVote
 from data.choices import getChoice
+
+BRACKET_SIZE = 8
 
 class List(Base):
     __tablename__ = 'lists'
@@ -16,28 +19,46 @@ class List(Base):
     id = Column('id', Integer, primary_key=True)
     url = Column('url', String)
     title = Column('title', String)
-
     bracket = Column('bracket', String)
 
     def __init__(self, title):
         self.title = title
+        self.bracket = json.dumps([[]]*BRACKET_SIZE)
         self.url = re.sub('[\W_]+', '', title.lower())
         session.add(self)
         session.commit()
 
     def toDict(self):
         return {
-            "choices": map(lambda j: getChoice(id=j.choice).toDict(), \
-               getListChoices(self)),
-            "votes": map(lambda j: getVote(id=j.user).toDict(), \
-                getListVotes(self)),
-            "users": map(lambda j: getUser(id=j.user).toDict(), \
-                getListUsers(self)),
-            "bracket": self.bracket,
+            "choices": map(lambda c: c.toDict(), self.getChoices()),
+            "votes": map(lambda v: v.toDict(), self.getVotes()),
+            "users": map(lambda u: u.toDict(), self.getUsers()),
+            "bracket": json.loads(self.bracket),
             "title": self.title,
             "url": self.url,
             "id": self.id,
         }
+
+    def getUsers(self, user=None):
+        listUsers = session.query(ListUser) \
+            .filter(ListUser.theList == self.id) \
+            .filter((ListUser.user == user.id) if \
+                (user is not None) else (True)).all()
+        return map(lambda j: getUser(id=j.user), listUsers)
+
+    def getVotes(self, index=None):
+        listVotes = session.query(ListVote) \
+            .filter(ListVote.theList == self.id) \
+            .filter((ListVote.index == index) if \
+                (index is not None) else (True)).all()
+        return map(lambda j: getVote(id=j.user), listVotes)
+
+
+    def getChoices(self):
+        listChoices = session.query(ListChoice) \
+            .filter(ListChoice.theList == self.id).all()
+        return map(lambda j: getChoice(id=j.choice), listChoices)
+
 
 # JOIN LIST and USER
 class ListUser(Base):
@@ -116,25 +137,53 @@ def getList(id=None, title=None, url=None):
 
     return theList
 
-def getListUsers(theList, user=None):
-    return session.query(ListUser) \
-        .filter(ListUser.theList == theList.id) \
-        .filter((ListUser.user == user.id) if \
-                (user is not None) else (True)).all()
+def nextSize(x):  
+    return 1 if x == 0 else 2**(x - 1).bit_length()
 
-def getListVotes(theList):
-    return session.query(ListVote) \
-        .filter(ListVote.theList == theList.id).all()
+def getWinner(bracket, index):
+    match = bracket[index]
 
-def getListChoices(theList, choice=None):
-    return session.query(ListChoice) \
-        .filter(ListChoice.theList == theList.id).all()
+    if index < BRACKET_SIZE / 2:
+        a = getWinner(bracket, index*2)
+        b = getWinner(bracket, index*2+1)
+        if a is not None:
+            match.append(a)
+        if b is not None:
+            match.append(b) 
+
+    if len(match) > 0:
+        # calculate votes
+        return match[0]
+
+    return None
+
 
 def addListChoice(theList, theChoice, theUser):
-    return ListChoice(theList, theChoice, theUser)
+    # ADD choice to list
+    newChoice = ListChoice(theList, theChoice, theUser)
+
+    choices = theList.getChoices()
+
+    bracket = []
+    matchIndex = BRACKET_SIZE-1
+
+    for i in range(BRACKET_SIZE):
+        bracket.append([])
+
+    for i in range(len(choices)):
+        if len(bracket[matchIndex]) == 2:
+            matchIndex -= 1
+        if matchIndex < (BRACKET_SIZE/2):
+            break;
+        bracket[matchIndex].append(choices[i].id)
+
+    bracket[0] = getWinner(bracket, 1)
+
+    theList.bracket = json.dumps(bracket)
+    session.commit()
 
 def addListUser(theList, theUser):
-    if len(getListUsers(theList, user=theUser)) == 0:
+    if len(theList.getUsers(user=theUser)) == 0:
         return ListUser(theList, theUser, False)
     return None
 
