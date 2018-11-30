@@ -28,7 +28,9 @@ const room = store => next => action => {
             break;
 
         case "JOIN_LIST":
-            socket.emit('leave', attachCreds(action, store.getState()))
+            if (store.getState().list.listID >= 0) {
+                socket.emit('leave', attachCreds(action, store.getState()))
+            }
             socket.emit('join', attachCreds(action, store.getState()))
             break;
 

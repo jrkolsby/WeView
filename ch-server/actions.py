@@ -31,6 +31,12 @@ def updateChoice(choice):
         "payload": choice.toDict()
     }
 
+def updateVote(vote):
+    return {
+        "type": "UPDATE_VOTE",
+        "payload": vote.toDict()
+    }
+
 def updateBracket(theList):
     return {
         "type": "UPDATE_BRACKET",

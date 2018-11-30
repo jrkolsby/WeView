@@ -145,6 +145,27 @@ nav div span {
 
 nav div.active { display: inline-block; }
 
+.choices, .bracket {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.choices {
+    margin-right: 32px;
+}
+
+.bracket {
+    padding-top: 92px;
+}
+
+.match {
+    background: white;
+}
+
+.match.r2 { margin-left: 64px; }
+
+.match.r3 { margin-left: 128px; }
+
 .choice {
     width: 304px;
     padding: 12px;
@@ -158,7 +179,7 @@ nav div.active { display: inline-block; }
     white-space: normal;
 }
 
-.choice:nth-child(2n+1) {
+.choice:nth-of-type(2n) {
     border-radius: 8px 8px 16px 16px ;
     margin-bottom: 32px;
 }
@@ -239,9 +260,12 @@ button.new {
     display: none;
     background: none;
     border-radius: none;
+    padding: 0;
+    padding-left: 80px;
+    margin-bottom: 16px;
 }
 
-button.new.active { display: inline-block; }
+button.new.active { display: block; }
 
 @-webkit-keyframes loading {
     0% { width: 0; }

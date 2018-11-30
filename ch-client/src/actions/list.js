@@ -13,6 +13,20 @@ export const createChoice = () => {
     })
 }
 
+// Sends the current vote and receives a new vote
+export const createVote = (index=-1, vote=-1) => {
+    return request({
+        type: ACTIONS.CREATE_VOTE,
+        payload: { vote, index }
+    }, (voteID) => {
+        console.log('set vote', voteID)
+        return {
+            type: ACTIONS.SET_VOTE,
+            payload: voteID
+        }
+    })
+}
+
 export const updateChoice = (id, title) => {
     return request({
         type: ACTIONS.UPDATE_CHOICE,
@@ -46,12 +60,5 @@ export const createList = (title) => {
             type: ACTIONS.JOIN_LIST,
             payload: list
         }
-    })
-}
-
-export const createVote = (choice) =>{
-    return request({
-        type: ACTIONS.CREATE_VOTE,
-        payload: choice
     })
 }

@@ -121,6 +121,11 @@ const HeaderContainer = (props) => {
                 </h4>
                 <a href="#next"
                     onClick={(e) => {
+                        console.log(props.state)
+                        if (props.state.voteID < 0) {
+                            console.log('get first vote!!')
+                            props.dispatch.createVote()
+                        }
                         props.dispatch.gotoPage(1)
                     }}
                 >Vote</a>
@@ -145,7 +150,7 @@ const mapState = (state) => {
         state: {
             ...state.nav,
             ...state.user,
-            users: state.list.users
+            ...state.list,
         }
     }
 }

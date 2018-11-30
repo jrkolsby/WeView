@@ -3,15 +3,17 @@ import testState from './test'
 
 const defaultState = {
     listID: -1,
+    voteID: -1,
     editing: -1,
     choices: {},
     users: {},
-    votes: [],
+    votes: {},
     bracket: []
 }
 
 const list = (state=testState, action) => {
     switch(action.type) {
+
         case ACTIONS.CREATE_CHOICE: 
             return {
                 ...state,
@@ -21,6 +23,26 @@ const list = (state=testState, action) => {
                     [action.payload.id]: {
                         user: action.payload.user,
                         title: action.payload.title
+                    }
+                }
+            }
+
+        // Sets the user's current option
+        case ACTIONS.SET_VOTE:
+            return {
+                ...state,
+                voteID: action.payload
+            }
+
+        // Adds a vote from the room
+        case ACTIONS.UPDATE_VOTE:
+            return {
+                ...state,
+                votes: {
+                    ...state.votes,
+                    [action.payload.id]: {
+                        index: action.payload.index,
+                        vote: action.payload.vote
                     }
                 }
             }

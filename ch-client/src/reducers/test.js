@@ -1,5 +1,6 @@
 export default {
     listID: -1,
+    voteID: -1,
     editing: 0,
     choices: {
         1: { title: "The Royal Tennenbaums", user: 1 },

@@ -1,8 +1,6 @@
 from flask import Flask, request
 from flask import render_template, jsonify
 
-import json
-
 from flask_cors import CORS
 
 from flask_socketio import SocketIO, emit, join_room, leave_room
@@ -10,27 +8,28 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 from data.choices   import addChoice,   getChoice,  setChoice
 from data.tokens    import addToken,    getToken,   deleteToken
 from data.users     import addUser,     getUser
-from data.lists     import addList,     getList,    addListUser, addListChoice
+from data.lists     import addList,     getList, \
+        addListUser, addListChoice, addListVote, \
+        makeURL, BRACKET_SIZE
 
 from actions import success, error, send, \
         updateChoice, updateUser, showSuccess, updateBracket
-
-'''
-from data.matches import addMatch, getMatches
-from data.votes import addVote, getVotes
-'''
 
 app = Flask(__name__)
 CORS(app)
 
 io = SocketIO(app)
 
-voteQueues = {
-    1: [{
-        "listID": 1,
-        "bracketID": 5
-    }]
-}
+voteQueues = {}
+
+def compareBrackets(old, new):
+    print old
+    print new
+    size = len(old)
+    delta = []
+    for i in range(size):
+        delta.append(new[i] != old[i] and len(new[i]) > 1)
+    return delta
 
 @io.on('join')
 def join(action):
@@ -119,8 +118,11 @@ def api():
         return jsonify(error("Bad Login"))
     
     if theType == "SIGNUP":
-        username = payload['user']
-        password = payload['pass']
+        try:
+            username = payload['user']
+            password = payload['pass']
+        except:
+            return jsonify(error("Bad Action"))
         
         if getUser(name=username) is None:
             user = addUser(username, password)
@@ -148,41 +150,102 @@ def api():
         return jsonify(success("Deleted Token!"))
 
     if theType == "CREATE_CHOICE":
+        theList = getList(id=theList)
+        if theList is None:
+            return jsonify(error("No such list"))
+
+        if user not in theList.getUsers():
+            return jsonify(error("Not a member"))
+
+        if len(theList.getChoices()) >= BRACKET_SIZE:
+            return jsonify(error("Too many choices!"))
+    
         choice = addChoice(user, "") 
+
+        oldBracket = theList.getBracket()
+        addListChoice(theList, choice, user)
+        newBracket = theList.getBracket()
+
+        deltaBracket = compareBrackets(oldBracket, newBracket)
+
+        for i in range(len(deltaBracket)):
+            if deltaBracket[i]:
+                for user in theList.getUsers():
+                    if user.id in voteQueues:
+                        voteQueues[user.id].append(i)
+                    else:
+                        voteQueues[user.id] = [i]
+
+        print voteQueues
+
+        send(io, theList.url, updateBracket(theList))
+        send(io, theList.url, updateChoice(choice))
+
+        return jsonify(success(choice.toDict()))
+
+    if theType == "CREATE_VOTE":
+        try:
+            vote = payload['vote']
+            index = payload['index']
+        except:
+            return jsonify(error("Bad Action"))
 
         theList = getList(id=theList)
         if theList is None:
             return jsonify(error("No such list"))
 
-        addListChoice(theList, choice, user)
+        if user not in theList.getUsers():
+            return jsonify(error("Not a member"))
 
-        print theList.bracket
+        # Not submitting a vote, just getting the new one
+        if index < 0:
+            if user.id in voteQueues:
+                return jsonify(success(voteQueues[user.id][0]))
+            return jsonify(error("You broke the vote!"))
+
+        oldBracket = theList.getBracket()
+
+        if theList.getVotes
+
+        addListVote(theList, user, index, vote)
+        newBracket = theList.getBracket()
+
+        deltaBracket = compareBrackets(oldBracket, newBracket)
 
         send(io, theList.url, updateBracket(theList))
+        send(io, theList.url, updateVote(vote))
 
-        return jsonify(success(choice.toDict()))
-        
+        return jsonify(success("New Vote!"))
+
     if theType == "UPDATE_CHOICE":
         choice = getChoice(id=payload['id'])
         if choice is None:
             return jsonify(error("No such choice"))
 
-        # Set to database
-        setChoice(choice, payload['title'])
+        if choice.user != user.id:
+            return jsonify(error("No persmission"))
 
         theList = getList(id=theList)
         if theList is None:
             return jsonify(error("No such list"))
+
+        # Set to database
+        setChoice(choice, payload['title'])
 
         send(io, theList.url, updateChoice(choice))
 
         return jsonify(success(choice.toDict()))
 
     if theType == "CREATE_LIST":
-        if getList(title=payload['title']) is not None:
+        try:
+            title = payload['title']
+        except:
+            return jsonify(error("Bad Action"))
+
+        if getList(url=makeURL(title)) is not None:
             return jsonify(error("List exists"))
 
-        theList = addList(payload['title'], user)
+        theList = addList(title, user)
 
         return jsonify(success(theList.toDict()))
 
@@ -197,15 +260,6 @@ def api():
         send(io, theList.url, updateUser(user))
 
         return jsonify(success(theList.toDict()))
-
-    if theType == "ADD_VOTE":
-        choice = payload['choice']
-        
-        print choice
-
-        io.emit('action', error("hello"), room=theList)
-        return jsonify(success("Add Vote!"))
-
-        
+ 
     if theType == "LEAVE_LIST":
         return jsonify(success("Leave List!!"))

@@ -1,6 +1,7 @@
 import React  from 'react'
 
 import Choice from '../components/choice'
+import Bracket from '../components/bracket'
 
 import * as listActions from '../actions/list'
 import * as navActions from '../actions/nav'
@@ -19,10 +20,10 @@ const InputContainer = (props) => {
     return (
         <div className="input-container">
         <div className="wrapper">
+            <button className={"new" + (props.state.listID >= 0 ? " active" : "")}
+                onClick={props.dispatch.createChoice}
+            >+ Add Choice</button>
             <div className="choices">
-                <button className={"new" + (props.state.listID >= 0 ? " active" : "")}
-                    onClick={props.dispatch.createChoice}
-                >+ Add Choice</button>
                 {Object.entries(props.state.choices).reverse().map(([id,c]) =>
                     <Choice 
                         handleChange={(newTitle) => {
@@ -36,6 +37,12 @@ const InputContainer = (props) => {
                     />
                 )}
             </div>
+            <Bracket 
+                bracket={props.state.bracket} 
+                choices={props.state.choices}
+                users={props.state.users}
+                votes={props.state.votes}
+            />
         </div>
         </div>
     )
