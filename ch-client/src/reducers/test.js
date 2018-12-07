@@ -1,6 +1,6 @@
 export default {
     listID: -1,
-    voteID: -1,
+    round: 0,
     editing: 0,
     choices: {
         1: { title: "The Royal Tennenbaums", user: 1 },
@@ -9,8 +9,8 @@ export default {
         4: { title: "Toy Story 2", user: 1 },
         5: { title: "Wall-E", user: 1 },
         6: { title: "The Ring", user: 2 },
+        8: { title: "Oh Brother Where Art Thou", user: 2 },
         7: { title: "The Departed", user: 2 },
-        8: { title: "Oh Brother Where Art Thou", user: 2 }
     },
     users: {
         1: { name: "James Kolsby" },
@@ -23,17 +23,29 @@ export default {
         { user: 1, id: 0, vote: 0 }, 
     ],
     bracket: [
+	[],
         // Winner
         [1], 
         // Finals
-        [1,7],
+	[],
+        [7,1],
         // Semifinals
-        [1,3],
-        [6,7], 
+	[],
+	[],
+        [8,6], 
+        [3,1],
         // First Round
-        [1,2],
-        [3,4],
+	[],
+	[],
+	[],
+	[],
         [5,6],
         [7,8],
-    ]
+        [3,4],
+        [1,2],
+    ],
+    results: [0, 1, 0, 0,
+	      0, 0, 0, 1,
+	      0, 0, 0, 0,
+	      0, 0, 1, 1],
 }

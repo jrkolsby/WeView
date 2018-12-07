@@ -9,11 +9,11 @@ from data.choices   import addChoice,   getChoice,  setChoice
 from data.tokens    import addToken,    getToken,   deleteToken
 from data.users     import addUser,     getUser
 from data.lists     import addList,     getList, \
-        addListUser, addListChoice, addListVote, \
+        addListUser, addListChoice, addListVote, updateRound \
         makeURL, BRACKET_SIZE
 
 from actions import success, error, send, \
-        updateChoice, updateUser, showSuccess, updateBracket
+        updateChoice, updateUser, updateVote, showSuccess, updateBracket
 
 app = Flask(__name__)
 CORS(app)
@@ -21,10 +21,9 @@ CORS(app)
 io = SocketIO(app)
 
 voteQueues = {}
+voteRounds = {}
 
 def compareBrackets(old, new):
-    print old
-    print new
     size = len(old)
     delta = []
     for i in range(size):
@@ -159,7 +158,7 @@ def api():
 
         if len(theList.getChoices()) >= BRACKET_SIZE:
             return jsonify(error("Too many choices!"))
-    
+
         choice = addChoice(user, "") 
 
         oldBracket = theList.getBracket()
@@ -168,15 +167,37 @@ def api():
 
         deltaBracket = compareBrackets(oldBracket, newBracket)
 
-        for i in range(len(deltaBracket)):
-            if deltaBracket[i]:
-                for user in theList.getUsers():
-                    if user.id in voteQueues:
-                        voteQueues[user.id].append(i)
-                    else:
-                        voteQueues[user.id] = [i]
+        # Get round
+        if theList.id not in voteRounds:
+            voteRounds[theList.id] = 1
+        voteRound = voteRounds[theList.id]
 
-        print voteQueues
+        # Get list queue object
+        if theList.id not in voteQueues:
+            voteQueues[theList.id] = {}
+        listQueue = voteQueues[theList.id]
+
+        # Get user queue
+        if user.id not in listQueue:
+            voteQueues[theList.id][user.id] = []
+        userQueue = voteQueues[theList.id][user.id]
+
+        listQueue = voteQueues[theList.id]
+        thisRound = voteRounds[theList.id]
+
+        # iterate through current round
+        for i in range(2**(4-thisRound), 2**(5-thisRound)):
+            print i
+            if deltaBracket[i]:
+                for aUser in theList.getUsers():
+                    if aUser.id not in listQueue:
+                        print "not in listqueue"
+                        listQueue[aUser.id] = [i]
+                    else:
+                        listQueue[aUser.id].append(i)
+
+        print user.username + " QUEUE:"
+        print userQueue
 
         send(io, theList.url, updateBracket(theList))
         send(io, theList.url, updateChoice(choice))
@@ -191,31 +212,57 @@ def api():
             return jsonify(error("Bad Action"))
 
         theList = getList(id=theList)
+
         if theList is None:
             return jsonify(error("No such list"))
 
         if user not in theList.getUsers():
             return jsonify(error("Not a member"))
 
-        # Not submitting a vote, just getting the new one
-        if index < 0:
-            if user.id in voteQueues:
-                return jsonify(success(voteQueues[user.id][0]))
-            return jsonify(error("You broke the vote!"))
+        if theList.id not in voteQueues:
+            voteQueues[theList.id] = {}
+
+        listQueue = voteQueues[theList.id]
+
+        if user.id not in listQueue:
+            voteQueues[theList.id][user.id] = []
+
+        userQueue = voteQueues[theList.id][user.id]
 
         oldBracket = theList.getBracket()
 
-        if theList.getVotes
+        if index > 0:
+            if len(theList.getVotes(user=user, index=index)) > 0:
+                return jsonify(error("Already voted"))
 
-        addListVote(theList, user, index, vote)
+            # create vote and remove from user's queue
+            vote = addListVote(theList, user, index, vote) 
+            userQueue[:] = [x for x in userQueue if x != index]
+
+            send(io, theList.url, showSuccess(user.username + " voted on " + str(index)))
+            send(io, theList.url, updateBracket(theList))
+
+        if len(userQueue) == 0:
+            return jsonify(error("Waiting for next round"))
+
         newBracket = theList.getBracket()
 
         deltaBracket = compareBrackets(oldBracket, newBracket)
 
-        send(io, theList.url, updateBracket(theList))
-        send(io, theList.url, updateVote(vote))
+        nextRound = True;
 
-        return jsonify(success("New Vote!"))
+        activeUsers = theList.getUsers()
+        for i in range(len(deltaBracket)):
+            if deltaBracket[i]:
+                for aUser in activeUsers:
+                    if len(listQueue[aUser.id]) > 0:
+                        nextRound = False;
+                    listQueue[aUser.id].append(i)
+
+        print user.username + " QUEUE:"
+        print listQueue[user.id]
+
+        return jsonify(success(userQueue[0]))
 
     if theType == "UPDATE_CHOICE":
         choice = getChoice(id=payload['id'])

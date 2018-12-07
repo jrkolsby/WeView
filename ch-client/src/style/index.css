@@ -120,6 +120,13 @@ header .messages {
     padding: 12px 24px;
     margin-top: 16px;
     white-space: normal;
+    position: relative;
+    right: 0;
+    transition: 0.2s right ease-in-out;
+}
+
+.message.hidden {
+    right: -300px;
 }
 
 .message.SHOW_SUCCESS {
@@ -162,16 +169,24 @@ nav div.active { display: inline-block; }
     background: white;
 }
 
+.match.r1 { margin-left: 0px; }
+
 .match.r2 { margin-left: 64px; }
 
 .match.r3 { margin-left: 128px; }
+
+.match.r4 { margin-left: 196px; }
 
 .choice {
     width: 304px;
     padding: 12px;
     font-weight: 500;
     background: #4948FF;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
+}
+
+.choice.lose {
+    background: lightgrey;
 }
 
 .choice {
@@ -184,12 +199,24 @@ nav div.active { display: inline-block; }
     margin-bottom: 32px;
 }
 
+.vote-container .wrapper {
+    padding-top: 32px;
+    text-align: center;
+}
+
 .vote-container .choice {
-    border-radius: 16px 16px 8px 8px;
+    border-radius: 32px;
+    text-align: left;
     display: inline-block;
-    margin-right: 16px;
     cursor: pointer;
     transition: 0.1s background ease-in-out;
+    border: 16px solid white;
+    box-shadow: 0 0 24px 0 rgba(0,0,0,0.12);
+}
+
+.vote-container .choice:last-child {
+    margin-left: 32px;
+
 }
 
 .vote-container .choice:hover {

@@ -43,6 +43,12 @@ def updateBracket(theList):
         "payload": theList.toDict()
     }
 
+def updateRound(n):
+    return {
+        "type": "UPDATE_ROUND",
+        "payload": n
+    }
+
 def updateUser(user):
     return {
         "type": "UPDATE_USER",

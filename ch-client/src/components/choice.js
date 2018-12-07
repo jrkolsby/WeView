@@ -4,7 +4,7 @@ import ChoiceForm from './choiceForm'
 
 const Choice = (props) => {
     return (
-        <div className="choice"
+        <div className={"choice" + (props.win ? "" : " lose")}
             onClick={props.handleClick}>
             <span>{props.user}</span>
             {props.editing ? (

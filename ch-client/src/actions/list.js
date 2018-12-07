@@ -19,10 +19,14 @@ export const createVote = (index=-1, vote=-1) => {
         type: ACTIONS.CREATE_VOTE,
         payload: { vote, index }
     }, (voteID) => {
-        console.log('set vote', voteID)
         return {
             type: ACTIONS.SET_VOTE,
             payload: voteID
+        }
+    }, (err) => {
+        return {
+            type: ACTIONS.SET_VOTE,
+            payload: -1
         }
     })
 }

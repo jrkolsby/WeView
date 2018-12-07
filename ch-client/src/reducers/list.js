@@ -3,12 +3,13 @@ import testState from './test'
 
 const defaultState = {
     listID: -1,
-    voteID: -1,
+    round: 0,
     editing: -1,
     choices: {},
     users: {},
     votes: {},
-    bracket: []
+    bracket: [],
+    results: []
 }
 
 const list = (state=testState, action) => {
@@ -28,14 +29,15 @@ const list = (state=testState, action) => {
             }
 
         // Sets the user's current option
-        case ACTIONS.SET_VOTE:
+        case ACTIONS.UPDATE_ROUND:
             return {
                 ...state,
-                voteID: action.payload
+		round: action.payload
             }
 
         // Adds a vote from the room
         case ACTIONS.UPDATE_VOTE:
+	    console.log('update vote', action);
             return {
                 ...state,
                 votes: {
@@ -45,6 +47,14 @@ const list = (state=testState, action) => {
                         vote: action.payload.vote
                     }
                 }
+            }
+
+        case ACTIONS.UPDATE_BRACKET:
+            console.log('update bracket', action)
+            return {
+                ...state,
+                bracket: action.payload.bracket,
+		results: action.payload.results,
             }
 
         case ACTIONS.UPDATE_CHOICE: 
@@ -70,17 +80,11 @@ const list = (state=testState, action) => {
                 }
             }
 
-        case ACTIONS.UPDATE_BRACKET:
-            console.log('update bracket', action)
-            return {
-                ...state,
-                bracket: action.payload.bracket
-            }
-
         case ACTIONS.JOIN_LIST:
             return {
                 ...state,
                 listID: action.payload.id,
+		round: 0,
                 bracket: action.payload.bracket,  
                 users: action.payload.users.reduce((d, u) => {
                     d[u.id] = { name: u.name }
@@ -90,16 +94,6 @@ const list = (state=testState, action) => {
                     d[c.id] = { title: c.title, user: c.user }
                     return d
                 }, {}),
-            }
-        
-
-        case ACTIONS.ADD_VOTE:
-            return {
-                ...state, 
-                votes: {
-                    ...state.choices,
-                    [action.payload.id]: action.payload 
-                }
             }
 
         case ACTIONS.LOGOUT:

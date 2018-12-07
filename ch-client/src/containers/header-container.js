@@ -134,7 +134,7 @@ const HeaderContainer = (props) => {
             <div className="messages">
                 {props.state.messages.map((m, i) => (
                     <div key={i} 
-                        className={"message " + m.type}>
+                        className={"message " + m.type + (m.time < (new Date()).getTime() - 1000 ? " hidden" : "")}>
                     {typeof m.payload === "string" ? m.payload : 
                         JSON.stringify(m.payload)}
                     </div> 

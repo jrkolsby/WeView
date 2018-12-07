@@ -1,5 +1,6 @@
 import re
 import json
+from functools import reduce
 
 from data import Base, session, createAll
 from data import Column, Integer, String, Boolean, UniqueConstraint
@@ -28,11 +29,13 @@ class List(Base):
         session.commit()
 
     def toDict(self):
+        bracket = json.loads(self.bracket)
         return {
             "choices": map(lambda c: c.toDict(), self.getChoices()),
             "votes": map(lambda v: v.toDict(), self.getVotes()),
+            "results": [self.getResult(index=i) for i,x in enumerate(bracket)],
             "users": map(lambda u: u.toDict(), self.getUsers()),
-            "bracket": json.loads(self.bracket),
+            "bracket": bracket,
             "title": self.title,
             "url": self.url,
             "id": self.id,
@@ -45,9 +48,12 @@ class List(Base):
                 (user is not None) else (True)).all()
         return map(lambda j: getUser(id=j.user), listUsers)
 
-    def getVotes(self, index=None):
+
+    def getVotes(self, index=None, user=None):
         return session.query(ListVote) \
             .filter(ListVote.theList == self.id) \
+            .filter((ListVote.user == user.id) if \
+                (user is not None) else (True)) \
             .filter((ListVote.index == index) if \
                 (index is not None) else (True)).all()
 
@@ -57,6 +63,31 @@ class List(Base):
             .filter((ListChoice.id == id) if \
                 (id is not None) else (True)).all()
         return map(lambda j: getChoice(id=j.choice), listChoices)
+
+    def getResult(self, index):
+        votes = self.getVotes(index=index)
+        winner = 0;
+        for vote in votes:
+            winner += 1 if vote.vote else 0
+        if len(votes) == 0:
+            return -1
+        return 0 if winner > 0 else 1
+
+    def getWinner(self, bracket, index):
+        match = bracket[index]
+
+        if index < BRACKET_SIZE / 2:
+            a = self.getWinner(bracket, index*2)
+            b = self.getWinner(bracket, index*2+1)
+            if a is not None:
+                match.append(a)
+            if b is not None:
+                match.append(b)
+
+        if len(match) > 0:
+            return match[self.getResult(index)] 
+
+        return None
 
     def getBracket(self):
         choices = self.getChoices()
@@ -74,29 +105,12 @@ class List(Base):
                 break;
             bracket[matchIndex].append(choices[i].id)
 
-        bracket[0] = [getWinner(bracket, 1)]
+        bracket[0] = [self.getWinner(bracket, 1)]
 
         self.bracket = json.dumps(bracket)
         session.commit()
 
         return bracket
-
-def getWinner(bracket, index):
-    match = bracket[index]
-
-    if index < BRACKET_SIZE / 2:
-        a = getWinner(bracket, index*2)
-        b = getWinner(bracket, index*2+1)
-        if a is not None:
-            match.append(a)
-        if b is not None:
-            match.append(b)
-
-    if len(match) > 0:
-        # calculate votes
-        return match[0]
-
-    return None
 
 # JOIN LIST and USER
 class ListUser(Base):
@@ -141,7 +155,9 @@ class ListVote(Base):
 
     def toDict(self):
         return {
-            "votes": map(lambda v: v.toDict(), getVotes()),
+            "user": self.user,
+            "vote": self.vote,
+            "index": self.index
         }
 
 # JOIN LIST and CHOICE
@@ -189,11 +205,11 @@ def nextSize(x):
 
 def addListChoice(theList, theChoice, theUser):
     # ADD choice to list
-    newChoice = ListChoice(theList, theUser, theChoice)
+    return ListChoice(theList, theUser, theChoice)
 
 def addListVote(theList, theUser, theIndex, theVote):
     # ADD vote to list
-    vote = ListVote(theList, theUser, theIndex, theVote)
+    return ListVote(theList, theUser, theIndex, theVote)
 
 def addListUser(theList, theUser):
     if len(theList.getUsers(user=theUser)) == 0:

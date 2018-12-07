@@ -28,7 +28,6 @@ const nav = (state=defaultState, action) => {
                 messages: [],
                 pageTitle: action.payload.title,
                 pageSubtitle: "chsy.io/" + action.payload.url,
-                navTitle: "Choices by"
             }
 
         case ACTIONS.GOTO_MODAL:
@@ -42,17 +41,8 @@ const nav = (state=defaultState, action) => {
         case ACTIONS.GOTO_PAGE:
             return {
                 ...state,
-                currentPage: action.payload 
-            }
-
-        case ACTIONS.JOIN_LIST:
-            return {
-                ...state,
-                pageSubtitle: action.payload.url,
-                pageTitle: action.payload.title,
-
-                currentModal: 0,
-                messages: [],
+                currentPage: action.payload,
+                navTitle: action.payload === 1 ? "Voting with" : "Choices by"
             }
 
         case ACTIONS.SHOW_LOADING:
@@ -62,20 +52,28 @@ const nav = (state=defaultState, action) => {
             }
 
         case ACTIONS.SHOW_SUCCESS:
+	    let time = (new Date()).getTime();
             return {
                 ...state, 
                 messages: [
                     ...state.messages,
-                    action
+		    {
+			...action,
+			time
+		    }
                 ]
             }
 
         case ACTIONS.SHOW_ERROR:
+	    time = (new Date()).getTime();
             return {
                 ...state, 
                 messages: [
                     ...state.messages,
-                    action
+		    {
+			...action,
+			time
+		    }
                 ]
             }
 
