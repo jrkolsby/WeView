@@ -1,6 +1,6 @@
 import re
 import json
-from functools import reduce
+import math
 
 from data import Base, session, createAll
 from data import Column, Integer, String, Boolean, UniqueConstraint
@@ -20,11 +20,13 @@ class List(Base):
     url = Column('url', String)
     title = Column('title', String)
     bracket = Column('bracket', String)
+    theRound = Column('round', Integer)
 
     def __init__(self, title):
         self.title = title
         self.bracket = json.dumps([[]]*BRACKET_SIZE)
         self.url = makeURL(title)
+        self.theRound = 1
         session.add(self)
         session.commit()
 
@@ -33,13 +35,22 @@ class List(Base):
         return {
             "choices": map(lambda c: c.toDict(), self.getChoices()),
             "votes": map(lambda v: v.toDict(), self.getVotes()),
-            "results": [self.getResult(index=i) for i,x in enumerate(bracket)],
+            "results": self.getResults(),
             "users": map(lambda u: u.toDict(), self.getUsers()),
-            "bracket": bracket,
+            "round": self.roundRange(),
             "title": self.title,
+            "bracket": bracket,
             "url": self.url,
             "id": self.id,
         }
+
+    def proceed(self):
+        self.theRound = self.theRound + 1
+        session.commit()
+
+    def roundRange(self):
+        return range(int(2**(math.sqrt(BRACKET_SIZE)-self.theRound)), \
+                     int(2**(math.sqrt(BRACKET_SIZE)+1-self.theRound)))
 
     def getUsers(self, user=None):
         listUsers = session.query(ListUser) \
@@ -47,7 +58,6 @@ class List(Base):
             .filter((ListUser.user == user.id) if \
                 (user is not None) else (True)).all()
         return map(lambda j: getUser(id=j.user), listUsers)
-
 
     def getVotes(self, index=None, user=None):
         return session.query(ListVote) \
@@ -66,12 +76,15 @@ class List(Base):
 
     def getResult(self, index):
         votes = self.getVotes(index=index)
-        winner = 0;
-        for vote in votes:
-            winner += 1 if vote.vote else 0
         if len(votes) == 0:
             return -1
-        return 0 if winner > 0 else 1
+        winner = 0;
+        for vote in votes:
+            winner += 1 if vote.vote else -1
+        return 1 if winner > 0 else 0
+
+    def getResults(self):
+        return [self.getResult(index=i) for i in range(BRACKET_SIZE)]
 
     def getWinner(self, bracket, index):
         match = bracket[index]
@@ -90,20 +103,19 @@ class List(Base):
         return None
 
     def getBracket(self):
-        choices = self.getChoices()
-
         bracket = []
-        matchIndex = BRACKET_SIZE-1
 
         for i in range(BRACKET_SIZE):
             bracket.append([])
 
-        for i in range(len(choices)):
+        matchIndex = BRACKET_SIZE-1
+
+        for choice in self.getChoices():
             if len(bracket[matchIndex]) == 2:
                 matchIndex -= 1
             if matchIndex < (BRACKET_SIZE/2):
                 break;
-            bracket[matchIndex].append(choices[i].id)
+            bracket[matchIndex].append(choice.id)
 
         bracket[0] = [self.getWinner(bracket, 1)]
 

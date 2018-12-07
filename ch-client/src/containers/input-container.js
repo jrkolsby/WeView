@@ -17,8 +17,10 @@ const updateChoice = debounce((dispatch, id, newValue) => {
 }, DEBOUNCE_TIME)
 
 const InputContainer = (props) => {
-    const choices = Object.entries(props.state.choices);
+    const choices = Object.entries(props.state.choices).reverse();
     const size = choices.length;
+    const offset = size % 2
+    console.log(choices)
     return (
         <div className="input-container">
         <div className="wrapper">
@@ -26,7 +28,10 @@ const InputContainer = (props) => {
                 onClick={props.dispatch.createChoice}
             >+ Add Choice</button>
             <div className="choices">
-		{choices.reverse().map(([id,c], i) => {
+	    {choices.map(([id,c], i) => {
+		const matchResult = props.state.results[
+				Math.floor(i/2)+(16-Math.ceil(size/2))]
+		console.log(matchResult)
 		return (
                     <Choice 
                         handleChange={(newTitle) => {
@@ -35,20 +40,19 @@ const InputContainer = (props) => {
                         editing={props.state.editing === parseInt(id)}
                         user={props.state.users[c.user] ? 
 			      props.state.users[c.user].name : "--"}
-			win={ 0 > props.state.results[
-				Math.floor(i/2)+(16-Math.ceil(size/2))] ||
-			    i%2 === props.state.results[
-				Math.floor(i/2)+(16-Math.ceil(size/2))]}
+			win={ matchResult < 0 || (i+offset)%2 === matchResult }
                         title={c.title}
                         key={id}
                     />
-                )})}
+                )
+	    })}
             </div>
             <Bracket 
                 bracket={props.state.bracket} 
 		results={props.state.results}
                 choices={props.state.choices}
                 users={props.state.users}
+		hideAfter={props.state.round[0]}
             />
         </div>
         </div>

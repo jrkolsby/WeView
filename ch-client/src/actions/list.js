@@ -18,16 +18,10 @@ export const createVote = (index=-1, vote=-1) => {
     return request({
         type: ACTIONS.CREATE_VOTE,
         payload: { vote, index }
-    }, (voteID) => {
-        return {
-            type: ACTIONS.SET_VOTE,
-            payload: voteID
-        }
-    }, (err) => {
-        return {
-            type: ACTIONS.SET_VOTE,
-            payload: -1
-        }
+    }, () => {
+	return {
+	    type: ACTIONS.NOACTION
+	}
     })
 }
 

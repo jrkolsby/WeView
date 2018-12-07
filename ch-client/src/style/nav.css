@@ -1,12 +1,15 @@
 main {
     width: 100%;
     position: relative;
+    display: block;
+    overflow-x: visible;
 }
 
 .nav-current,
 .nav-right,
 .nav-left {
     overflow: visible;
+    display: inline-block;
 
     position: absolute;
     width: 100%;

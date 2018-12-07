@@ -3,7 +3,7 @@ import testState from './test'
 
 const defaultState = {
     listID: -1,
-    round: 0,
+    round: [15,14,13,12],
     editing: -1,
     choices: {},
     users: {},
@@ -28,36 +28,29 @@ const list = (state=testState, action) => {
                 }
             }
 
-        // Sets the user's current option
-        case ACTIONS.UPDATE_ROUND:
-            return {
-                ...state,
-		round: action.payload
-            }
-
-        // Adds a vote from the room
-        case ACTIONS.UPDATE_VOTE:
-	    console.log('update vote', action);
-            return {
-                ...state,
-                votes: {
-                    ...state.votes,
-                    [action.payload.id]: {
-                        index: action.payload.index,
-                        vote: action.payload.vote
-                    }
-                }
-            }
-
         case ACTIONS.UPDATE_BRACKET:
             console.log('update bracket', action)
             return {
                 ...state,
-                bracket: action.payload.bracket,
-		results: action.payload.results,
+                bracket: action.payload,
+            }
+
+        case ACTIONS.UPDATE_RESULTS:
+            console.log('update results', action)
+            return {
+                ...state,
+		results: action.payload,
+            }
+
+        case ACTIONS.UPDATE_ROUND:
+            return {
+                ...state,
+		round: action.payload,
+		editing: -1
             }
 
         case ACTIONS.UPDATE_CHOICE: 
+	    console.log('update choice')
             return {
                 ...state,
                 choices: {
@@ -84,8 +77,9 @@ const list = (state=testState, action) => {
             return {
                 ...state,
                 listID: action.payload.id,
-		round: 0,
+		round: action.payload.round,
                 bracket: action.payload.bracket,  
+		results: action.payload.results,
                 users: action.payload.users.reduce((d, u) => {
                     d[u.id] = { name: u.name }
                     return d
@@ -96,8 +90,8 @@ const list = (state=testState, action) => {
                 }, {}),
             }
 
-        case ACTIONS.LOGOUT:
-            return testState
+        case ACTIONS.LOGOUT: 
+	    return testState
 
         default: return state;
     }

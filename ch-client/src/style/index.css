@@ -185,8 +185,22 @@ nav div.active { display: inline-block; }
     margin-bottom: 8px;
 }
 
+.match.final .choice {
+    background: #5BFF92;
+}
+
+.match.final .choice p,
+.match.final .choice span {
+    color: #444;
+}
+
 .choice.lose {
-    background: lightgrey;
+    background: #f1f1f1 !important;
+}
+
+.choice.lose p,
+.choice.lose span {
+    color: #ccc !important;
 }
 
 .choice {
@@ -194,7 +208,7 @@ nav div.active { display: inline-block; }
     white-space: normal;
 }
 
-.choice:nth-of-type(2n) {
+.choice:nth-last-of-type(2n+1) {
     border-radius: 8px 8px 16px 16px ;
     margin-bottom: 32px;
 }
@@ -202,6 +216,10 @@ nav div.active { display: inline-block; }
 .vote-container .wrapper {
     padding-top: 32px;
     text-align: center;
+}
+
+.vote-container .vote {
+    display: block;
 }
 
 .vote-container .choice {
@@ -216,11 +234,10 @@ nav div.active { display: inline-block; }
 
 .vote-container .choice:last-child {
     margin-left: 32px;
-
 }
 
 .vote-container .choice:hover {
-    background: #FEDC2C;
+    background: #FEDC2C !important;
 }
 
 .choice span {

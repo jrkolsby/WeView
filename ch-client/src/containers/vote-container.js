@@ -9,23 +9,28 @@ import {connect} from 'react-redux';
 export const VoteContainer = (props) => (
     <div className="vote-container">
     <div className="wrapper">
-        {props.state.voteID < 0 ? (
-	    <div className="404">Waiting for next round</div>
-	) : props.state.bracket[props.state.voteID].map((c, i) => {
-                const choice = props.state.choices[c]
-                return (
-                    <Choice 
-                        key={i}
-                        user={props.state.users[choice.user] ? 
-			      props.state.users[choice.user].name : "--"}
-                        title={choice.title}
-                        handleClick={() => {
-                            props.dispatch.createVote(props.state.voteID, i)
-                        }}
-                    />
-                )
-        
-        })}
+        {props.state.round < 0 ? (
+	    <div className="404">Waiting for first round</div>
+	) : props.state.round.map((r) => {
+	    return props.state.bracket[r].length < 2 ? "Waiting for next round..." : (
+		<div className="vote">
+		{props.state.bracket[r].map((c, i) => {
+		    const choice = props.state.choices[c]
+		    return (
+			<Choice 
+			    key={i}
+			    user={props.state.users[choice.user] ? 
+				  props.state.users[choice.user].name : "--"}
+			    title={choice.title}
+			    handleClick={() => {
+				props.dispatch.createVote(r, i)
+			    }}
+			/>
+		    )
+		})}
+		</div>
+	    )}
+	)}
     </div>
     </div>
 )

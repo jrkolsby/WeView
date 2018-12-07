@@ -1,6 +1,5 @@
 export default {
     listID: -1,
-    round: 0,
     editing: 0,
     choices: {
         1: { title: "The Royal Tennenbaums", user: 1 },
@@ -25,10 +24,10 @@ export default {
     bracket: [
 	[],
         // Winner
-        [1], 
+        [], 
         // Finals
 	[],
-        [7,1],
+        [8,1],
         // Semifinals
 	[],
 	[],
@@ -44,6 +43,7 @@ export default {
         [3,4],
         [1,2],
     ],
+    round: [1],
     results: [0, 1, 0, 0,
 	      0, 0, 0, 1,
 	      0, 0, 0, 0,

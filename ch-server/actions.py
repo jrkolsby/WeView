@@ -31,26 +31,33 @@ def updateChoice(choice):
         "payload": choice.toDict()
     }
 
+def updateUser(user):
+    return {
+        "type": "UPDATE_USER",
+        "payload": user.toDict()
+    }
+
 def updateVote(vote):
     return {
         "type": "UPDATE_VOTE",
         "payload": vote.toDict()
     }
 
-def updateBracket(theList):
+def updateBracket(bracket):
     return {
         "type": "UPDATE_BRACKET",
-        "payload": theList.toDict()
+        "payload": bracket 
     }
 
-def updateRound(n):
+def updateResults(results):
+    return {
+        "type": "UPDATE_RESULTS",
+        "payload": results
+    }
+
+def updateRound(aRange):
     return {
         "type": "UPDATE_ROUND",
-        "payload": n
+        "payload": aRange
     }
 
-def updateUser(user):
-    return {
-        "type": "UPDATE_USER",
-        "payload": user.toDict()
-    }
