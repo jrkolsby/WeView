@@ -11,16 +11,51 @@ import {connect} from 'react-redux';
 import debounce from 'lodash/debounce'
 
 const DEBOUNCE_TIME = 100
+const BRACKET_SIZE = 16
 
 const updateChoice = debounce((dispatch, id, newValue) => {
     dispatch(id, newValue)
 }, DEBOUNCE_TIME)
 
+const renderFirstRound = (props) => {
+    const { bracket, users, choices, results} = props.state
+
+    const size = bracket.length
+    const slice = bracket.slice(size/2, size)
+    const sliceResults = results.slice(size/2, size)
+
+    console.log('bracket', bracket)
+    console.log('slice', slice)
+
+    let firstRound = []
+
+    for (var i = 0; i < slice.length; i++) {
+	var match = slice[i]
+	for (var j = match.length-1; j >= 0; j--) {
+	    let c = match[j]
+	    var choice = choices[c]
+	    const user = users[choice.user] ? 
+		users[choice.user].name : "--"
+	    firstRound.push(
+		<Choice 
+		    handleChange={(newTitle) => {
+			updateChoice(props.dispatch.updateChoice, c, newTitle)
+		    }}
+		    editing={props.state.editing === c}
+		    user={user}
+		    win={sliceResults[i] < 0 || j === sliceResults[i]}
+		    title={choice.title}
+		    key={c}
+		/>
+	    )
+	}
+    }
+
+    return firstRound
+}
+
 const InputContainer = (props) => {
-    const choices = Object.entries(props.state.choices).reverse();
-    const size = choices.length;
-    const offset = size % 2
-    console.log(choices)
+    console.log(props.state.editing)
     return (
         <div className="input-container">
         <div className="wrapper">
@@ -28,24 +63,7 @@ const InputContainer = (props) => {
                 onClick={props.dispatch.createChoice}
             >+ Add Choice</button>
             <div className="choices">
-	    {choices.map(([id,c], i) => {
-		const matchResult = props.state.results[
-				Math.floor(i/2)+(16-Math.ceil(size/2))]
-		console.log(matchResult)
-		return (
-                    <Choice 
-                        handleChange={(newTitle) => {
-                            updateChoice(props.dispatch.updateChoice, id, newTitle)
-                        }}
-                        editing={props.state.editing === parseInt(id)}
-                        user={props.state.users[c.user] ? 
-			      props.state.users[c.user].name : "--"}
-			win={ matchResult < 0 || (i+offset)%2 === matchResult }
-                        title={c.title}
-                        key={id}
-                    />
-                )
-	    })}
+		{renderFirstRound(props)}
             </div>
             <Bracket 
                 bracket={props.state.bracket} 

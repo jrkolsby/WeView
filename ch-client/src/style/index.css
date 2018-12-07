@@ -6,8 +6,14 @@ body {
 }
 
 a {
+    cursor: pointer;
     color: inherit;
     text-decoration: inherit
+}
+
+a:hover,
+a.active {
+    text-decoration: underline;
 }
 
 .wrapper {
@@ -27,16 +33,52 @@ header {
 header .nav-header {
     width: 100%;
     position: relative;
+    padding-top: 16px;
 }
 
 .nav-header a {
     position: absolute;
+    transition: 0.2s opacity ease-in-out,
+                0.2s right ease-in-out,
+                0.2s left ease-in-out;
     transform: translateY(-50%);
+    background: #4948FF;
+    padding: 8px 16px;
+    border-radius: 16px;
+    color: white;
+    font-weight: 500;
     top: 50%;
 }
 
 .nav-header a:first-child { left: 0; }
 .nav-header a:last-child { right: 0; }
+
+.nav-header a:last-child:after,
+.nav-header a:first-child:before {
+    font-size: 8px;
+    position: relative;
+    bottom: 2px;
+}
+.nav-header a:last-child:after { 
+    content: " ▶"; 
+    margin-left: 8px;
+}
+    
+
+.nav-header a:first-child:before { 
+    content: "◀ "; 
+    margin-right: 8px;
+}
+
+.nav-header a.hidden:first-child {
+    left: -100px;
+    opacity: 0;
+}
+
+.nav-header a.hidden:last-child {
+    right: -100px;
+    opacity: 0;
+}
 
 .nav-header h4 {
     text-align: center;
@@ -63,7 +105,7 @@ form.modal.active {
     display: block;
 }
 
-form.modal h3 {
+form.modal h2 {
     font-size: 36px;
     font-weight: 400;
     margin-bottom: 24px;
@@ -72,6 +114,12 @@ form.modal h3 {
 form.modal input {
     display: block;
     margin-bottom: 16px;
+}
+
+form.modal a {
+    display: block;
+    margin-top: 16px;
+    margin-left: 8px;
 }
 
 header .progress {
@@ -94,7 +142,7 @@ header h1 {
 
 header h3 {
     font-weight: 400;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 header nav {
@@ -108,7 +156,6 @@ header .messages {
     bottom: 16px;
     z-index: 200;
     position: fixed;
-    pointer-events: none;
 }
 
 .message {
@@ -122,7 +169,7 @@ header .messages {
     white-space: normal;
     position: relative;
     right: 0;
-    transition: 0.2s right ease-in-out;
+    transition: 0.28s right ease-in-out;
 }
 
 .message.hidden {
@@ -130,13 +177,24 @@ header .messages {
 }
 
 .message.SHOW_SUCCESS {
+    pointer-events: none;
     background: #5BFF92;
     font-weight: 400;
     color: #111;
 }
 
 .message.SHOW_ERROR {
+    pointer-events: none;
     background: #FF4631;
+}
+
+.message.SHOW_REJECT {
+    background: #4948FF;
+    opacity: 1;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #white;
+    border-radius: 16px;
 }
 
 nav div {
@@ -185,17 +243,26 @@ nav div.active { display: inline-block; }
     margin-bottom: 8px;
 }
 
-.match.final .choice {
+.match.final .choice:not(.lose) {
     background: #5BFF92;
+}
+
+.match.final .choice:not(.lose) {
+}
+
+.match.final .choice:not(.lose) p,
+.match.final .choice:not(.lose) span {
+    color: black;
+}
+
+
+.choice.lose {
+    background: #f1f1f1 !important;
 }
 
 .match.final .choice p,
 .match.final .choice span {
     color: #444;
-}
-
-.choice.lose {
-    background: #f1f1f1 !important;
 }
 
 .choice.lose p,
@@ -220,20 +287,20 @@ nav div.active { display: inline-block; }
 
 .vote-container .vote {
     display: block;
+    margin-bottom: 32px;
 }
 
 .vote-container .choice {
-    border-radius: 32px;
     text-align: left;
+    margin-bottom: 0;
     display: inline-block;
     cursor: pointer;
+    border-radius: 8px 8px 16px 16px ;
     transition: 0.1s background ease-in-out;
-    border: 16px solid white;
-    box-shadow: 0 0 24px 0 rgba(0,0,0,0.12);
 }
 
 .vote-container .choice:last-child {
-    margin-left: 32px;
+    margin-left: 16px;
 }
 
 .vote-container .choice:hover {

@@ -22,7 +22,7 @@ def reject(message):
 def error(message):
     return {
         "type": "REQUEST_ERROR",
-        "payload": message 
+        "payload": message
     }
 
 def updateChoice(choice):

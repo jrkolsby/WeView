@@ -12,8 +12,8 @@ from data.lists     import addList,     getList, \
         addListUser, addListChoice, addListVote, \
         makeURL, BRACKET_SIZE
 
-from actions import success, showSuccess, error, send, \
-        updateChoice, updateUser, updateBracket, \
+from actions import success, error, reject, send, \
+        showSuccess, updateChoice, updateUser, updateBracket, \
         updateResults, updateRound
 
 app = Flask(__name__)
@@ -124,13 +124,14 @@ def api():
         except:
             return jsonify(error("Bad Action"))
         
-        if getUser(name=username) is None:
-            user = addUser(username, password)
-            token = addToken(user)
+        if getUser(name=username) is not None:
+            return jsonify(error("Username taken"))
 
-            return jsonify(success(token.toDict()))
+        user = addUser(username, password)
+        token = addToken(user)
 
-        return jsonify(error("Username taken"))
+        return jsonify(success(token.toDict()))
+
     
     # Validate existing user
     user = getUser(id=user)
@@ -161,7 +162,7 @@ def api():
             return jsonify(error("Too many choices!"))
 
         if theList.theRound > 1:
-            return jsonify(error("No new choices!"))
+            return jsonify(reject("Create a new round!"))
 
         choice = addChoice(user, "") 
 

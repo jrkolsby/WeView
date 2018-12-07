@@ -1,7 +1,7 @@
 import req from 'superagent'
 
 import {ACTIONS} from '.'
-import {showLoading, showError, showSuccess} from './nav'
+import {showLoading, showError, showReject, showSuccess} from './nav'
 
 export const SERVER = "http://localhost:5000"
 export const SERVER_REQUEST = SERVER + "/api"
@@ -16,7 +16,7 @@ export const attachCreds = (action, state) => {
     }
 }
 
-export const request = (action, success=showSuccess, error=showError) => {
+export const request = (action, success=showSuccess, error=showError, reject=showReject) => {
     return (dispatch, getState) => {
         dispatch(showLoading(1))
 		req.post(SERVER_REQUEST)
@@ -36,8 +36,7 @@ export const request = (action, success=showSuccess, error=showError) => {
                                 break;
 
                             case ACTIONS.REQUEST_REJECT:
-                                // TODO: Implement reject!
-                                dispatch(error(res.body.payload))
+                                dispatch(reject(res.body.payload))
                                 break;
                             
                             case ACTIONS.REQUEST_ERROR:

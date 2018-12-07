@@ -5,7 +5,7 @@ export const AccountForm = (props) => (
     <Form className={"account modal" + (props.active ? " active" : "")}
         onSubmit={props.handleSubmit}
     >
-        <h3>{props.title}</h3>
+        <h2>{props.title}</h2>
         <Field 
             name="user"
             component="input" 

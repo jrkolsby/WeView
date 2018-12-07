@@ -4,8 +4,8 @@ const defaultState = {
     currentPage: 0,
     currentModal: 0,
 
-    pageTitle: "Choosy",
-    pageSubtitle: "Decide with friends",
+    pageTitle: "Wichy",
+    pageSubtitle: "Decide together",
     navTitle: "Choices by",
 
     progress: 0,
@@ -20,6 +20,9 @@ const nav = (state=defaultState, action) => {
                 messages: [],
                 currentModal: 4,
             }
+
+        case ACTIONS.LOGOUT:
+            return defaultState
 
         case ACTIONS.JOIN_LIST:
             return {
@@ -76,9 +79,19 @@ const nav = (state=defaultState, action) => {
 		    }
                 ]
             }
-
-        case ACTIONS.LOGOUT:
-            return defaultState
+	
+	case ACTIONS.SHOW_REJECT:
+	    time = (new Date()).getTime();
+	    return {
+		...state,
+		messages: [
+		    ...state.messages,
+		    {
+			...action,
+			time
+		    }
+		]
+	    }
 
         default:
             return state

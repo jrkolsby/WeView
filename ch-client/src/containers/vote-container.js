@@ -3,22 +3,31 @@ import React from 'react'
 import Choice from '../components/choice'
 
 import * as listActions from '../actions/list'
+import * as navActions from '../actions/nav'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 export const VoteContainer = (props) => (
     <div className="vote-container">
     <div className="wrapper">
-        {props.state.round < 0 ? (
-	    <div className="404">Waiting for first round</div>
+        {props.state.round < 0 || 
+	props.state.bracket[
+	    props.state.round[
+		props.state.round.length-1]].length < 2 ? (
+	    <div className="404">
+	    <button
+		onClick={() => { props.dispatch.gotoModal(3) }}>Create New Decision
+	    </button>
+	    </div>
 	) : props.state.round.map((r) => {
-	    return props.state.bracket[r].length < 2 ? "Waiting for next round..." : (
+	    return props.state.bracket[r].length < 2 ? null : (
 		<div className="vote">
 		{props.state.bracket[r].map((c, i) => {
 		    const choice = props.state.choices[c]
 		    return (
 			<Choice 
 			    key={i}
+			    win={true}
 			    user={props.state.users[choice.user] ? 
 				  props.state.users[choice.user].name : "--"}
 			    title={choice.title}
@@ -46,7 +55,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
     return {
         dispatch: {
-            ...bindActionCreators(listActions, dispatch) 
+            ...bindActionCreators(listActions, dispatch),
+            ...bindActionCreators(navActions, dispatch) 
         }
     }
 }

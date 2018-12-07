@@ -29,6 +29,16 @@ export const showSuccess = (message) => {
 
 }
 
+export const showReject = (message, modalIndex) => {
+    return {
+        type: ACTIONS.SHOW_REJECT,
+        payload: {
+	    message,
+	    modalIndex
+	}
+    }
+}
+
 export const showLoading = (progress) => {
     return {
         type: ACTIONS.SHOW_LOADING,
