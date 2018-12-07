@@ -4,7 +4,7 @@ const defaultState = {
     currentPage: 0,
     currentModal: 0,
 
-    pageTitle: "Wichy",
+    pageTitle: "Choosy",
     pageSubtitle: "Decide together",
     navTitle: "Choices by",
 
@@ -23,6 +23,14 @@ const nav = (state=defaultState, action) => {
 
         case ACTIONS.LOGOUT:
             return defaultState
+
+        case ACTIONS.UPDATE_ROUND:
+	    return {
+		...state,
+		navTitle: action.payload.length === 4 ? "Second round" :
+		    action.payload.length === 2 ? "Third round" :
+		    action.payload.length === 1 ? "Final round" : ""
+	    }
 
         case ACTIONS.JOIN_LIST:
             return {

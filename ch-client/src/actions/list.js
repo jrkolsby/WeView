@@ -16,11 +16,12 @@ export const createChoice = () => {
 // Sends the current vote and receives a new vote
 export const createVote = (index=-1, vote=-1) => {
     return request({
-        type: ACTIONS.CREATE_VOTE,
+        type: ACTIONS.UPDATE_VOTE,
         payload: { vote, index }
     }, () => {
 	return {
-	    type: ACTIONS.NOACTION
+	    type: ACTIONS.UPDATE_VOTE,
+	    payload: { vote, index }
 	}
     })
 }

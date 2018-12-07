@@ -29,17 +29,24 @@ const list = (state=testState, action) => {
             }
 
         case ACTIONS.UPDATE_BRACKET:
-            console.log('update bracket', action)
             return {
                 ...state,
                 bracket: action.payload,
             }
 
         case ACTIONS.UPDATE_RESULTS:
-            console.log('update results', action)
             return {
                 ...state,
 		results: action.payload,
+            }
+
+        case ACTIONS.UPDATE_VOTE:
+            return {
+                ...state,
+		votes: {
+		    ...state.votes,
+		    [action.payload.index]: action.payload.vote
+		}
             }
 
         case ACTIONS.UPDATE_ROUND:

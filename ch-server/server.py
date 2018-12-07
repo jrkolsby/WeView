@@ -9,7 +9,7 @@ from data.choices   import addChoice,   getChoice,  setChoice
 from data.tokens    import addToken,    getToken,   deleteToken
 from data.users     import addUser,     getUser
 from data.lists     import addList,     getList, \
-        addListUser, addListChoice, addListVote, \
+        addListUser, addListChoice, addListVote, setListVote, \
         makeURL, BRACKET_SIZE
 
 from actions import success, error, reject, send, \
@@ -162,7 +162,7 @@ def api():
             return jsonify(error("Too many choices!"))
 
         if theList.theRound > 1:
-            return jsonify(reject("Create new"))
+            return jsonify(reject("Create new decision"))
 
         choice = addChoice(user, "") 
 
@@ -173,7 +173,7 @@ def api():
 
         return jsonify(success(choice.toDict()))
 
-    if theType == "CREATE_VOTE":
+    if theType == "UPDATE_VOTE":
         try:
             vote = payload['vote']
             index = payload['index']
@@ -190,10 +190,9 @@ def api():
 
         if index > 0:
             if len(theList.getVotes(user=user, index=index)) > 0:
-                return jsonify(error("Already voted"))
-
-            # create vote and remove from user's queue
-            vote = addListVote(theList, user, index, vote) 
+                setListVote(theList, user, index, vote)
+            else:
+                addListVote(theList, user, index, vote) 
 
         activeUsers = len(theList.getUsers())
         proceed = True
@@ -201,21 +200,17 @@ def api():
         bracket = theList.getBracket()
 
         for i in theList.roundRange():
-            if len(bracket[i]) > 1 and len(theList.getVotes(index=i)) < activeUsers:
+            if len(bracket[i]) > 1 and \
+               len(theList.getVotes(index=i)) < activeUsers:
                 proceed = False
 
         if proceed:
             theList.proceed()
-            print "PROCEEDING"
-            print map(lambda c: c.toDict(), theList.getChoices())
-            print theList.getBracket()
-            print theList.getResults()
-            print theList.roundRange()
             send(io, theList.url, updateResults(theList.getResults()))
             send(io, theList.url, updateBracket(theList.getBracket()))
             send(io, theList.url, updateRound(theList.roundRange()))
 
-        return jsonify(success("VOTED"))
+        return jsonify(success("Success"))
 
     if theType == "UPDATE_CHOICE":
         choice = getChoice(id=payload['id'])

@@ -24,13 +24,14 @@ const renderFirstRound = (props) => {
     const slice = bracket.slice(size/2, size)
     const sliceResults = results.slice(size/2, size)
 
-    console.log('bracket', bracket)
-    console.log('slice', slice)
-
     let firstRound = []
+    let matchIndex = 1
 
     for (var i = 0; i < slice.length; i++) {
 	var match = slice[i]
+	if (match.length > 0) {
+	    firstRound.push(<h3 key={2*i+i*matchIndex}>Match {matchIndex++}</h3>)
+	}
 	for (var j = match.length-1; j >= 0; j--) {
 	    let c = match[j]
 	    var choice = choices[c]
@@ -55,7 +56,6 @@ const renderFirstRound = (props) => {
 }
 
 const InputContainer = (props) => {
-    console.log(props.state.editing)
     return (
         <div className="input-container">
         <div className="wrapper">

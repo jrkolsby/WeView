@@ -3,20 +3,28 @@
 # TODO
 
 ### First iteration, group voting
-- [ ] Group socket connection for lists
-- [ ] Create item
-- [ ] Signup
-- [ ] Login
-- [ ] Logout
-- [ ] Create room
-- [ ] Swipe to vote
-- [ ] Get results
+- [X] Group socket connection for lists
+- [X] Create item
+- [X] Signup
+- [X] Login
+- [X] Logout
+- [X] Create room
+- [X] Swipe to vote
+- [X] Get results
 
 ### Second iteration, informed voting
 - [ ] Display choice's position in any list for voting
 
 ### Third iteration, fancy features
-- [ ] Real-time input updates to room
+- [X] Real-time input updates to room
 - [ ] Input suggestions based on all choices ever
 - [ ] Delete choices
 - [ ] Delete rooms
+
+### 
+Tell people to give out the room URL
+Add chsy.io/ before URL
+Hide voting
+Make it clear that a choice has already been voted on
+Display which round we're on
+Label matches in inputs and voting

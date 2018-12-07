@@ -223,6 +223,14 @@ def addListVote(theList, theUser, theIndex, theVote):
     # ADD vote to list
     return ListVote(theList, theUser, theIndex, theVote)
 
+def setListVote(theList, theUser, theIndex, theVote):
+    vote = session.query(ListVote) \
+        .filter(ListVote.theList == theList.id) \
+        .filter(ListVote.user == theUser.id) \
+        .filter(ListVote.index == theIndex).first()
+    vote.vote = theVote
+    session.commit()
+
 def addListUser(theList, theUser):
     if len(theList.getUsers(user=theUser)) == 0:
         return ListUser(theList, theUser, False)

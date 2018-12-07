@@ -33,7 +33,6 @@ header {
 header .nav-header {
     width: 100%;
     position: relative;
-    padding-top: 16px;
 }
 
 .nav-header a {
@@ -140,10 +139,14 @@ header h1 {
     margin-bottom: 4px;
 }
 
-header h3 {
+h3 {
     font-weight: 400;
     font-size: 18px;
+    margin-bottom: 8px;
+    color: #aaa;
 }
+
+main h3 { text-align: center; }
 
 header nav {
     top: 20px;
@@ -161,7 +164,7 @@ header .messages {
 .message {
     color: white;
     opacity: 0.8;
-    width: 188px;
+    width: 196px;
     font-weight: 500;
     line-height: 1.2;
     padding: 12px 24px;
@@ -283,28 +286,31 @@ nav div.active { display: inline-block; }
 .vote-container .wrapper {
     padding-top: 32px;
     text-align: center;
-}
-
-.vote-container .vote {
-    display: block;
-    margin-bottom: 32px;
+    white-space: normal;
 }
 
 .vote-container .choice {
     text-align: left;
-    margin-bottom: 0;
-    display: inline-block;
+    display: block;
     cursor: pointer;
-    border-radius: 8px 8px 16px 16px ;
-    transition: 0.1s background ease-in-out;
+    transition: 0.1s background ease-in-out,
+		0.1s transform ease-in-out;
+    transform: none;
 }
 
-.vote-container .choice:last-child {
-    margin-left: 16px;
+.vote-container .vote {
+    display: inline-block;
+    width: 304px;
+    margin-right: 16px;
+}
+
+.vote-container .vote:last-child {
+    margin-right: 0;
 }
 
 .vote-container .choice:hover {
-    background: #FEDC2C !important;
+    background: #5BFF92 !important;
+    transform: scale(1.2);
 }
 
 .choice span {

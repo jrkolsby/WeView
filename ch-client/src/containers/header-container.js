@@ -136,7 +136,8 @@ class HeaderContainer extends Component {
 		</nav>
 
 		<div className="nav-header">
-		    <a className={this.props.state.currentPage === 0 ? "hidden" : ""}
+		    <a className={(!this.props.state.loggedIn ||
+				  this.props.state.currentPage === 0) ? "hidden" : ""}
 			href="#back"
 			onClick={(e) => {
 			    this.props.dispatch.gotoPage(0)
@@ -148,12 +149,11 @@ class HeaderContainer extends Component {
 			return u.name + (i < a.length - 1 ? ", " : "")
 		    })}
 		    </h4>
-		    <a className={this.props.state.currentPage === 1 ? "hidden" : ""}
+		    <a className={(!this.props.state.loggedIn ||
+				  this.props.state.currentPage === 1) ? "hidden" : ""}
 			href="#next"
 			onClick={(e) => {
-			    console.log(this.props.state)
 			    if (this.props.state.voteID < 0) {
-				console.log('get first vote!!')
 				this.props.dispatch.createVote()
 			    }
 			    this.props.dispatch.gotoPage(1)
