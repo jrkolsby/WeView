@@ -162,13 +162,12 @@ def api():
             return jsonify(error("Too many choices!"))
 
         if theList.theRound > 1:
-            return jsonify(reject("Create a new round!"))
+            return jsonify(reject("Create new"))
 
         choice = addChoice(user, "") 
 
         addListChoice(theList, choice, user)
 
-        print "SEND UPDATE CHOICE"
         send(io, theList.url, updateChoice(choice))
         send(io, theList.url, updateBracket(theList.getBracket()))
 
