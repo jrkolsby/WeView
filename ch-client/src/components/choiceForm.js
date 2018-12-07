@@ -6,7 +6,7 @@ const ChoiceForm = (props) => (
         name="choice" 
         component="input" 
         type="text"
-        placeholder="Add a choice..."
+        placeholder="Type an option..."
         onChange={(e) => {
             props.handleChange(e.target.value)
         }}

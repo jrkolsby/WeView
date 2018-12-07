@@ -27,6 +27,8 @@ const nav = (state=defaultState, action) => {
         case ACTIONS.UPDATE_ROUND:
 	    return {
 		...state,
+                currentModal: 0,
+		currentPage: 0,
 		navTitle: action.payload.length === 4 ? "Second round" :
 		    action.payload.length === 2 ? "Third round" :
 		    action.payload.length === 1 ? "Final round" : ""
@@ -36,6 +38,7 @@ const nav = (state=defaultState, action) => {
             return {
                 ...state,
                 currentModal: 0,
+		currentPage: 0,
                 messages: [],
                 pageTitle: action.payload.title,
                 pageSubtitle: "chsy.io/" + action.payload.url,

@@ -42,6 +42,7 @@ const renderFirstRound = (props) => {
 		    handleChange={(newTitle) => {
 			updateChoice(props.dispatch.updateChoice, c, newTitle)
 		    }}
+		    handleClick={() => {props.dispatch.editChoice(c)}}
 		    editing={props.state.editing === c}
 		    user={user}
 		    win={sliceResults[i] < 0 || j === sliceResults[i]}

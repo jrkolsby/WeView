@@ -13,6 +13,13 @@ export const createChoice = () => {
     })
 }
 
+export const editChoice = (id) => {
+    return {
+	type: ACTIONS.EDIT_CHOICE,
+	payload: id
+    }
+}
+
 // Sends the current vote and receives a new vote
 export const createVote = (index=-1, vote=-1) => {
     return request({

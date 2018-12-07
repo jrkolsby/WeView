@@ -239,6 +239,7 @@ nav div.active { display: inline-block; }
 .match.r4 { margin-left: 196px; }
 
 .choice {
+    cursor: text;
     width: 304px;
     padding: 12px;
     font-weight: 500;
@@ -310,6 +311,7 @@ nav div.active { display: inline-block; }
 
 .vote-container .choice:hover {
     background: #5BFF92 !important;
+    color: #444 !important;
     transform: scale(1.2);
 }
 
