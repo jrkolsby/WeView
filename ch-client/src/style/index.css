@@ -311,8 +311,12 @@ nav div.active { display: inline-block; }
 
 .vote-container .choice:hover {
     background: #5BFF92 !important;
-    color: #444 !important;
     transform: scale(1.2);
+}
+
+.vote-container .choice:hover p,
+.vote-container .choice:hover span {
+    color: #444 !important;
 }
 
 .choice span {

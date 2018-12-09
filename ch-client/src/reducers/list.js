@@ -59,7 +59,8 @@ const list = (state=testState, action) => {
             return {
                 ...state,
 		round: action.payload,
-		editing: -1
+		editing: -1,
+		votes: {},
             }
 
         case ACTIONS.UPDATE_CHOICE: 

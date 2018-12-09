@@ -27,6 +27,8 @@ export const VoteContainer = (props) => {
 		    <h3>Match {matchIndex++}</h3>
 		    {props.state.bracket[r].map((c, i) => {
 			const choice = props.state.choices[c]
+			const vote = props.state.votes[r]
+			console.log(props.state)
 			return (
 			    <Choice 
 				key={i}

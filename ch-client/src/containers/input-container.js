@@ -11,7 +11,6 @@ import {connect} from 'react-redux';
 import debounce from 'lodash/debounce'
 
 const DEBOUNCE_TIME = 100
-const BRACKET_SIZE = 16
 
 const updateChoice = debounce((dispatch, id, newValue) => {
     dispatch(id, newValue)
@@ -42,7 +41,9 @@ const renderFirstRound = (props) => {
 		    handleChange={(newTitle) => {
 			updateChoice(props.dispatch.updateChoice, c, newTitle)
 		    }}
-		    handleClick={() => {props.dispatch.editChoice(c)}}
+		    handleClick={() => {
+			props.dispatch.editChoice(c)
+		    }}
 		    editing={props.state.editing === c}
 		    user={user}
 		    win={sliceResults[i] < 0 || j === sliceResults[i]}
@@ -92,7 +93,7 @@ const mapDispatch = (dispatch) => {
     return {
         dispatch: {
             ...bindActionCreators(navActions, dispatch), 
-            ...bindActionCreators(listActions, dispatch) 
+            ...bindActionCreators(listActions, dispatch)
         }
     }
 }
