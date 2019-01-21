@@ -22,7 +22,7 @@ CORS(app)
 io = SocketIO(app)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(host='0.0.0.0')
 
 def compareBrackets(old, new):
     size = len(old)
@@ -33,6 +33,10 @@ def compareBrackets(old, new):
 
 def roundRange(n):
     return range(2**(4-n), 2**(5-n))
+
+@app.route('/')
+def helloworld():
+    return 'Hey, we have Flask in a Docker container!'
 
 @io.on('join')
 def join(action):
