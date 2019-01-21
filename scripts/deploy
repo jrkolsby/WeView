@@ -1,0 +1,22 @@
+#!/bin/bash
+
+CLIENT_ID="$(docker images -q ch-client 2> /dev/null)"
+SERVER_ID="$(docker images -q ch-server 2> /dev/null)"
+
+if [[ $CLIENT_ID == "" ]]; then
+    echo "LOG: Building client image..."
+    docker build -t ch-client:latest ./ch-client
+    CLIENT_ID=$(docker images -q ch-client)
+fi
+
+if [[ $SERVER_ID == "" ]]; then
+    echo "LOG: Building server image..."
+    docker build -t ch-server:latest ./ch-server
+    SERVER_ID=$(docker images -q ch-server)
+fi
+
+echo "LOG: Server image $SERVER_ID"
+echo "LOG: Client image $CLIENT_ID"
+
+SERVER_CONTAINER=$(docker run -d -p 5000:5000 $SERVER_ID)
+CLIENT_CONTAINER=$(docker run -d -p 80:80 $CLIENT_ID)

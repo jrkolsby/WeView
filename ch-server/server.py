@@ -21,6 +21,9 @@ CORS(app)
 
 io = SocketIO(app)
 
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
+
 def compareBrackets(old, new):
     size = len(old)
     delta = []
