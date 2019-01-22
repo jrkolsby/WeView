@@ -18,7 +18,7 @@ fi
 echo "LOG: Server image $SERVER_ID"
 echo "LOG: Client image $CLIENT_ID"
 
-SERVER_CONTAINER=$(docker run -d -p 5000:5000 $SERVER_ID)
+SERVER_CONTAINER=$(docker run -d -p 5000:5000 -e MODULE_NAME="server" $SERVER_ID)
 CLIENT_CONTAINER=$(docker run -d -p 80:80 $CLIENT_ID)
 
 echo "LOG: Server container $SERVER_CONTAINER"

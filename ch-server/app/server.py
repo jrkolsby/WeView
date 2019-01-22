@@ -1,8 +1,6 @@
 from flask import Flask, request
 from flask import render_template, jsonify
 
-from flask_cors import CORS
-
 from flask_socketio import SocketIO, emit, join_room, leave_room
 
 from data.choices   import addChoice,   getChoice,  setChoice
@@ -33,10 +31,6 @@ def compareBrackets(old, new):
 
 def roundRange(n):
     return range(2**(4-n), 2**(5-n))
-
-@app.route('/')
-def helloworld():
-    return 'Hey, we have Flask in a Docker container!'
 
 @io.on('join')
 def join(action):
