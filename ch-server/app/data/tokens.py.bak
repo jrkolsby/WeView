@@ -23,7 +23,7 @@ class Token(Base):
         # Generate Token
         alphabet = string.ascii_letters + string.digits
         self.token = ''.join( choice(alphabet) \
-            for i in list(range(TOKEN_SIZE)))
+            for i in range(TOKEN_SIZE))
 
         self.expire = getTime() + TOKEN_EXPIRE
 

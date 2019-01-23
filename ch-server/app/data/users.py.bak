@@ -26,7 +26,7 @@ class User(Base):
         }
 
 def addUser(username, password, theList=None):
-    print("NEW USER: " + username)
+    print "NEW USER: " + username
     return User(username, password)
 
 def getUser(id=None, name=None, password=None, theList=None):

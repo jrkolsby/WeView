@@ -33,10 +33,10 @@ class List(Base):
     def toDict(self):
         bracket = json.loads(self.bracket)
         return {
-            "choices": [c.toDict() for c in self.getChoices()],
-            "votes": [v.toDict() for v in self.getVotes()],
+            "choices": map(lambda c: c.toDict(), self.getChoices()),
+            "votes": map(lambda v: v.toDict(), self.getVotes()),
             "results": self.getResults(),
-            "users": [u.toDict() for u in self.getUsers()],
+            "users": map(lambda u: u.toDict(), self.getUsers()),
             "round": self.roundRange(),
             "title": self.title,
             "bracket": bracket,
@@ -49,15 +49,15 @@ class List(Base):
         session.commit()
 
     def roundRange(self):
-        return list(range(int(2**(math.sqrt(BRACKET_SIZE)-self.theRound)), \
-                     int(2**(math.sqrt(BRACKET_SIZE)+1-self.theRound))))
+        return range(int(2**(math.sqrt(BRACKET_SIZE)-self.theRound)), \
+                     int(2**(math.sqrt(BRACKET_SIZE)+1-self.theRound)))
 
     def getUsers(self, user=None):
         listUsers = session.query(ListUser) \
             .filter(ListUser.theList == self.id) \
             .filter((ListUser.user == user.id) if \
                 (user is not None) else (True)).all()
-        return [getUser(id=j.user) for j in listUsers]
+        return map(lambda j: getUser(id=j.user), listUsers)
 
     def getVotes(self, index=None, user=None):
         return session.query(ListVote) \
@@ -72,7 +72,7 @@ class List(Base):
             .filter(ListChoice.theList == self.id) \
             .filter((ListChoice.id == id) if \
                 (id is not None) else (True)).all()
-        return [getChoice(id=j.choice) for j in listChoices]
+        return map(lambda j: getChoice(id=j.choice), listChoices)
 
     def getResult(self, index):
         votes = self.getVotes(index=index)
