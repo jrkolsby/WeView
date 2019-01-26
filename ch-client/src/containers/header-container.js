@@ -145,8 +145,8 @@ class HeaderContainer extends Component {
 		    >Bracket</a>
 		    <h4>
 		    {this.props.state.navTitle + " "}
-		    {Object.values(this.props.state.users).map((u, i, a, r) => {
-			return u.name + (i < a.length - 1 ? ", " : "")
+		    {Object.keys(this.props.state.users).map((u, i, a) => {
+			return this.props.state.users[u].name + (i < a.length - 1 ? ", " : "")
 		    })}
 		    </h4>
 		    <a className={(!this.props.state.loggedIn ||

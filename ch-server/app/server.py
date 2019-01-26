@@ -76,6 +76,11 @@ def leave(action):
     leave_room(room.url)
     send(io, room.url, showSuccess(user.username + " left /" + room.url))
 
+@app.route("/")
+def default():
+    print("hit root")
+    return "HI"
+
 @app.route("/api", methods=['POST'])
 def api():
 

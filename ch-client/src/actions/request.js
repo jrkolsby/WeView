@@ -3,8 +3,7 @@ import req from 'superagent'
 import {ACTIONS} from '.'
 import {showLoading, showError, showReject, showSuccess} from './nav'
 
-export const SERVER = "http://localhost:5000"
-export const SERVER_REQUEST = SERVER + "/api"
+export const SERVER = "/api/"
 
 export const attachCreds = (action, state) => {
     return {
@@ -19,7 +18,7 @@ export const attachCreds = (action, state) => {
 export const request = (action, success=showSuccess, error=showError, reject=showReject) => {
     return (dispatch, getState) => {
         dispatch(showLoading(1))
-		req.post(SERVER_REQUEST)
+		req.post(SERVER)
             .send(attachCreds(action, getState())) 
             .set('Accept', 'application/json')
 			.end((err, res) => {

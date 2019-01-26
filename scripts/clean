@@ -1,1 +1,5 @@
 rm ./ch-server/data/data.db
+docker stop ch-client-prod
+docker stop ch-server-prod
+docker rmi $(docker images | grep 'ch-client' | awk '{print $3}')
+docker rmi $(docker images | grep 'ch-server' | awk '{print $3}')
