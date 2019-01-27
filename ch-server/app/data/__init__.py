@@ -18,4 +18,5 @@ metaData = MetaData()
 Base = declarative_base(metadata=metaData)
 
 def createAll():
-    metaData.create_all(engine)
+    if __name__ == '__main__':
+        metaData.create_all(engine)
