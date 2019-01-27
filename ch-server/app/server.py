@@ -76,12 +76,11 @@ def leave(action):
     leave_room(room.url)
     send(io, room.url, showSuccess(user.username + " left /" + room.url))
 
-@app.route("/")
-def default():
-    print("hit root")
-    return "HI"
+@app.errorhandler(404)
+def page_not_found(error):
+    return 'This route does not exist {}'.format(request.url), 404
 
-@app.route("/api", methods=['POST'])
+@app.route("/", methods=['POST'])
 def api():
 
     action = request.get_json(force=True)
