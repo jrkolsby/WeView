@@ -13,5 +13,5 @@ RUN npm run build
 FROM nginx:1.14.2-alpine
 COPY --from=builder /usr/src/app/build /etc/nginx/html
 COPY choosy.conf /etc/nginx/conf.d/
-EXPOSE 80
+RUN cat /etc/hosts
 CMD ["nginx", "-g", "daemon off;"]

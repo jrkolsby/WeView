@@ -1,0 +1,14 @@
+version: "3"
+services:
+  ch-server:
+    build: ./ch-server
+    ports:
+      - 5000:5000
+  ch-client:
+    build: ./ch-client
+    links:
+      - "ch-server:flask"
+    depends_on:
+      - ch-server
+    ports:
+      - 80:80

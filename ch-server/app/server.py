@@ -78,7 +78,7 @@ def leave(action):
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return 'This route does not exist {}'.format(request.url), 404
+    return 'Hi there this page does not exist: '.format(request.url), 404
 
 @app.route("/", methods=['POST'])
 def api():
