@@ -6,8 +6,6 @@ services:
       - 5000:5000
   ch-client:
     build: ./ch-client
-    links:
-      - "ch-server:flask"
     depends_on:
       - ch-server
     ports:
