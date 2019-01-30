@@ -7,6 +7,6 @@ if [ $MATCHES -gt 0 ]; then
     echo "running ./${SCRIPTS}${1}"
     source "./${SCRIPTS}${1}"
 else 
-    echo "please choose from:"
+    echo "Usage: ./run "
     ls -1 ./scripts/
 fi
