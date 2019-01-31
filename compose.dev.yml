@@ -1,11 +1,12 @@
 version: "3"
 services:
   ch-nginx-dev:
-    image: nginx:1.14.2-alpine
+    image: nginx:1.15.8
     volumes:
       - ./ch-client/choosy.dev.conf:/etc/nginx/conf.d/choosy.conf
     ports:
       - 80:80
+      - 443:443
     entrypoint:
       - nginx
       - -g

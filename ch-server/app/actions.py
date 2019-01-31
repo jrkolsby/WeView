@@ -1,4 +1,4 @@
-def send(io, room, action):
+def dispatch(io, room, action):
     io.emit('action', action, room=room)
 
 def success(message): 
@@ -44,8 +44,6 @@ def updateVote(vote):
     }
 
 def updateBracket(bracket):
-    print("update bracket")
-    print(bracket)
     return {
         "type": "UPDATE_BRACKET",
         "payload": bracket 

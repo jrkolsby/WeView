@@ -10,13 +10,12 @@ from data.lists     import addList,     getList, \
         addListUser, addListChoice, addListVote, setListVote, \
         makeURL, BRACKET_SIZE
 
-from actions import success, error, reject, send, \
+from actions import success, error, reject, dispatch, \
         showSuccess, updateChoice, updateUser, updateBracket, \
         updateResults, updateRound
 
 app = Flask(__name__)
-
-io = SocketIO(app)
+io = SocketIO(app, logger=True, engineio_logger=True, saync_mode='gevent')
 
 def compareBrackets(old, new):
     size = len(old)
@@ -27,6 +26,19 @@ def compareBrackets(old, new):
 
 def roundRange(n):
     return list(range(2**(4-n), 2**(5-n)))
+
+@io.on('connect')
+def connect():
+    print("connected")
+    print(request.args.to_dict(flat=False))
+
+@io.on('disconnect')
+def connect():
+    print("disconnected")
+
+@io.on('message')
+def handle_message(message):
+    print('received message: ' + message)
 
 @io.on('join')
 def join(action):
@@ -53,7 +65,7 @@ def join(action):
 
     print("JOINED ROOM")
     join_room(room)
-    send(io, room, showSuccess(user.username + " joined /" + room))
+    dispatch(io, room, showSuccess(user.username + " joined /" + room))
 
 @io.on('leave')
 def leave(action):
@@ -78,7 +90,7 @@ def leave(action):
         return 
 
     leave_room(room.url)
-    send(io, room.url, showSuccess(user.username + " left /" + room.url))
+    dispatch(io, room.url, showSuccess(user.username + " left /" + room.url))
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -173,8 +185,9 @@ def api():
 
         addListChoice(theList, choice, user)
 
-        send(io, theList.url, updateChoice(choice))
-        send(io, theList.url, updateBracket(theList.getBracket()))
+        print("UPDATE BRACKET")
+        dispatch(io, theList.url, updateChoice(choice))
+        dispatch(io, theList.url, updateBracket(theList.getBracket()))
 
         return jsonify(success(choice.toDict()))
 
@@ -211,9 +224,9 @@ def api():
 
         if proceed:
             theList.proceed()
-            send(io, theList.url, updateResults(theList.getResults()))
-            send(io, theList.url, updateBracket(theList.getBracket()))
-            send(io, theList.url, updateRound(theList.roundRange()))
+            dispatch(io, theList.url, updateResults(theList.getResults()))
+            dispatch(io, theList.url, updateBracket(theList.getBracket()))
+            dispatch(io, theList.url, updateRound(theList.roundRange()))
 
         return jsonify(success("Success"))
 
@@ -232,7 +245,7 @@ def api():
         # Set to database
         setChoice(choice, payload['title'])
 
-        send(io, theList.url, updateChoice(choice))
+        dispatch(io, theList.url, updateChoice(choice))
 
         return jsonify(success(choice.toDict()))
 
@@ -257,7 +270,7 @@ def api():
 
         addListUser(theList, user)
 
-        send(io, theList.url, updateUser(user))
+        dispatch(io, theList.url, updateUser(user))
 
         return jsonify(success(theList.toDict()))
  
