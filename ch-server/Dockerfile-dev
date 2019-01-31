@@ -5,4 +5,4 @@ COPY ./app /app
 EXPOSE 5000
 WORKDIR /app
 # GUNICORN MUST HAVE ONLY ONE WORKER FOR SOCKETS TO WORK!
-ENTRYPOINT [ "gunicorn", "-b", "0.0.0.0:5000", "--worker-class", "gevent", "-w", "1", "--access-logfile", "-", "--log-level", "debug", "server:app"]
+ENTRYPOINT [ "gunicorn", "-b", "0.0.0.0:5000", "--reload", "--worker-class", "gevent", "-w", "1", "--access-logfile", "-", "--log-level", "debug", "server:app"]

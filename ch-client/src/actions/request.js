@@ -3,7 +3,7 @@ import req from 'superagent'
 import {ACTIONS} from '.'
 import {showLoading, showError, showReject, showSuccess} from './nav'
 
-export const SERVER = "/api/"
+export const SERVER = "http://localhost/api/"
 
 export const attachCreds = (action, state) => {
     return {

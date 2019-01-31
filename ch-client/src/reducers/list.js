@@ -13,8 +13,9 @@ const defaultState = {
 }
 
 const list = (state=testState, action) => {
+    console.log("action", action)
     switch(action.type) {
-	
+
 	case ACTIONS.EDIT_CHOICE:
 	    return {
 		...state,

@@ -44,6 +44,8 @@ def updateVote(vote):
     }
 
 def updateBracket(bracket):
+    print("update bracket")
+    print(bracket)
     return {
         "type": "UPDATE_BRACKET",
         "payload": bracket 

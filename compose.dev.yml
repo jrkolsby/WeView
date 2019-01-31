@@ -1,0 +1,28 @@
+version: "3"
+services:
+  ch-nginx-dev:
+    image: nginx:1.14.2-alpine
+    volumes:
+      - ./ch-client/choosy.dev.conf:/etc/nginx/conf.d/choosy.conf
+    ports:
+      - 80:80
+    entrypoint:
+      - nginx
+      - -g
+      - daemon off;
+  ch-react-dev:
+    build: 
+      context: ./ch-client
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./ch-client/src:/usr/src/app/src:rw
+    ports:
+      - 3000:3000
+  ch-flask-dev:
+    build: 
+      context: ./ch-server
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./ch-server/app:/app:rw
+    ports:
+      - 5000:5000

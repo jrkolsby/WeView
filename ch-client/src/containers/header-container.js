@@ -37,7 +37,7 @@ class HeaderContainer extends Component {
 				    this.props.dispatch.gotoModal(3) :
 				    this.props.dispatch.gotoModal(1)
 			    }}
-			>Create New</a>
+			>New Decision</a>
 			<DecisionForm
 			    form="new-decision"
 			    title="New Decision"       

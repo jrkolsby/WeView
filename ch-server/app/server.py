@@ -30,6 +30,8 @@ def roundRange(n):
 
 @io.on('join')
 def join(action):
+    print("SOCKET JOIN")
+    print(action)
     try:
         user = action['user']
         token = action['token']
@@ -55,6 +57,8 @@ def join(action):
 
 @io.on('leave')
 def leave(action):
+    print("SOCKET LEAVE")
+    print(action)
     try:
         user = action['user']
         token = action['token']

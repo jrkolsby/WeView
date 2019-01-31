@@ -6,7 +6,5 @@ services:
       - 5000:5000
   ch-client:
     build: ./ch-client
-    depends_on:
-      - ch-server
     ports:
       - 80:80

@@ -14,11 +14,13 @@ import Choosy from './Choosy'
 import { SERVER, attachCreds } from './actions/request'
 
 const socket = socketio(SERVER)
+console.log(socket)
 
 // Dispatch socket actions
 socket.on('action', (action) => {
-        store.dispatch(action)
-    })
+    console.log('socket action', action)
+    store.dispatch(action)
+})
 
 // Intercept JOIN_ROOM actions
 const room = store => next => action => {

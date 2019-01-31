@@ -1,8 +1,7 @@
 Flask-SQLAlchemy==2.3.2
-Flask-SocketIO==3.0.2
+flask-socketio>=3
 SQLAlchemy==1.2.12
-Flask-Cors==3.0.6
-eventlet==0.24.1
-gunicorn[eventlet]
+gunicorn[gevent]
 passlib==1.7.1
 Flask==1.0.2
+scrypt
