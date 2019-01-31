@@ -17,22 +17,8 @@ const socket = socketio(window.location.href, {
     path: SERVER + 'socket.io/'
 })
 
-socket.on('connect', (action) => {
-    console.log('connected to socket', action)
-})
-
-socket.on('disconnect', (action) => {
-    console.log('disconnected from socket', action)
-})
-
-socket.on('*', (e,d) => {
-    console.log("event", e)
-    console.log("data", d)
-})
-
 // Dispatch socket actions
 socket.on('action', (action) => {
-    console.log('socket action', action)
     store.dispatch(action)
 })
 
@@ -44,7 +30,6 @@ const room = store => next => action => {
             break;
 
         case "JOIN_LIST":
-	    console.log("emitting join", store.getState().list)
             if (store.getState().list.listID >= 0) {
                 socket.emit('leave', attachCreds(action, store.getState()))
             }

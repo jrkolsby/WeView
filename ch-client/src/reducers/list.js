@@ -1,18 +1,7 @@
 import {ACTIONS} from '../actions';
-import testState from './test'
+import defaultState from './landing'
 
-const defaultState = {
-    listID: -1,
-    round: [15,14,13,12],
-    editing: -1,
-    choices: {},
-    users: {},
-    votes: {},
-    bracket: [],
-    results: []
-}
-
-const list = (state=testState, action) => {
+const list = (state=defaultState, action) => {
     switch(action.type) {
 
 	case ACTIONS.EDIT_CHOICE:
@@ -64,7 +53,6 @@ const list = (state=testState, action) => {
             }
 
         case ACTIONS.UPDATE_CHOICE: 
-	    console.log('update choice')
             return {
                 ...state,
                 choices: {
@@ -105,7 +93,7 @@ const list = (state=testState, action) => {
             }
 
         case ACTIONS.LOGOUT: 
-	    return testState
+	    return defaultState
 
         default: return state;
     }

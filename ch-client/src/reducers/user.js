@@ -11,7 +11,6 @@ const user = (state=defaultState, action) => {
     switch(action.type) {
 
         case ACTIONS.LOGIN:
-            console.log(action.payload)
             return {
                 ...state,
                 loggedIn: true,
