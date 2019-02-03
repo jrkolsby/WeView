@@ -19,7 +19,19 @@
 - [X] Real-time input updates to room
 - [ ] Input suggestions based on all choices ever
 - [ ] Delete choices
+
+### Fourth Sprint
+- [ ] Delete Choices
 - [ ] Delete rooms
+- [ ] Router based on room hash in URL
+- [ ] Autocopy room ID
+- [ ] Connect bracket
+
+### Issues
+
+- [ ] room "movietn" crashes
+- [ ] sometimes choice input only changes last character
+- [ ] choice which you are editing isn't always at the top?
 
 ### 
 Tell people to give out the room URL
