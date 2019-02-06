@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 main {
     width: 100%;
     position: relative;
@@ -8,7 +12,6 @@ main {
 .nav-current,
 .nav-right,
 .nav-left {
-    overflow: visible;
     display: inline-block;
 
     position: absolute;
