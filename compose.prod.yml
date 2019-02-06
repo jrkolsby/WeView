@@ -1,0 +1,14 @@
+version: "3"
+services:
+  ch-server:
+    build: 
+      context: ./ch-server
+      dockerfile: Dockerfile-prod
+    ports:
+      - 5000:5000
+  ch-client:
+    build: 
+      context: ./ch-client
+      dockerfile: Dockerfile-prod
+    ports:
+      - 80:80

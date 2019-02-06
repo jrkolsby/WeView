@@ -27,23 +27,8 @@ def compareBrackets(old, new):
 def roundRange(n):
     return list(range(2**(4-n), 2**(5-n)))
 
-@io.on('connect')
-def connect():
-    print("connected")
-    print(request.args.to_dict(flat=False))
-
-@io.on('disconnect')
-def connect():
-    print("disconnected")
-
-@io.on('message')
-def handle_message(message):
-    print('received message: ' + message)
-
 @io.on('join')
 def join(action):
-    print("SOCKET JOIN")
-    print(action)
     try:
         user = action['user']
         token = action['token']
@@ -63,14 +48,11 @@ def join(action):
         print("WARN Invalid token")
         return 
 
-    print("JOINED ROOM")
     join_room(room)
     dispatch(io, room, showSuccess(user.username + " joined /" + room))
 
 @io.on('leave')
 def leave(action):
-    print("SOCKET LEAVE")
-    print(action)
     try:
         user = action['user']
         token = action['token']
@@ -92,15 +74,10 @@ def leave(action):
     leave_room(room.url)
     dispatch(io, room.url, showSuccess(user.username + " left /" + room.url))
 
-@app.errorhandler(404)
-def page_not_found(error):
-    return 'Hi there this page does not exist: '.format(request.url), 404
-
 @app.route("/", methods=['POST'])
 def api():
 
     action = request.get_json(force=True)
-    print(action)
     
     try:
         theList = action['list']
