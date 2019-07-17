@@ -28,9 +28,11 @@ const renderFirstRound = (props) => {
 
     for (var i = 0; i < slice.length; i++) {
 	var match = slice[i]
+	/*
 	if (match.length > 0) {
 	    firstRound.push(<h3 key={2*i+i*matchIndex}>Match {matchIndex++}</h3>)
 	}
+	*/
 	for (var j = match.length-1; j >= 0; j--) {
 	    let c = match[j]
 	    var choice = choices[c]
