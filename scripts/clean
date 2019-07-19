@@ -1,4 +1,0 @@
-docker image prune -f
-docker container prune -f
-docker-compose -f compose.prod.yml down --remove-orphans --rmi 'all'
-docker-compose -f compose.dev.yml down --remove-orphans --rmi 'all'
