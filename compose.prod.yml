@@ -1,12 +1,12 @@
 version: "3"
 services:
-  ch-server:
+  wv-server:
     build: 
       context: ./wv-server
       dockerfile: Dockerfile-prod
     ports:
       - 5000:5000
-  ch-client:
+  wv-client:
     build: 
       context: ./wv-client
       dockerfile: Dockerfile-prod

@@ -31,6 +31,7 @@
 - [ ] Router based on room hash in URL
 - [ ] Autocopy room ID
 - [ ] Connect bracket
+- [ ] SSL
 
 ### Issues
 
