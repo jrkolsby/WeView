@@ -1,5 +1,10 @@
 # Choosy: Pick a movie!
 
+### Development Environment
+
+- `make dev`
+- navigate to `localhost`
+
 # TODO
 
 ### First iteration, group voting
@@ -29,6 +34,7 @@
 
 ### Issues
 
+- [ ] deploying deletes database
 - [ ] room "movietn" crashes
 - [ ] sometimes choice input only changes last character
 - [ ] choice which you are editing isn't always at the top?
