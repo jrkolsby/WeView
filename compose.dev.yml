@@ -1,28 +1,28 @@
 version: "3"
 services:
-  ch-nginx-dev:
+  wv-nginx-dev:
     image: nginx:1.15.8
     volumes:
-      - ./ch-client/choosy.dev.conf:/etc/nginx/conf.d/choosy.conf
+      - ./wv-client/choosy.dev.conf:/etc/nginx/conf.d/choosy.conf
     ports:
       - 80:80
     entrypoint:
       - nginx
       - -g
       - daemon off;
-  ch-react-dev:
+  wv-react-dev:
     build: 
-      context: ./ch-client
+      context: ./wv-client
       dockerfile: Dockerfile-dev
     volumes:
-      - ./ch-client/src:/usr/src/app/src:rw
+      - ./wv-client/src:/usr/src/app/src:rw
     ports:
       - 3000:3000
-  ch-flask-dev:
+  wv-flask-dev:
     build: 
-      context: ./ch-server
+      context: ./wv-server
       dockerfile: Dockerfile-dev
     volumes:
-      - ./ch-server/app:/app:rw
+      - ./wv-server/app:/app:rw
     ports:
       - 5000:5000
