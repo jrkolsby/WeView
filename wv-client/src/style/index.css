@@ -175,6 +175,7 @@ header .messages {
     bottom: 16px;
     z-index: 200;
     position: fixed;
+    pointer-events: none;
 }
 
 .message {
@@ -193,18 +194,15 @@ header .messages {
 
 .message.hidden {
     right: -300px;
-    pointer-events: none !important;
 }
 
 .message.SHOW_SUCCESS {
-    pointer-events: none;
     background: #5BFF92;
     font-weight: 400;
     color: #111;
 }
 
 .message.SHOW_ERROR {
-    pointer-events: none;
     background: #FF4631;
 }
 
@@ -213,6 +211,7 @@ header .messages {
     color: #111;
     opacity: 1;
     text-decoration: underline;
+    pointer-events: all;
     cursor: pointer;
     border-radius: 16px;
 }
