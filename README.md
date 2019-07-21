@@ -7,6 +7,21 @@
 
 # TODO
 
+- [ ] Input suggestions based on all choices ever
+- [ ] Delete choices
+- [ ] Delete rooms
+- [ ] Router based on room hash in URL
+- [ ] Autocopy room ID
+- [ ] Connect bracket
+- [ ] SSL
+
+### Issues
+
+- [ ] deploying deletes database (need to run MySQL on a dedicated server)
+- [ ] room "movietn" crashes
+- [ ] sometimes choice input only changes last character
+- [ ] choice which you are editing isn't always at the top?
+
 ### First iteration, group voting
 - [X] Group socket connection for lists
 - [X] Create item
@@ -22,28 +37,3 @@
 
 ### Third iteration, fancy features
 - [X] Real-time input updates to room
-- [ ] Input suggestions based on all choices ever
-- [ ] Delete choices
-
-### Fourth Sprint
-- [ ] Delete Choices
-- [ ] Delete rooms
-- [ ] Router based on room hash in URL
-- [ ] Autocopy room ID
-- [ ] Connect bracket
-- [ ] SSL
-
-### Issues
-
-- [ ] deploying deletes database
-- [ ] room "movietn" crashes
-- [ ] sometimes choice input only changes last character
-- [ ] choice which you are editing isn't always at the top?
-
-### 
-Tell people to give out the room URL
-Add chsy.io/ before URL
-Hide voting
-Make it clear that a choice has already been voted on
-Display which round we're on
-Label matches in inputs and voting
