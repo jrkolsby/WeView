@@ -62,7 +62,7 @@ const renderFirstRound = (props) => {
 const InputContainer = (props) => {
     return (
         <div className="input-container">
-        <div className="wrapper">
+        <div className={"wrapper r" + props.state.round[0]}>
             <button className={"new" + (props.state.listID >= 0 ? " active" : "")}
                 onClick={props.dispatch.createChoice}
             >+ Add Choice</button>

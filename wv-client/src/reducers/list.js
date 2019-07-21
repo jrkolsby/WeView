@@ -45,6 +45,7 @@ const list = (state=defaultState, action) => {
             }
 
         case ACTIONS.UPDATE_ROUND:
+	    console.log(action.payload)
             return {
                 ...state,
 		round: action.payload,

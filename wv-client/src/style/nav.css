@@ -2,13 +2,12 @@ main {
     width: 100%;
     position: relative;
     display: block;
-    overflow-x: visible;
 }
 
 .nav-current,
 .nav-right,
 .nav-left {
-    overflow: visible;
+    overflow: hidden;
     display: inline-block;
 
     position: absolute;

@@ -4,9 +4,9 @@ const defaultState = {
     currentPage: 0,
     currentModal: 0,
 
-    pageTitle: "Choosy",
-    pageSubtitle: "Decide together",
-    navTitle: "Choices by",
+    pageTitle: "WeView",
+    pageSubtitle: "Pick a movie with friends!",
+    navTitle: "Choosing with",
 
     progress: 0,
     messages: []

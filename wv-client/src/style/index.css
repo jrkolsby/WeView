@@ -5,6 +5,16 @@ body {
     color: #444;
 }
 
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    overflow-y: scroll;
+}
+
 a {
     cursor: pointer;
     color: inherit;
@@ -46,6 +56,7 @@ header .nav-header {
     border-radius: 16px;
     color: white;
     font-weight: 500;
+    z-index: 10;
     top: 50%;
 }
 
@@ -139,14 +150,19 @@ header h1 {
     margin-bottom: 4px;
 }
 
-h3 {
+header h3 {
+    margin-bottom: 16px;
     font-weight: 400;
     font-size: 18px;
-    margin-bottom: 8px;
     color: #aaa;
 }
 
-main h3 { text-align: center; }
+main h3 { 
+    font-weight: 400;
+    text-align: center; 
+    margin-bottom: 8px;
+    color: #aaa;
+}
 
 header nav {
     top: 20px;
@@ -177,6 +193,7 @@ header .messages {
 
 .message.hidden {
     right: -300px;
+    pointer-events: none !important;
 }
 
 .message.SHOW_SUCCESS {
@@ -238,9 +255,14 @@ nav div.active { display: inline-block; }
 
 .match.r4 { margin-left: 196px; }
 
+.choice,
+.vote-container .vote {
+    width: 304px;
+    vertical-align: top;
+}
+
 .choice {
     cursor: text;
-    width: 304px;
     padding: 12px;
     font-weight: 500;
     background: #4948FF;
@@ -258,7 +280,6 @@ nav div.active { display: inline-block; }
 .match.final .choice:not(.lose) span {
     color: black;
 }
-
 
 .choice.lose {
     background: #f1f1f1 !important;
@@ -288,6 +309,7 @@ nav div.active { display: inline-block; }
     padding-top: 32px;
     text-align: center;
     white-space: normal;
+    vertical-align: top;
 }
 
 .vote-container .choice {
@@ -301,7 +323,6 @@ nav div.active { display: inline-block; }
 
 .vote-container .vote {
     display: inline-block;
-    width: 304px;
     margin-right: 16px;
 }
 
@@ -410,5 +431,60 @@ button.new.active { display: block; }
         transform: translate(50%, -50%);
         box-shadow: 0 0 0 800px rgba(255,255,255,0.4),
                     0 0 24px 0 rgba(0,0,0,0.12);
+    }
+}
+
+@media only screen and (max-width: 460px) {
+
+    form.modal { 
+	padding: 24px; 
+	text-align: left;
+	width: calc(100% - 32px);
+    }
+
+    form input { width: 100%; }
+
+    header {
+	padding-top: 16px;
+    }
+
+    header h1 {
+	font-size: 24px;
+	text-align: center;
+	margin-bottom: 16px;
+    }
+
+    header h4,
+    header h3 { display: none; }
+
+    header nav {
+	width: 100%;
+	margin-top: 8px;
+	text-align: center;
+    }
+
+    nav div>a {
+	font-size: 12px;
+    }
+
+    header .nav-header {
+	height: 64px;
+	margin-bottom: -32px;
+    }
+
+    button.new {
+	padding-left: 40px;
+    }
+
+    .input-container .wrapper.r4,
+    .input-container .wrapper.r2 { left: -200px; }
+    .input-container .wrapper.r1 { left: -200px; }
+
+    .input-container .wrapper.r8,
+    .input-container .wrapper.r0 { left: 0px; }
+
+    .choice,
+    .vote-container .vote {
+	width: 200px !important;
     }
 }

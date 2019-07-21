@@ -43,7 +43,7 @@ export default {
         [3,4],
         [1,2],
     ],
-    round: [1],
+    round: [0],
     results: [0, 1, 0, 0,
 	      0, 0, 0, 1,
 	      0, 0, 0, 0,
