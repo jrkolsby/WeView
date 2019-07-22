@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile-prod
     ports:
       - 5000:5000
+    volumes:
+      - ./wv-server/app/data/:/app/data/:rw
   wv-client:
     build: 
       context: ./wv-client
