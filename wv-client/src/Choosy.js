@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import * as userActions from './actions/user'
+import * as listActions from './actions/list'
+
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -17,6 +19,10 @@ class Choosy extends Component {
     constructor(props) {
         super(props)
         window.addEventListener('beforeunload', props.dispatch.logout)
+	if (window.location.pathname.length > 1) {
+	    let roomURL = window.location.pathname.substr(1)
+	    props.dispatch.joinList(roomURL)
+	}
     }
         
     render() {
@@ -36,7 +42,9 @@ const mapDispatch = (dispatch) => {
     return {
         dispatch: {
             ...bindActionCreators(userActions, dispatch), 
+            ...bindActionCreators(listActions, dispatch)
         }
     }
 }
-export default connect(mapDispatch)(Choosy);
+
+export default connect(null, mapDispatch)(Choosy);
