@@ -1,0 +1,4 @@
+"Done entering options" button
+Choices get cut off sometimes when other people join the room and add choices
+Unify bracket and voting
+Get rid of landing bracket, replace with bold text

@@ -240,7 +240,12 @@ def api():
         return jsonify(success(theList.toDict()))
 
     if theType == "JOIN_LIST":
-        theList = getList(url=payload['url'])
+        try:
+            url = payload['url']
+        except:
+            return jsonify(error("Bad Action"))
+
+        theList = getList(url)
 
         if theList is None:
             return jsonify(error("Invalid URL")) 
