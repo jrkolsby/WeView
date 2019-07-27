@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import rootReducer from './reducers'
+import rootReducer from './reducers';
+import Router from './Router';
 
 import socketio from 'socket.io-client';
 import thunk from 'redux-thunk'
@@ -37,7 +38,7 @@ const room = store => next => action => {
             break;
 
         default: break;
-    } 
+    }
 
     next(action);
 }
@@ -49,10 +50,9 @@ const store = createStore(
 
 ReactDOM.render((
     <Provider store={store}>
-        <Choosy />
+        <Router />
     </Provider>
     ), document.getElementById('root')
 );
 
 //registerServiceWorker();
-
