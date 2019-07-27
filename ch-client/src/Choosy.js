@@ -18,7 +18,7 @@ class Choosy extends Component {
         super(props)
         window.addEventListener('beforeunload', props.dispatch.logout)
     }
-        
+
     render() {
         return (
             <div className="choosy">
@@ -31,11 +31,11 @@ class Choosy extends Component {
         )
     }
 }
-    
+
 const mapDispatch = (dispatch) => {
     return {
         dispatch: {
-            ...bindActionCreators(userActions, dispatch), 
+            ...bindActionCreators(userActions, dispatch),
         }
     }
 }
